@@ -1,1 +1,29 @@
-<p>login works!</p>
+
+<div class="card card-form m-3 p-1 mx-auto">
+<div class="card-body">
+
+	<form>
+
+		<div class="form-floating mb-3">
+			<input type="email" class="form-control" id="email" #email placeholder="Email" [value]="fillEmail" >
+			<label for="email">Email</label>
+		</div>
+
+		<div class="form-floating mb-3">
+			<input type="password" class="form-control" id="clave" #clave placeholder="Contraseña" [value]="fillClave" >
+			<label for="clave">Contraseña</label>
+		</div>
+
+		<button type="button" class="btn btn-primary" (click)="authenticationService.signIn(email.value, clave.value)">Ingresar</button>
+
+		<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">Completar Campos</button>
+	    <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+	      <a class="dropdown-item" (click)="completarCampos(0)">test2</a>
+	      <a class="dropdown-item" (click)="completarCampos(1)">test3</a>
+	      <a class="dropdown-item" (click)="completarCampos(2)">test5</a>
+	    </div>
+
+	</form>
+</div>
+</div>

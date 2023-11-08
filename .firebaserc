@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "clinica-6b04b": {
+      "hosting": {
+        "laurenzano-lab4-clinica": [
+          "laurenzano-lab4-clinica"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "clinica-6b04b"
+  }
+}
