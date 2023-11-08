@@ -1,1 +1,31 @@
-<p>register works!</p>
+
+<div class="card card-form m-3 p-1 mx-auto">
+<div class="card-body">
+
+	<form>
+
+		<div class="form-floating mb-3">
+			<input type="text" class="form-control" id="nombre" #nombre placeholder="Nombre">
+			<label for="nombre">Nombre</label>
+		</div>
+
+		<div class="form-floating mb-3">
+			<input type="email" class="form-control" id="email" #email placeholder="Email">
+			<label for="email">Email</label>
+		</div>
+
+		<div class="form-floating mb-3">
+			<input type="text" class="form-control" id="rol" #rol placeholder="Rol">
+			<label for="rol">Rol</label>
+		</div>
+
+		<div class="form-floating mb-3">
+			<input type="password" class="form-control" id="clave" #clave placeholder="Contraseña">
+			<label for="clave">Contraseña</label>
+		</div>
+
+		<button type="button" class="btn btn-primary me-2" (click)="authenticationService.signUp(nombre.value, email.value, rol.value, clave.value)">Registrarse</button>
+
+	</form>
+</div>
+</div>

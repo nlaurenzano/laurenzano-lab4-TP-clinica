@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 // import { LogService } from './log.service';
 
-import { Auth, signInWithEmailAndPassword, signOut } from "@angular/fire/auth";
+import { Auth, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword, updateProfile } from "@angular/fire/auth";
 import { Router } from '@angular/router';
 
 // import Toastify from 'toastify-js';
@@ -64,42 +64,54 @@ export class AuthenticationService {
     // }
   }
 
-
-
   // Registro con email, nombre y clave
-  // signUp(email: string, nombre: string, clave: string) {
-  //   return this.afAuth
-  //     .createUserWithEmailAndPassword(email, clave)
-  //     .then((resultado) => {
-  //       resultado.user.updateProfile({ displayName: nombre });
-  //       // .then(...)
-  //       // .catch(...)
-        
-  //       console.log('nombre: '+resultado.user.displayName);
+  signUp(nombre: string, email: string, rol: string, clave: string) {
 
-  //       // Log de registro
-  //       this.logService.signUp(email);
-  //       // Redirección
-  //       this.router.navigate(['home']);
-  //     })
-  //     .catch((error) => {
-  //       let mensaje: string;
-  //       switch(error.code) {
-  //         case "auth/invalid-email":
-  //           mensaje = "Formato de correo inválido";
-  //           break;
-  //         case "auth/email-already-in-use":
-  //           mensaje = "El correo ingresado ya está en uso";
-  //           break;
-  //         case "auth/weak-password":
-  //           mensaje = "La clave no es segura";
-  //           break;
-  //         default:
-  //           mensaje = "Ocurrió un error inesperado";
-  //       } 
-  //       this.mostrarError(mensaje);
-  //     });
-  // }
+
+    createUserWithEmailAndPassword(this.auth, email, clave)
+      .then((resultado) => {
+        updateProfile(resultado.user, { displayName: nombre });
+          // rol: rol
+
+// this.auth.createUserWithEmailAndPassword(email, password)
+// .then(registeredUser => {
+//   this.firestore.collection("usersCollection")
+//   .add({
+//     uid: registeredUser.user.uid,
+//     field: 'Info you want to get here',
+//     anotherField: 'Another Info...',
+//     ....
+
+        // .then(...)
+        // .catch(...)
+        
+        // console.log('nombre: '+resultado.user.displayName);
+
+        // Log de registro
+        // this.logService.signUp(email);
+        // Redirección
+        this.router.navigate(['/']);
+      })
+      .catch((error) => {
+        let mensaje: string;
+        switch(error.code) {
+          case "auth/invalid-email":
+            mensaje = "Formato de correo inválido";
+            break;
+          case "auth/email-already-in-use":
+            mensaje = "El correo ingresado ya está en uso";
+            break;
+          case "auth/weak-password":
+            mensaje = "La clave no es segura";
+            break;
+          default:
+            mensaje = "Ocurrió un error inesperado";
+        } 
+        this.mostrarError(mensaje);
+      });
+  }
+
+
 
   // Devuelve true si el usuario está logueado
   // get isLoggedIn(): boolean {
