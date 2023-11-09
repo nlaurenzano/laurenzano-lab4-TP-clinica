@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AuthenticationService } from "../../../servicios/authentication.service";
+import { AuthenticationService, Usuario } from "../../../servicios/authentication.service";
 
 @Component({
   selector: 'app-register',
@@ -8,10 +8,22 @@ import { AuthenticationService } from "../../../servicios/authentication.service
 })
 export class RegisterComponent {
 
+  public usuario: Usuario = {
+    rol: '',
+    nombre: '',
+    apellido: '',
+    edad: '',
+    dni: '',
+    email: '',
+    clave: '',
+    obraSocial: '',
+    especialidad: ''
+};
+
   constructor( public authenticationService: AuthenticationService ) { }
 
-  // public signUp() {
-  //   this.;
-  // }
+  public signUp() {
+    this.authenticationService.signUp(this.usuario);
+  }
 
 }

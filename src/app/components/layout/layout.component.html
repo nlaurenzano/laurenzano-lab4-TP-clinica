@@ -10,8 +10,21 @@
         <a routerLink="/" class="nav-link" aria-current="page">Inicio</a>
         <a routerLink="/admin/usuarios" class="nav-link" aria-current="page">Usuarios</a>
         <a routerLink="/auth/login" class="nav-link">Ingresar</a>
+        <a routerLink="/auth/register" class="nav-link">Registro</a>
+
+        <a routerLink="" (click)="authenticationService.signOut()" class="nav-link">Salir</a>
 
 <!-- 
+        <div *ngIf="authenticationService.isLoggedIn; then thenBlock else elseBlock"></div>
+        <ng-template #thenBlock>
+          <a routerLink="/menu-juegos">Juegos</a>
+          <a routerLink="" (click)="authenticationService.signOut()">Salir</a>
+        </ng-template>
+        <ng-template #elseBlock>
+          <a routerLink="/login">Ingresar</a>
+        </ng-template>
+
+        
         <a [routerLink]="item.link" class="nav-link active" aria-current="page">{{item.etiqueta}}</a>
 
         <a class="nav-link active" aria-current="page" href="#">Home</a>

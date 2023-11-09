@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AuthenticationService } from "../../servicios/authentication.service";
 
 // export type NavItem = {
 //   link: string;
@@ -12,9 +13,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./layout.component.css']
 })
 export class LayoutComponent {
-
   // @Input navItems: NavItem[] = [];
 
+  constructor( public authenticationService: AuthenticationService ) { }
 
 
 }

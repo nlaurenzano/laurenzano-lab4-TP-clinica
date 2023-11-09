@@ -1,20 +1,42 @@
 import { Injectable } from '@angular/core';
-// import { LogService } from './log.service';
-
-import { Auth, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword, updateProfile } from "@angular/fire/auth";
 import { Router } from '@angular/router';
+import { Firestore, doc, setDoc, getDocs, collection, collectionData } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
 
+import { 
+  Auth,
+  User,
+  signInWithEmailAndPassword,
+  signOut,
+  createUserWithEmailAndPassword,
+  updateProfile
+  } from "@angular/fire/auth";
+
+// import { LogService } from './log.service';
 // import Toastify from 'toastify-js';
+
+export interface Usuario {
+  rol: string,
+  nombre: string,
+  apellido: string,
+  edad: string,
+  dni: string,
+  email: string,
+  clave: string,
+  obraSocial: string,    // Pacientes
+  especialidad: string,  // Especialistas
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
 
-  usuario: any = null;
+  public usuarios = [{nombre:''}];
 
   constructor(
     public auth: Auth,
+    public fs: Firestore,
     public router: Router
     ) {}
 
@@ -65,27 +87,29 @@ export class AuthenticationService {
   }
 
   // Registro con email, nombre y clave
-  signUp(nombre: string, email: string, rol: string, clave: string) {
+  signUp( usuario: Usuario ) {
 
-
-    createUserWithEmailAndPassword(this.auth, email, clave)
+    createUserWithEmailAndPassword(this.auth, usuario.email, usuario.clave)
       .then((resultado) => {
-        updateProfile(resultado.user, { displayName: nombre });
-          // rol: rol
+        updateProfile(resultado.user, { displayName: usuario.nombre + ' ' + usuario.apellido});
 
-// this.auth.createUserWithEmailAndPassword(email, password)
-// .then(registeredUser => {
-//   this.firestore.collection("usersCollection")
-//   .add({
-//     uid: registeredUser.user.uid,
-//     field: 'Info you want to get here',
-//     anotherField: 'Another Info...',
-//     ....
+        const docData = {
+          // uid: resultado.user.uid,
+          rol: usuario.rol,
+          nombre: usuario.nombre,
+          apellido: usuario.apellido,
+          edad: usuario.edad,
+          dni: usuario.dni,
+          obraSocial: usuario.obraSocial,
+          especialidad: usuario.especialidad
+          // dateExample: Timestamp.fromDate(new Date("December 10, 1815")),
+        };
+        setDoc(doc(this.fs, "usuarios", resultado.user.uid), docData);
 
         // .then(...)
         // .catch(...)
         
-        // console.log('nombre: '+resultado.user.displayName);
+        console.log('nombre: '+resultado.user.displayName);
 
         // Log de registro
         // this.logService.signUp(email);
@@ -110,6 +134,24 @@ export class AuthenticationService {
         this.mostrarError(mensaje);
       });
   }
+
+  // Devuelve la lista de todos los usuarios registrados
+  async obtenerUsuarios() {
+
+    const usuariosRef = collection(this.fs, "usuarios");
+    // this.usuarios$ = collectionData(usuariosRef) as Observable<Usuario[]>;
+
+    const querySnapshot = await getDocs(collection(this.fs, "usuarios"));
+    
+    this.usuarios = [];
+    querySnapshot.forEach((doc) => {
+      this.usuarios.push({
+        nombre: doc.data()['nombre']
+      });
+    });
+  }
+
+
 
 
 

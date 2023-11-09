@@ -1,7 +1,5 @@
-
 <div class="card card-form m-3 p-1 mx-auto">
 <div class="card-body">
-
 	<form>
 
 		<div class="form-floating mb-3">
@@ -16,13 +14,14 @@
 
 		<button type="button" class="btn btn-primary me-2" (click)="authenticationService.signIn(email.value, clave.value)">Ingresar</button>
 
-		<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false">Completar Campos</button>
-	    <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-	      <a class="dropdown-item" (click)="completarCampos(0)">test2</a>
-	      <a class="dropdown-item" (click)="completarCampos(1)">test3</a>
-	      <a class="dropdown-item" (click)="completarCampos(2)">test5</a>
-	    </div>
+		<button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+		Completar Campos
+		</button>
+		<ul class="dropdown-menu">
+			<li *ngFor="let item of usuarios; let i = index;">
+				<a  class="dropdown-item" (click)="completarCampos(i)">{{item}}</a>
+			</li>
+		</ul>
 
 	</form>
 </div>

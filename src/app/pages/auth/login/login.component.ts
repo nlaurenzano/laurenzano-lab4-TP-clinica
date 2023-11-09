@@ -11,7 +11,7 @@ export class LoginComponent {
   fillEmail: string = '';
   fillClave: string = '';
 
-  private usuarios = ['test2@test.com','test3@lab4.com','test5@lab4.com'];
+  public usuarios = ['admin1@clinica.com'];
 
   constructor( public authenticationService: AuthenticationService ) { }
 
