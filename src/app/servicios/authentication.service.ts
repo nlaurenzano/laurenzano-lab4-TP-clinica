@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 
 import { 
   Auth,
-  User,
+  // User,
   signInWithEmailAndPassword,
   signOut,
   createUserWithEmailAndPassword,
@@ -14,6 +14,7 @@ import {
 
 // import { LogService } from './log.service';
 // import Toastify from 'toastify-js';
+
 
 export interface Usuario {
   rol: string,
