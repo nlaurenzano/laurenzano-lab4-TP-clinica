@@ -1,13 +1,20 @@
 {
-  "hosting": {
-    "public": "dist/laurenzano-lab4-clinica",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ],
-    "frameworksBackend": {
-      "region": "us-central1"
+  "hosting": [
+    {
+      "public": "dist/laurenzano-lab4-clinica",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "frameworksBackend": {
+        "region": "us-central1"
+      }
+    },
+    {
+      "target": "laurenzano-lab4-clinica",
+      "source": ".",
+      "frameworksBackend": {}
     }
-  }
+  ]
 }

@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 
 import { 
   Auth,
-  User,
+  // User,
   signInWithEmailAndPassword,
   signOut,
   createUserWithEmailAndPassword,
@@ -14,6 +14,7 @@ import {
 
 // import { LogService } from './log.service';
 // import Toastify from 'toastify-js';
+
 
 export interface Usuario {
   rol: string,
@@ -32,6 +33,7 @@ export interface Usuario {
 })
 export class AuthenticationService {
 
+  public loadingUsuarios: boolean = false;
   public usuarios = [{nombre:''}];
 
   constructor(
@@ -138,17 +140,18 @@ export class AuthenticationService {
   // Devuelve la lista de todos los usuarios registrados
   async obtenerUsuarios() {
 
+    this.loadingUsuarios = true;
+    this.usuarios = [];
     const usuariosRef = collection(this.fs, "usuarios");
     // this.usuarios$ = collectionData(usuariosRef) as Observable<Usuario[]>;
 
     const querySnapshot = await getDocs(collection(this.fs, "usuarios"));
-    
-    this.usuarios = [];
     querySnapshot.forEach((doc) => {
       this.usuarios.push({
         nombre: doc.data()['nombre']
       });
     });
+    this.loadingUsuarios = false;
   }
 
 
