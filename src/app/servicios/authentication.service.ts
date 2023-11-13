@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { Firestore, doc, setDoc, getDocs, collection, collectionData } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 
+import { DbService } from './db.service';
+
 import { 
   Auth,
   // User,
@@ -17,6 +19,7 @@ import {
 
 
 export interface Usuario {
+  id: string,
   rol: string,
   nombre: string,
   apellido: string,
@@ -33,12 +36,9 @@ export interface Usuario {
 })
 export class AuthenticationService {
 
-  public loadingUsuarios: boolean = false;
-  public usuarios = [{nombre:''}];
-
   constructor(
     public auth: Auth,
-    public fs: Firestore,
+    public db: DbService,
     public router: Router
     ) {}
 
@@ -94,24 +94,14 @@ export class AuthenticationService {
     createUserWithEmailAndPassword(this.auth, usuario.email, usuario.clave)
       .then((resultado) => {
         updateProfile(resultado.user, { displayName: usuario.nombre + ' ' + usuario.apellido});
-
-        const docData = {
-          // uid: resultado.user.uid,
-          rol: usuario.rol,
-          nombre: usuario.nombre,
-          apellido: usuario.apellido,
-          edad: usuario.edad,
-          dni: usuario.dni,
-          obraSocial: usuario.obraSocial,
-          especialidad: usuario.especialidad
-          // dateExample: Timestamp.fromDate(new Date("December 10, 1815")),
-        };
-        setDoc(doc(this.fs, "usuarios", resultado.user.uid), docData);
-
+        console.log('createUserWithEmailAndPassword 1');
+        usuario.id = resultado.user.uid;
+        console.log('createUserWithEmailAndPassword 2');
+        this.db.agregarUsuario(usuario);
+        console.log('createUserWithEmailAndPassword 3');
         // .then(...)
         // .catch(...)
         
-        console.log('nombre: '+resultado.user.displayName);
 
         // Log de registro
         // this.logService.signUp(email);
@@ -137,22 +127,7 @@ export class AuthenticationService {
       });
   }
 
-  // Devuelve la lista de todos los usuarios registrados
-  async obtenerUsuarios() {
 
-    this.loadingUsuarios = true;
-    this.usuarios = [];
-    const usuariosRef = collection(this.fs, "usuarios");
-    // this.usuarios$ = collectionData(usuariosRef) as Observable<Usuario[]>;
-
-    const querySnapshot = await getDocs(collection(this.fs, "usuarios"));
-    querySnapshot.forEach((doc) => {
-      this.usuarios.push({
-        nombre: doc.data()['nombre']
-      });
-    });
-    this.loadingUsuarios = false;
-  }
 
 
 

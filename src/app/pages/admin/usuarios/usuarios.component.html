@@ -1,33 +1,37 @@
-<div class="container text-center m-3 p-1">
+<section class="appointment">
+	<div class="container">
 
-<div *ngIf="authenticationService.loadingUsuarios; then thenBlock else elseBlock"></div>
-<ng-template #thenBlock>
-	<div class="spinner-border" role="status">
-	  <span class="visually-hidden">Cargando usuarios...</span>
-	</div>
-</ng-template>
+		<div *ngIf="db.loadingUsuarios; then preloader else elseBlock"></div>
+		<ng-template #preloader>
+			<div id="preloader"></div>
+		</ng-template>
 
-<ng-template #elseBlock>
- 
-	<div class="row justify-content-md-center">
-	    
-		<div class="col col-lg-2">
-			<h3>Usuarios</h3>
-			<div class="list-group">
-				<button *ngFor="let usuario of authenticationService.usuarios" type="button" class="list-group-item list-group-item-action">{{usuario.nombre}}</button>
+		<ng-template #elseBlock>
+
+			<div class="section-title">
+		      <h2>Usuarios</h2>
+		    </div>
+		 
+			<div class="row justify-content-md-center">
+			    
+				<div class="col col-lg-2">
+					<div class="list-group">
+						<button *ngFor="let usuario of db.usuarios" type="button" class="list-group-item list-group-item-action">{{usuario.nombre}}</button>
+					</div>
+				</div>
+
+				<div class="col-md-auto">
+				  
+				</div>
+
+				<div class="col col-lg-2">
+				  
+				</div>
+
 			</div>
-		</div>
 
-		<div class="col-md-auto">
-		  
-		</div>
+		</ng-template>
 
-		<div class="col col-lg-2">
-		  
-		</div>
 
-	</div>
-
-</ng-template>
-
-</div>
+  </div>
+</section>

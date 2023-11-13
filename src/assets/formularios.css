@@ -1,5 +1,98 @@
 
-
-.card-form {
+.card-login {
   max-width: 500px;
+}
+
+.formulario {
+  width: 100%;
+}
+
+.formulario .form-group {
+  padding-bottom: 8px;
+}
+
+.formulario .validate {
+  display: none;
+  color: red;
+  margin: 0 0 15px 0;
+  font-weight: 400;
+  font-size: 13px;
+}
+
+.formulario .error-message {
+  display: none;
+  color: #fff;
+  background: #ed3c0d;
+  text-align: left;
+  padding: 15px;
+  font-weight: 600;
+}
+
+.formulario .error-message br+br {
+  margin-top: 25px;
+}
+
+.formulario .sent-message {
+  display: none;
+  color: #fff;
+  background: #18d26e;
+  text-align: center;
+  padding: 15px;
+  font-weight: 600;
+}
+
+.formulario .loading {
+  display: none;
+  background: #fff;
+  text-align: center;
+  padding: 15px;
+}
+
+.formulario .loading:before {
+  content: "";
+  display: inline-block;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  margin: 0 10px -6px 0;
+  border: 3px solid #18d26e;
+  border-top-color: #eee;
+  animation: animate-loading 1s linear infinite;
+}
+
+.formulario input,
+.formulario textarea,
+.formulario select {
+  border-radius: 0;
+  box-shadow: none;
+  font-size: 14px;
+/*  padding: 10px !important;*/
+}
+
+.formulario input:focus,
+.formulario textarea:focus,
+.formulario select:focus {
+  border-color: #1977cc;
+}
+
+.formulario input,
+.formulario select {
+  height: 44px;
+}
+
+.formulario textarea {
+  padding: 10px 12px;
+}
+
+.formulario button {
+  background: #1977cc;
+  border: 0;
+  padding: 10px 35px;
+  color: #fff;
+  transition: 0.4s;
+  border-radius: 50px;
+}
+
+.formulario button:hover {
+  background: #1c84e3;
 }

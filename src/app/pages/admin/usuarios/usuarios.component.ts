@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService, Usuario } from "../../../servicios/authentication.service";
+import { DbService } from "../../../servicios/db.service";
 
 @Component({
   selector: 'app-usuarios',
@@ -8,10 +9,10 @@ import { AuthenticationService, Usuario } from "../../../servicios/authenticatio
 })
 export class UsuariosComponent implements OnInit {
 
-  constructor( public authenticationService: AuthenticationService ) {}
+  constructor( public db: DbService ) {}
 
   ngOnInit() {
-    this.authenticationService.obtenerUsuarios();
+    this.db.obtenerUsuarios();
   }
 
 
