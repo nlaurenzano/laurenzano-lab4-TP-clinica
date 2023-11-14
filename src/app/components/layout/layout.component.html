@@ -10,7 +10,7 @@
       <!-- Uncomment below if you prefer to use an image logo -->
       <!-- <a href="index.html" class="logo me-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
 
-      <nav id="navbar" class="navbar order-last order-lg-0">
+      <nav class="navbar order-last order-lg-0">
         <ul>
           <li><a class="nav-link scrollto" routerLink="/">Inicio</a></li>
           <li><a class="nav-link scrollto" routerLink="/admin/usuarios">Usuarios</a></li>
@@ -20,13 +20,19 @@
           <li><a class="nav-link scrollto" routerLink="" (click)="authenticationService.signOut()">Salir</a></li>
 
         </ul>
-        <i class="bi bi-list mobile-nav-toggle"></i>
-      </nav><!-- .navbar -->
+        <!-- <i class="bi bi-list mobile-nav-toggle"></i> -->
+      </nav>
 
     </div>
-  </header><!-- End Header -->
-
+  </header>
 <!-- 
+
+----------------------------------------
+    navbarlink.classList.add('active')
+  } else {
+    navbarlink.classList.remove('active')
+----------------------------------------
+
         <div *ngIf="authenticationService.isLoggedIn; then thenBlock else elseBlock"></div>
         <ng-template #thenBlock>
           <a routerLink="/menu-juegos">Juegos</a>

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Firestore, doc, setDoc, getDocs, collection, collectionData } from '@angular/fire/firestore';
+// import { Firestore, doc, setDoc, getDocs, collection, collectionData } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 
 import { DbService } from './db.service';
@@ -19,7 +19,7 @@ import {
 
 
 export interface Usuario {
-  id: string,
+  // id: string,
   rol: string,
   nombre: string,
   apellido: string,
@@ -95,13 +95,10 @@ export class AuthenticationService {
       .then((resultado) => {
         updateProfile(resultado.user, { displayName: usuario.nombre + ' ' + usuario.apellido});
         console.log('createUserWithEmailAndPassword 1');
-        usuario.id = resultado.user.uid;
-        console.log('createUserWithEmailAndPassword 2');
-        this.db.agregarUsuario(usuario);
-        console.log('createUserWithEmailAndPassword 3');
+        // usuario.id = resultado.user.uid;
+        this.db.agregarUsuario( resultado.user.uid, usuario );
         // .then(...)
         // .catch(...)
-        
 
         // Log de registro
         // this.logService.signUp(email);
@@ -123,14 +120,10 @@ export class AuthenticationService {
           default:
             mensaje = "Ocurrió un error inesperado";
         } 
-        this.mostrarError(mensaje);
+        this.mostrarError(error.code);
+        // this.mostrarError(mensaje);
       });
   }
-
-
-
-
-
 
 
   // Devuelve true si el usuario está logueado

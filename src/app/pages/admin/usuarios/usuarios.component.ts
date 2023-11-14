@@ -9,10 +9,19 @@ import { DbService } from "../../../servicios/db.service";
 })
 export class UsuariosComponent implements OnInit {
 
+  public usuarios;
+  public usuarioDetalle: Usuario = null;
+
   constructor( public db: DbService ) {}
 
   ngOnInit() {
-    this.db.obtenerUsuarios();
+    this.usuarios = this.db.obtenerUsuarios();
+  }
+
+  mostrarDetalle( usuario ) {
+
+    this.usuarioDetalle = usuario;
+
   }
 
 

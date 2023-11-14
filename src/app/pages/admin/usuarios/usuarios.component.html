@@ -1,12 +1,12 @@
 <section class="appointment">
 	<div class="container">
 
-		<div *ngIf="db.loadingUsuarios; then preloader else elseBlock"></div>
+		<div *ngIf="usuarios | async; then contenidoBlock else preloader"></div>
 		<ng-template #preloader>
 			<div id="preloader"></div>
 		</ng-template>
 
-		<ng-template #elseBlock>
+		<ng-template #contenidoBlock>
 
 			<div class="section-title">
 		      <h2>Usuarios</h2>
@@ -14,24 +14,53 @@
 		 
 			<div class="row justify-content-md-center">
 			    
-				<div class="col col-lg-2">
+			    <!-- Listado -->
+				<div class="col col-lg-6">
 					<div class="list-group">
-						<button *ngFor="let usuario of db.usuarios" type="button" class="list-group-item list-group-item-action">{{usuario.nombre}}</button>
+						<button *ngFor="let usuario of usuarios | async" type="button" class="list-group-item list-group-item-action"
+							(click)="mostrarDetalle(usuario)">
+							<p>{{usuario.nombre}}</p>
+							<p>{{usuario.rol}}</p>
+
+
+							
+
+						</button>
 					</div>
 				</div>
 
-				<div class="col-md-auto">
-				  
-				</div>
+				<!-- Detalles -->
+				<div class="col col-lg-6 usuarios detalle">
 
-				<div class="col col-lg-2">
+					<div *ngIf="usuarioDetalle" class="detalle d-flex align-items-start">
+		              <div class="pic"><img src="assets/img/doctors/doctors-1.jpg" class="img-fluid" alt=""></div>
+		              <div class="detalle-info">
+		                <h4>{{usuarioDetalle.nombre | titlecase}} {{usuarioDetalle.apellido | titlecase}}</h4>
+		                <span>{{usuarioDetalle.rol | titlecase}}</span>
+		                <p>{{usuarioDetalle.edad}}</p>
+		                <p>{{usuarioDetalle.dni}}</p>
+		                <p>{{usuarioDetalle.obraSocial}}</p>
+		                <p>{{usuarioDetalle.especialidad | titlecase}}</p>
+		                <p>Explicabo voluptatem mollitia et repellat qui dolorum quasi</p>
+		                
+		                <!-- 
+		                <div class="social">
+		                  <a href=""><i class="ri-twitter-fill"></i></a>
+		                  <a href=""><i class="ri-facebook-fill"></i></a>
+		                  <a href=""><i class="ri-instagram-fill"></i></a>
+		                  <a href=""> <i class="ri-linkedin-box-fill"></i> </a>
+		                </div>
+		                 -->
+		              </div>
+		            </div>
+
 				  
 				</div>
 
 			</div>
 
 		</ng-template>
-
-
   </div>
+
+
 </section>

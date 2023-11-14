@@ -10,7 +10,7 @@ export class RegisterComponent {
 
   // public loadingUsuarios: boolean = false;
   public usuario: Usuario = {
-    id: '',
+    // id: '',
     rol: '',
     nombre: '',
     apellido: '',
@@ -29,32 +29,31 @@ export class RegisterComponent {
   constructor( public authenticationService: AuthenticationService ) { }
 
   public signUp() {
-    // console.log(this.usuario.especialidad);
     this.authenticationService.signUp(this.usuario);
   }
 
   public setAdmin() {
-    this.usuario.rol = this.roles[1];
+    this.usuario.rol = this.roles[0];
   }
 
   public setEspecialista() {
-    this.usuario.rol = this.roles[2];
+    this.usuario.rol = this.roles[1];
   }
 
   public setPaciente() {
-    this.usuario.rol = this.roles[3];
-  }
-
-  get esEspecialista(): boolean {
-    return this.usuario.rol == this.roles[2];
-  }
-
-  get esPaciente(): boolean {
-    return this.usuario.rol == this.roles[3];
+    this.usuario.rol = this.roles[2];
   }
 
   get esAdmin(): boolean {
+    return this.usuario.rol == this.roles[0];
+  }
+
+  get esEspecialista(): boolean {
     return this.usuario.rol == this.roles[1];
+  }
+
+  get esPaciente(): boolean {
+    return this.usuario.rol == this.roles[2];
   }
 
 }

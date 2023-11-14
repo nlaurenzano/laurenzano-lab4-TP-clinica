@@ -1,38 +1,39 @@
 import { Injectable } from '@angular/core';
 import { Firestore, doc, setDoc, getDocs, collection, collectionData } from '@angular/fire/firestore';
 import { Usuario } from './authentication.service';
+// import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DbService {
 
-  public loadingUsuarios: boolean = false;
-  public usuarios = [{nombre:''}];
-
   constructor( public fs: Firestore ) {}
 
   // Devuelve la lista de todos los usuarios
   async obtenerUsuarios() {
-
-    this.loadingUsuarios = true;
-    this.usuarios = [];
+    let usuariosResult = [];
     const usuariosRef = collection(this.fs, "usuarios");
     // this.usuarios$ = collectionData(usuariosRef) as Observable<Usuario[]>;
 
     const querySnapshot = await getDocs(collection(this.fs, "usuarios"));
     querySnapshot.forEach((doc) => {
-      this.usuarios.push({
-        nombre: doc.data()['nombre']
+      usuariosResult.push({
+        rol: doc.data()['rol'],
+        nombre: doc.data()['nombre'],
+        apellido: doc.data()['apellido'],
+        edad: doc.data()['edad'],
+        dni: doc.data()['dni'],
+        obraSocial: doc.data()['obraSocial'],
+        especialidad: doc.data()['especialidad']
       });
     });
-    this.loadingUsuarios = false;
+
+    return usuariosResult;
   }
 
-  agregarUsuario( usuario ) {
-    console.log('agregarUsuario 1');
+  agregarUsuario( uid, usuario ) {
     const docData = {
-      id: usuario.id,
       rol: usuario.rol,
       nombre: usuario.nombre,
       apellido: usuario.apellido,
@@ -42,11 +43,8 @@ export class DbService {
       especialidad: usuario.especialidad
       // dateExample: Timestamp.fromDate(new Date("December 10, 1815")),
     };
-    console.log('agregarUsuario 2 '+docData.id);
-    
-    setDoc(doc(this.fs, "usuarios", usuario.id), docData);
 
-    console.log('agregarUsuario 3');
+    setDoc(doc(this.fs, "usuarios", uid), docData);
   }
 
 
