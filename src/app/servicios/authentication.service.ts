@@ -1,17 +1,21 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 // import { Firestore, doc, setDoc, getDocs, collection, collectionData } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { traceUntilFirst } from '@angular/fire/performance';
+import { map } from 'rxjs/operators';
+import { EMPTY, Observable, Subscription } from 'rxjs';
 
 import { DbService } from './db.service';
 
 import { 
+  User,
   Auth,
-  // User,
-  signInWithEmailAndPassword,
   signOut,
-  createUserWithEmailAndPassword,
-  updateProfile
+  authState,
+  updateProfile,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword
+  // getUser
   } from "@angular/fire/auth";
 
 // import { LogService } from './log.service';
@@ -19,7 +23,6 @@ import {
 
 
 export interface Usuario {
-  // id: string,
   rol: string,
   nombre: string,
   apellido: string,
@@ -29,42 +32,71 @@ export interface Usuario {
   clave: string,
   obraSocial: string,    // Pacientes
   especialidad: string,  // Especialistas
+  habilitado: string,  // Especialistas
 }
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthenticationService {
+export class AuthenticationService implements OnDestroy {
 
-  constructor(
-    public auth: Auth,
-    public db: DbService,
-    public router: Router
-    ) {}
+  public readonly usuario: Observable<User | null> = EMPTY;
+  public isLoggedIn = false;
+
+  private readonly userDisposable: Subscription|undefined;
+
+  // constructor(@Optional() private auth: Auth) {
+  constructor( public auth: Auth, public db: DbService, public router: Router ) {
+    if (auth) {
+      this.usuario = authState(this.auth);
+      this.userDisposable = authState(this.auth).pipe(
+        traceUntilFirst('auth'),
+        map(u => !!u)
+      ).subscribe(isLoggedIn => {
+        this.isLoggedIn = isLoggedIn;
+      });
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.userDisposable) {
+      this.userDisposable.unsubscribe();
+    }
+  }
 
   // Log in con email/clave
   signIn(email: string, clave: string) {
 
     signInWithEmailAndPassword(this.auth, email, clave)
       .then((resultado) => {
-        // Log de ingreso
-        // this.logService.signIn(email);
-        // console.log('nombre: '+resultado.user.displayName);
-        
-        // Redirección
-        this.router.navigate(['/']);
+
+        this.validarIngreso( resultado.user )
+          .then((valido) => {
+            if (valido) {
+              console.log('ingreso validado');
+              // Log de ingreso
+              // this.logService.signIn(email);
+              // console.log('nombre: '+resultado.user.displayName);
+              
+              // Redirección
+              this.redirigir(resultado.user);
+            } else {
+              this.mostrarError('Debe verificar su email.');
+              this.signOut();
+            }
+          });
       })
       .catch((error) => {
         let mensaje: string;
         switch(error.code) {
-          case "auth/invalid-email":
-            mensaje = "Formato de correo inválido";
+          case 'auth/invalid-email':
+            mensaje = 'Formato de correo inválido';
             break;
-          case "auth/user-disabled":
-            mensaje = "Usuario deshabilitado";
+          case 'auth/user-disabled':
+            mensaje = 'Usuario deshabilitado';
             break;
           default:
-            mensaje = "Usuario o clave incorrectos";
+            mensaje = 'Usuario o clave incorrectos';
             // mensaje = error.code;
         }
         this.mostrarError(mensaje);
@@ -94,9 +126,9 @@ export class AuthenticationService {
     createUserWithEmailAndPassword(this.auth, usuario.email, usuario.clave)
       .then((resultado) => {
         updateProfile(resultado.user, { displayName: usuario.nombre + ' ' + usuario.apellido});
-        console.log('createUserWithEmailAndPassword 1');
-        // usuario.id = resultado.user.uid;
+        
         this.db.agregarUsuario( resultado.user.uid, usuario );
+
         // .then(...)
         // .catch(...)
 
@@ -124,6 +156,47 @@ export class AuthenticationService {
         // this.mostrarError(mensaje);
       });
   }
+
+  // Redirige al usuario según su rol
+  redirigir( user: User) {
+    return this.db.obtenerUsuarioPorUid( user.uid )
+      .then((usuario) => {
+        if ( usuario.rol == 'administrador') {
+          this.router.navigate(['admin/usuarios']);
+        } else {
+          this.router.navigate(['/']);
+        }
+      });
+  }
+
+
+  // Valida si el usuario puede ingresar
+  async validarIngreso( user: User ) {
+    console.log('validando ingreso 1');
+
+    const datosUsuario = await this.db.obtenerUsuarioPorUid( user.uid );
+    console.log('validando ingreso 2');
+
+    if ( datosUsuario.rol == 'especialista' && !user.emailVerified ) {
+      console.log('user.emailVerified: '+user.emailVerified);
+      return false;
+    }
+    return true;
+
+
+    // return this.db.obtenerUsuarioPorUid( user.uid )
+    //   .then( (datosUsuario) => {
+    //     console.log('validando ingreso 2');
+    //     if ( datosUsuario.rol == 'especialista' && !user.emailVerified ) {
+    //       console.log('user.emailVerified: '+user.emailVerified);
+    //       return false;
+    //     } else {
+    //       return true;
+    //     }
+    //   });
+  }
+
+
 
 
   // Devuelve true si el usuario está logueado

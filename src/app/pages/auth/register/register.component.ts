@@ -10,7 +10,6 @@ export class RegisterComponent {
 
   // public loadingUsuarios: boolean = false;
   public usuario: Usuario = {
-    // id: '',
     rol: '',
     nombre: '',
     apellido: '',
@@ -19,13 +18,14 @@ export class RegisterComponent {
     email: '',
     clave: '',
     obraSocial: '',
-    especialidad: ''
+    especialidad: '',
+    habilitado: ''
   };
 
-  private roles = ['admin', 'especialista', 'paciente'];
+  private roles = ['administrador', 'especialista', 'paciente'];
   public especialidades = ['Traumatología', 'Cardiología', 'Pediatría', 'Odontología'];
   public obrasSociales = ['OSDE', 'Swiss Medical', 'Hospital Británico', 'Apres', 'PAMI', 'Particular'];
-
+ 
   constructor( public authenticationService: AuthenticationService ) { }
 
   public signUp() {
