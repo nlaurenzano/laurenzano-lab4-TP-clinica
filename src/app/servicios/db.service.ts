@@ -79,12 +79,10 @@ export class DbService {
 
   // Devuelve la lista de todos los usuarios con el rol indicado
   async obtenerUsuarioPorUid( uid ) {
-console.log('obtenerUsuarioPorUid 1');
 
     let usuarioResult = null;
     const docRef = doc(this.fs, "usuarios", uid);
     const docSnap = await getDoc(docRef);
-console.log('obtenerUsuarioPorUid 2');
 
     usuarioResult = {
       rol: docSnap.data()['rol'],

@@ -33,6 +33,14 @@ export class ArchivosService {
         console.log('Uploaded a blob or file!');
       });
 
+
+
+
+
+  // Create a reference from a Google Cloud Storage URI
+  const gsReference = ref(this.storage, 'gs://bucket/images/stars.jpg');
+
+
   }
 
 }
