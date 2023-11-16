@@ -24,6 +24,10 @@ export class DbService {
     setDoc(doc(this.fs, "usuarios", uid), usuario);
   }
 
+  agregarEspecialidad( especialidad: string) {
+    setDoc(doc(this.fs, "especialidades", especialidad), {nombre: especialidad});
+  }
+
   // Devuelve la lista de todos los usuarios
   async obtenerUsuarios() {
     let usuariosResult = [];
@@ -92,6 +96,21 @@ export class DbService {
     }
 
     return usuarioResult;
+  }
+
+  // Devuelve la lista de todas las especialidades
+  async obtenerEspecialidades() {
+    let especialidadesResult = [];
+    const especialidadesRef = collection(this.fs, "especialidades");
+
+    const querySnapshot = await getDocs(especialidadesRef);
+    querySnapshot.forEach((doc) => {
+      especialidadesResult.push({
+        nombre: doc.data()['nombre'],
+      });
+    });
+
+    return especialidadesResult;
   }
 
 

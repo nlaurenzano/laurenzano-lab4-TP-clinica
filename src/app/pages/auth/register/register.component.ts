@@ -1,12 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthenticationService, Usuario } from "../../../servicios/authentication.service";
+import { DbService } from "../../../servicios/db.service";
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit {
 
   // public loadingUsuarios: boolean = false;
   public usuario: Usuario = {
@@ -19,14 +20,22 @@ export class RegisterComponent {
     clave: '',
     obraSocial: '',
     especialidad: '',
-    habilitado: ''
+    habilitado: false
   };
 
-  private roles = ['administrador', 'especialista', 'paciente'];
-  public especialidades = ['Traumatología', 'Cardiología', 'Pediatría', 'Odontología'];
+  public especialidades;
+  // public especialidades = ['Traumatología', 'Cardiología', 'Pediatría', 'Odontología'];
   public obrasSociales = ['OSDE', 'Swiss Medical', 'Hospital Británico', 'Apres', 'PAMI', 'Particular'];
+  private roles = ['administrador', 'especialista', 'paciente'];
  
-  constructor( public authenticationService: AuthenticationService ) { }
+  constructor( 
+    public authenticationService: AuthenticationService,
+    public db: DbService
+    ) {}
+
+  ngOnInit() {
+    this.mostrarEspecialidades();
+  }
 
   public signUp() {
     this.authenticationService.signUp(this.usuario);
@@ -54,6 +63,19 @@ export class RegisterComponent {
 
   get esPaciente(): boolean {
     return this.usuario.rol == this.roles[2];
+  }
+
+  agregarEspecialidad( especialidad ) {
+    // TODO: Validar que no se ingrese cualquier cosa
+
+    this.db.agregarEspecialidad( especialidad );
+    this.mostrarEspecialidades();
+    this.usuario.especialidad = especialidad;
+  }
+
+   // Devuelve la lista de todas las especialidades
+  mostrarEspecialidades() {
+    this.especialidades = this.db.obtenerEspecialidades();
   }
 
 }

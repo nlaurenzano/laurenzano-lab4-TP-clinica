@@ -32,7 +32,7 @@ export interface Usuario {
   clave: string,
   obraSocial: string,    // Pacientes
   especialidad: string,  // Especialistas
-  habilitado: string,  // Especialistas
+  habilitado: boolean,  // Especialistas
 }
 
 @Injectable({
@@ -169,7 +169,6 @@ export class AuthenticationService implements OnDestroy {
       });
   }
 
-
   // Valida si el usuario puede ingresar
   async validarIngreso( user: User ) {
     console.log('validando ingreso 1');
@@ -177,24 +176,19 @@ export class AuthenticationService implements OnDestroy {
     const datosUsuario = await this.db.obtenerUsuarioPorUid( user.uid );
     console.log('validando ingreso 2');
 
-    if ( datosUsuario.rol == 'especialista' && !user.emailVerified ) {
+    // Los usuarios con perfil Especialista solo pueden ingresar si un usuario administrador
+    // aprobó su cuenta y verificó el mail al momento de registrarse.
+    // Los usuarios con perfil Paciente solo pueden ingresar si verificaron su mail al
+    // momento de registrarse.
+    if ( (datosUsuario.rol == 'especialista' && (!user.emailVerified || datosUsuario.habilitado)) ||
+      (datosUsuario.rol == 'paciente' && !user.emailVerified) ) {
       console.log('user.emailVerified: '+user.emailVerified);
       return false;
     }
     return true;
-
-
-    // return this.db.obtenerUsuarioPorUid( user.uid )
-    //   .then( (datosUsuario) => {
-    //     console.log('validando ingreso 2');
-    //     if ( datosUsuario.rol == 'especialista' && !user.emailVerified ) {
-    //       console.log('user.emailVerified: '+user.emailVerified);
-    //       return false;
-    //     } else {
-    //       return true;
-    //     }
-    //   });
   }
+
+
 
 
 
