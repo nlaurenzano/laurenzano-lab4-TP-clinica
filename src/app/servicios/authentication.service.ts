@@ -4,9 +4,9 @@ import { Router } from '@angular/router';
 import { traceUntilFirst } from '@angular/fire/performance';
 import { map } from 'rxjs/operators';
 import { EMPTY, Observable, Subscription } from 'rxjs';
+import Toastify from 'toastify-js';
 
 import { DbService } from './db.service';
-
 import { 
   User,
   Auth,
@@ -20,7 +20,6 @@ import {
   } from "@angular/fire/auth";
 
 // import { LogService } from './log.service';
-// import Toastify from 'toastify-js';
 
 
 export interface Usuario {
@@ -123,7 +122,6 @@ export class AuthenticationService implements OnDestroy {
 
   // Registro con email, nombre y clave
   signUp( usuario: Usuario ) {
-
     createUserWithEmailAndPassword(this.auth, usuario.email, usuario.clave)
       .then((resultado) => {
         this.db.agregarUsuario( resultado.user.uid, usuario );
@@ -157,8 +155,8 @@ export class AuthenticationService implements OnDestroy {
           default:
             mensaje = "Ocurrió un error inesperado";
         } 
-        this.mostrarError(error.code);
-        // this.mostrarError(mensaje);
+        // this.mostrarError(error.code);
+        this.mostrarError(mensaje);
       });
   }
 
@@ -232,16 +230,15 @@ export class AuthenticationService implements OnDestroy {
 
 
   mostrarError(mensaje: String) {
-    alert(mensaje);
-    // Toastify({
-    //   text: mensaje,
-    //   duration: 3000,
-    //   position: 'center',
-    //   className: 'text-mono',
-    //   close: true,
-    //   stopOnFocus: true,
-    //   style: { color: "#701a28", background: "linear-gradient(to right, #ff8a9d, #ff8a9d)" }
-    // }).showToast();
+    Toastify({
+      text: mensaje,
+      duration: 3000,
+      position: 'center',
+      className: 'toast-lower',
+      close: true,
+      stopOnFocus: true,
+      style: { color: "#701a28", background: "linear-gradient(to right, #ff8a9d, #ff8a9d)" }
+    }).showToast();
   }
 
 }

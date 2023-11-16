@@ -1756,3 +1756,7 @@ section {
   color: #fff;
   text-decoration: none;
 }
+
+.toast-lower {
+  margin-top: 80px;
+}

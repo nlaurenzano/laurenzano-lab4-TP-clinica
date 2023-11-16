@@ -9,7 +9,7 @@ import { DbService } from "../../../servicios/db.service";
 })
 export class RegisterComponent implements OnInit {
 
-
+  clave2 = '';
 
   @ViewChild('nuevaEspecialidad') private inputNuevaEspecialidad: ElementRef;
 
@@ -30,6 +30,7 @@ export class RegisterComponent implements OnInit {
   public especialidades;
   // public especialidades = ['Traumatología', 'Cardiología', 'Pediatría', 'Odontología'];
   public obrasSociales = ['OSDE', 'Swiss Medical', 'Hospital Británico', 'Apres', 'PAMI', 'Particular'];
+
   private roles = ['administrador', 'especialista', 'paciente'];
  
   constructor( 
@@ -47,7 +48,13 @@ export class RegisterComponent implements OnInit {
   }
 
   public signUp() {
-    this.authenticationService.signUp(this.usuario);
+    console.log('claves: '+this.usuario.clave + ' - '+this.clave2);
+
+    if ( this.usuario.clave != this.clave2 ) {
+      this.authenticationService.mostrarError('Las claves ingresadas no son idénticas.');
+    } else {
+    // this.authenticationService.signUp(this.usuario);
+    }
   }
 
   public setAdmin() {
