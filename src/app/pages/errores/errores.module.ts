@@ -3,10 +3,12 @@ import { CommonModule } from '@angular/common';
 
 import { ErroresRoutingModule } from './errores-routing.module';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { VerificarComponent } from './verificar/verificar.component';
 
 @NgModule({
   declarations: [
-    NotFoundComponent
+    NotFoundComponent,
+    VerificarComponent
   ],
   imports: [
     CommonModule,

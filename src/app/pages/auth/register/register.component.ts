@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { AuthenticationService, Usuario } from "../../../servicios/authentication.service";
 import { DbService } from "../../../servicios/db.service";
 
@@ -8,6 +8,10 @@ import { DbService } from "../../../servicios/db.service";
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
+
+
+
+  @ViewChild('nuevaEspecialidad') private inputNuevaEspecialidad: ElementRef;
 
   // public loadingUsuarios: boolean = false;
   public usuario: Usuario = {
@@ -34,6 +38,11 @@ export class RegisterComponent implements OnInit {
     ) {}
 
   ngOnInit() {
+    // Si se está creando un admin desde la vista de usuarios
+    if ( this.authenticationService.creandoAdmin ) {
+      this.usuario.rol = this.roles[0];
+      this.authenticationService.creandoAdmin = false;
+    }
     this.mostrarEspecialidades();
   }
 
@@ -70,6 +79,7 @@ export class RegisterComponent implements OnInit {
 
     this.db.agregarEspecialidad( especialidad );
     this.mostrarEspecialidades();
+    this.inputNuevaEspecialidad.nativeElement.value = '';
     this.usuario.especialidad = especialidad;
   }
 

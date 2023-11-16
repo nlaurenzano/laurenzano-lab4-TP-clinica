@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService, Usuario } from "../../../servicios/authentication.service";
 import { DbService } from "../../../servicios/db.service";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-usuarios',
@@ -11,10 +12,15 @@ export class UsuariosComponent implements OnInit {
 
   public usuarios;
   public usuarioDetalle: Usuario = null;
+  public creandoAdmin: boolean = false;
 
   private roles = ['administrador', 'especialista', 'paciente'];
 
-  constructor( public db: DbService ) {}
+  constructor( 
+    public authenticationService: AuthenticationService,
+    public db: DbService, 
+    public router: Router ) {}
+  // constructor( public db: DbService ) {}
 
   ngOnInit() {
     this.mostrarTodos();
@@ -74,6 +80,12 @@ export class UsuariosComponent implements OnInit {
 
   get esPaciente(): boolean {
     return this.usuarioDetalle.rol == this.roles[2];
+  }
+
+  crearAdmin() {
+    this.authenticationService.creandoAdmin = true;
+    this.router.navigate(['/auth/register']);
+
   }
 
 

@@ -13,6 +13,7 @@ import {
   signOut,
   authState,
   updateProfile,
+  sendEmailVerification,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword
   // getUser
@@ -42,7 +43,9 @@ export class AuthenticationService implements OnDestroy {
 
   public readonly usuario: Observable<User | null> = EMPTY;
   public isLoggedIn = false;
+  public creandoAdmin = false;
 
+  private readonly urlLogin: string = 'https://clinica-6b04b.web.app/auth/login';
   private readonly userDisposable: Subscription|undefined;
 
   // constructor(@Optional() private auth: Auth) {
@@ -73,16 +76,14 @@ export class AuthenticationService implements OnDestroy {
         this.validarIngreso( resultado.user )
           .then((valido) => {
             if (valido) {
-              console.log('ingreso validado');
               // Log de ingreso
               // this.logService.signIn(email);
-              // console.log('nombre: '+resultado.user.displayName);
               
               // Redirección
-              this.redirigir(resultado.user);
+              this.redirigir(resultado.user, null);
             } else {
-              this.mostrarError('Debe verificar su email.');
               this.signOut();
+              this.mostrarError('Debe verificar su correo electrónico para ingresar.');
             }
           });
       })
@@ -125,17 +126,21 @@ export class AuthenticationService implements OnDestroy {
 
     createUserWithEmailAndPassword(this.auth, usuario.email, usuario.clave)
       .then((resultado) => {
-        updateProfile(resultado.user, { displayName: usuario.nombre + ' ' + usuario.apellido});
-        
         this.db.agregarUsuario( resultado.user.uid, usuario );
+
+        if ( this.enviarVerificacion(resultado.user, usuario) ) {
+          this.signOut();
+        }
+        
 
         // .then(...)
         // .catch(...)
 
         // Log de registro
         // this.logService.signUp(email);
+        
         // Redirección
-        this.router.navigate(['/']);
+        this.redirigir(resultado.user, usuario);
       })
       .catch((error) => {
         let mensaje: string;
@@ -158,23 +163,27 @@ export class AuthenticationService implements OnDestroy {
   }
 
   // Redirige al usuario según su rol
-  redirigir( user: User) {
-    return this.db.obtenerUsuarioPorUid( user.uid )
-      .then((usuario) => {
-        if ( usuario.rol == 'administrador') {
-          this.router.navigate(['admin/usuarios']);
-        } else {
-          this.router.navigate(['/']);
-        }
-      });
+  async redirigir( user: User, datosUsuario: Usuario ) {
+
+    if ( datosUsuario == null ) {
+      datosUsuario = await this.db.obtenerUsuarioPorUid( user.uid );
+    }
+
+    if ( datosUsuario.rol == 'administrador') {
+      this.router.navigate(['admin/usuarios']);
+    } else {
+      if ( user.emailVerified ) {
+        this.router.navigate(['/']);
+      } else {
+        this.router.navigate(['errores/verificar']);
+      }
+    }
   }
 
   // Valida si el usuario puede ingresar
   async validarIngreso( user: User ) {
-    console.log('validando ingreso 1');
 
     const datosUsuario = await this.db.obtenerUsuarioPorUid( user.uid );
-    console.log('validando ingreso 2');
 
     // Los usuarios con perfil Especialista solo pueden ingresar si un usuario administrador
     // aprobó su cuenta y verificó el mail al momento de registrarse.
@@ -182,10 +191,24 @@ export class AuthenticationService implements OnDestroy {
     // momento de registrarse.
     if ( (datosUsuario.rol == 'especialista' && (!user.emailVerified || datosUsuario.habilitado)) ||
       (datosUsuario.rol == 'paciente' && !user.emailVerified) ) {
-      console.log('user.emailVerified: '+user.emailVerified);
       return false;
     }
     return true;
+  }
+
+  private enviarVerificacion( user: User, datosUsuario: Usuario ): boolean {
+    // Pacientes y Especialistas deben verificar el email
+    if (datosUsuario.rol != 'administrador') {
+      // Configura el correo en español
+      this.auth.languageCode = 'es';
+      const actionCodeSettings = {
+        url: this.urlLogin,
+        handleCodeInApp: false
+      };
+      sendEmailVerification(user, actionCodeSettings);
+      return true;
+    }
+    return false;
   }
 
 
