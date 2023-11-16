@@ -48,12 +48,10 @@ export class RegisterComponent implements OnInit {
   }
 
   public signUp() {
-    console.log('claves: '+this.usuario.clave + ' - '+this.clave2);
-
     if ( this.usuario.clave != this.clave2 ) {
       this.authenticationService.mostrarError('Las claves ingresadas no son idénticas.');
     } else {
-    // this.authenticationService.signUp(this.usuario);
+      this.authenticationService.signUp(this.usuario);
     }
   }
 
