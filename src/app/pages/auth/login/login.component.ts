@@ -23,8 +23,8 @@ export class LoginComponent implements OnInit{
   }
 
   completarCampos( id: number ) {
-    // this.fillEmail = this.usuarios[id];
-    this.fillEmail = 'admin1@clinica.com';
+    // this.fillEmail = 'admin1@clinica.com';
+    this.fillEmail = this.usuarios[id].email;
     this.fillClave = "password";
   }
 
