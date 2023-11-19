@@ -1,19 +1,25 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { Firestore, doc, setDoc, getDocs, collection, collectionData } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+// import { Firestore, doc, setDoc, getDocs, collection, collectionData } from '@angular/fire/firestore';
+import { traceUntilFirst } from '@angular/fire/performance';
+import { map } from 'rxjs/operators';
+import { EMPTY, Observable, Subscription } from 'rxjs';
+import Toastify from 'toastify-js';
 
+import { DbService } from './db.service';
 import { 
+  User,
   Auth,
-  // User,
-  signInWithEmailAndPassword,
   signOut,
-  createUserWithEmailAndPassword,
-  updateProfile
+  authState,
+  updateProfile,
+  sendEmailVerification,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword
+  // getUser
   } from "@angular/fire/auth";
 
 // import { LogService } from './log.service';
-// import Toastify from 'toastify-js';
 
 
 export interface Usuario {
@@ -26,45 +32,71 @@ export interface Usuario {
   clave: string,
   obraSocial: string,    // Pacientes
   especialidad: string,  // Especialistas
+  habilitado: boolean,  // Especialistas
 }
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthenticationService {
+export class AuthenticationService implements OnDestroy {
 
-  public loadingUsuarios: boolean = false;
-  public usuarios = [{nombre:''}];
+  public readonly usuario: Observable<User | null> = EMPTY;
+  public isLoggedIn = false;
+  public creandoAdmin = false;
 
-  constructor(
-    public auth: Auth,
-    public fs: Firestore,
-    public router: Router
-    ) {}
+  private readonly urlLogin: string = 'https://clinica-6b04b.web.app/auth/login';
+  private readonly userDisposable: Subscription|undefined;
+
+  // constructor(@Optional() private auth: Auth) {
+  constructor( public auth: Auth, public db: DbService, public router: Router ) {
+    if (auth) {
+      this.usuario = authState(this.auth);
+      this.userDisposable = authState(this.auth).pipe(
+        traceUntilFirst('auth'),
+        map(u => !!u)
+      ).subscribe(isLoggedIn => {
+        this.isLoggedIn = isLoggedIn;
+      });
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.userDisposable) {
+      this.userDisposable.unsubscribe();
+    }
+  }
 
   // Log in con email/clave
   signIn(email: string, clave: string) {
 
     signInWithEmailAndPassword(this.auth, email, clave)
       .then((resultado) => {
-        // Log de ingreso
-        // this.logService.signIn(email);
-        // console.log('nombre: '+resultado.user.displayName);
-        
-        // Redirección
-        this.router.navigate(['/']);
+
+        this.validarIngreso( resultado.user )
+          .then((valido) => {
+            if (valido) {
+              // Log de ingreso
+              // this.logService.signIn(email);
+              
+              // Redirección
+              this.redirigir(resultado.user, null);
+            } else {
+              this.signOut();
+              this.mostrarError('Debe verificar su correo electrónico para ingresar.');
+            }
+          });
       })
       .catch((error) => {
         let mensaje: string;
         switch(error.code) {
-          case "auth/invalid-email":
-            mensaje = "Formato de correo inválido";
+          case 'auth/invalid-email':
+            mensaje = 'Formato de correo inválido';
             break;
-          case "auth/user-disabled":
-            mensaje = "Usuario deshabilitado";
+          case 'auth/user-disabled':
+            mensaje = 'Usuario deshabilitado';
             break;
           default:
-            mensaje = "Usuario o clave incorrectos";
+            mensaje = 'Usuario o clave incorrectos';
             // mensaje = error.code;
         }
         this.mostrarError(mensaje);
@@ -90,33 +122,23 @@ export class AuthenticationService {
 
   // Registro con email, nombre y clave
   signUp( usuario: Usuario ) {
-
     createUserWithEmailAndPassword(this.auth, usuario.email, usuario.clave)
       .then((resultado) => {
-        updateProfile(resultado.user, { displayName: usuario.nombre + ' ' + usuario.apellido});
+        this.db.agregarUsuario( resultado.user.uid, usuario );
 
-        const docData = {
-          // uid: resultado.user.uid,
-          rol: usuario.rol,
-          nombre: usuario.nombre,
-          apellido: usuario.apellido,
-          edad: usuario.edad,
-          dni: usuario.dni,
-          obraSocial: usuario.obraSocial,
-          especialidad: usuario.especialidad
-          // dateExample: Timestamp.fromDate(new Date("December 10, 1815")),
-        };
-        setDoc(doc(this.fs, "usuarios", resultado.user.uid), docData);
+        if ( this.enviarVerificacion(resultado.user, usuario) ) {
+          this.signOut();
+        }
+        
 
         // .then(...)
         // .catch(...)
-        
-        console.log('nombre: '+resultado.user.displayName);
 
         // Log de registro
         // this.logService.signUp(email);
+        
         // Redirección
-        this.router.navigate(['/']);
+        this.redirigir(resultado.user, usuario);
       })
       .catch((error) => {
         let mensaje: string;
@@ -133,26 +155,60 @@ export class AuthenticationService {
           default:
             mensaje = "Ocurrió un error inesperado";
         } 
+        // this.mostrarError(error.code);
         this.mostrarError(mensaje);
       });
   }
 
-  // Devuelve la lista de todos los usuarios registrados
-  async obtenerUsuarios() {
+  // Redirige al usuario según su rol
+  async redirigir( user: User, datosUsuario: Usuario ) {
 
-    this.loadingUsuarios = true;
-    this.usuarios = [];
-    const usuariosRef = collection(this.fs, "usuarios");
-    // this.usuarios$ = collectionData(usuariosRef) as Observable<Usuario[]>;
+    if ( datosUsuario == null ) {
+      datosUsuario = await this.db.obtenerUsuarioPorUid( user.uid );
+    }
 
-    const querySnapshot = await getDocs(collection(this.fs, "usuarios"));
-    querySnapshot.forEach((doc) => {
-      this.usuarios.push({
-        nombre: doc.data()['nombre']
-      });
-    });
-    this.loadingUsuarios = false;
+    if ( datosUsuario.rol == 'administrador') {
+      this.router.navigate(['admin/usuarios']);
+    } else {
+      if ( user.emailVerified ) {
+        this.router.navigate(['/']);
+      } else {
+        this.router.navigate(['errores/verificar']);
+      }
+    }
   }
+
+  // Valida si el usuario puede ingresar
+  async validarIngreso( user: User ) {
+
+    const datosUsuario = await this.db.obtenerUsuarioPorUid( user.uid );
+
+    // Los usuarios con perfil Especialista solo pueden ingresar si un usuario administrador
+    // aprobó su cuenta y verificó el mail al momento de registrarse.
+    // Los usuarios con perfil Paciente solo pueden ingresar si verificaron su mail al
+    // momento de registrarse.
+    if ( (datosUsuario.rol == 'especialista' && (!user.emailVerified || datosUsuario.habilitado)) ||
+      (datosUsuario.rol == 'paciente' && !user.emailVerified) ) {
+      return false;
+    }
+    return true;
+  }
+
+  private enviarVerificacion( user: User, datosUsuario: Usuario ): boolean {
+    // Pacientes y Especialistas deben verificar el email
+    if (datosUsuario.rol != 'administrador') {
+      // Configura el correo en español
+      this.auth.languageCode = 'es';
+      const actionCodeSettings = {
+        url: this.urlLogin,
+        handleCodeInApp: false
+      };
+      sendEmailVerification(user, actionCodeSettings);
+      return true;
+    }
+    return false;
+  }
+
 
 
 
@@ -174,16 +230,15 @@ export class AuthenticationService {
 
 
   mostrarError(mensaje: String) {
-    alert(mensaje);
-    // Toastify({
-    //   text: mensaje,
-    //   duration: 3000,
-    //   position: 'center',
-    //   className: 'text-mono',
-    //   close: true,
-    //   stopOnFocus: true,
-    //   style: { color: "#701a28", background: "linear-gradient(to right, #ff8a9d, #ff8a9d)" }
-    // }).showToast();
+    Toastify({
+      text: mensaje,
+      duration: 3000,
+      position: 'center',
+      className: 'toast-lower',
+      close: true,
+      stopOnFocus: true,
+      style: { color: "#701a28", background: "linear-gradient(to right, #ff8a9d, #ff8a9d)" }
+    }).showToast();
   }
 
 }

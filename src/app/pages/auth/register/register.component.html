@@ -1,56 +1,175 @@
+<section><div class="container">
 
-<div class="card card-form m-3 p-1 mx-auto">
-<div class="card-body">
+	<div *ngIf="usuario.rol==''; then thenBlock else elseBlock"></div>
+	<ng-template #thenBlock>
+	<div class="section-title">
+		<h2>Seleccione el tipo de usuario</h2>
+    </div>
 
-	<form>
-
-		<div class="form-floating mb-3">
-			<input type="text" class="form-control" id="rol" name="rol" #rol placeholder="Rol" [(ngModel)]="usuario.rol">
-			<label for="rol">Rol</label>
+    <div class="row justify-content-md-center">
+		<div class="col-lg-4 col-md-6 mx-4 mb-2 align-items-stretch">
+			<div class="icon-box" (click)="setEspecialista()">
+				<div class="icon"><i class="fas fa-stethoscope"></i></div>
+				<h4><a href="">Especialista</a></h4>
+			</div>
 		</div>
 
-		<div class="form-floating mb-3">
-			<input type="text" class="form-control" id="nombre" name="nombre" #nombre placeholder="Nombre" [(ngModel)]="usuario.nombre">
-			<label for="nombre">Nombre</label>
-		</div>
+		<div class="col-lg-4 col-md-6 mx-4 mb-2 align-items-stretch mt-4 mt-md-0">
+        	<div class="icon-box" (click)="setPaciente()">
+          		<div class="icon"><i class="fa-solid fa-hospital-user"></i></div>
+          		<h4><a href="">Paciente</a></h4>
+        	</div>
+      	</div>
 
-		<div class="form-floating mb-3">
-			<input type="text" class="form-control" id="apellido" name="apellido" #apellido placeholder="Apellido" [(ngModel)]="usuario.apellido">
-			<label for="apellido">Apellido</label>
-		</div>
+    </div>
+	</ng-template>
 
-		<div class="form-floating mb-3">
-			<input type="text" class="form-control" id="edad" name="edad" #edad placeholder="Edad" [(ngModel)]="usuario.edad">
-			<label for="edad">Edad</label>
-		</div>
+	<ng-template #elseBlock>
+	<div class="card m-3 p-1 mx-auto">
+	<div class="card-body">
 
-		<div class="form-floating mb-3">
-			<input type="text" class="form-control" id="dni" name="dni" #dni placeholder="DNI" [(ngModel)]="usuario.dni">
-			<label for="dni">DNI</label>
-		</div>
+		<div class="section-title">
+			<div *ngIf="esPaciente">
+				<h2>Datos del Paciente</h2>
+			</div>
+			<div *ngIf="esEspecialista">
+				<h2>Datos del Especialista</h2>
+			</div>
+			<div *ngIf="esAdmin">
+				<h2>Datos del Administrador</h2>
+			</div>
+	    </div>
 
-		<div class="form-floating mb-3">
-			<input type="text" class="form-control" id="obrasocial" name="obrasocial" #obrasocial placeholder="Obra Social" [(ngModel)]="usuario.obraSocial">
-			<label for="obrasocial">Obra Social</label>
-		</div>
+	    <form class="formulario">
 
-		<div class="form-floating mb-3">
-			<input type="text" class="form-control" id="especialidad" name="especialidad" #especialidad placeholder="Especialidad" [(ngModel)]="usuario.especialidad">
-			<label for="especialidad">Especialidad</label>
-		</div>
+	    	<!-- Nombre y apellido -->
+	    	<div class="row">
 
-		<div class="form-floating mb-3">
-			<input type="email" class="form-control" id="email" name="email" #email placeholder="Email" [(ngModel)]="usuario.email">
-			<label for="email">Email</label>
-		</div>
+				<div class="col-md-4 form-group">
+					<div class="form-floating mb-3">
+						<input type="text" class="form-control" id="nombre" name="nombre" #nombre placeholder="Nombre" [(ngModel)]="usuario.nombre">
+						<label for="nombre">Nombre</label>
+					</div>
+				</div>
+				<div class="col-md-4 form-group">
+					<div class="form-floating mb-3">
+						<input type="text" class="form-control" id="apellido" name="apellido" #apellido placeholder="Apellido" [(ngModel)]="usuario.apellido">
+						<label for="apellido">Apellido</label>
+					</div>
+				</div>
+	      	</div>
 
-		<div class="form-floating mb-3">
-			<input type="password" class="form-control" id="clave" name="clave" #clave placeholder="Contraseña" [(ngModel)]="usuario.clave">
-			<label for="clave">Contraseña</label>
-		</div>
+	      	<!-- Edad y DNI + Especialidad / Obra Social -->
+	      	<div class="row">
+				<div class="col-md-4 form-group">
+					<div class="form-floating mb-3">
+						<input type="text" class="form-control" id="edad" name="edad" #edad placeholder="Edad" [(ngModel)]="usuario.edad">
+						<label for="edad">Edad</label>
+					</div>
+				</div>
 
-		<button type="button" class="btn btn-primary me-2" (click)="signUp()">Registrarse</button>
+				<div class="col-md-4 form-group">
+					<div class="form-floating mb-3">
+						<input type="text" class="form-control" id="dni" name="dni" #dni placeholder="DNI" [(ngModel)]="usuario.dni">
+						<label for="dni">DNI</label>
+					</div>
+				</div>
 
-	</form>
-</div>
-</div>
+				<!-- Especialidad / Obra Social -->
+				<div class="col-md-4 form-group">
+					<div *ngIf="esPaciente">
+						<div class="form-floating mb-3">
+							<select class="form-select" id="obrasocial" name="obrasocial" #obrasocial [(ngModel)]="usuario.obraSocial">
+								<option *ngFor="let item of obrasSociales" value="{{item}}">{{item | titlecase}}</option>
+							</select>
+							<label for="obrasocial">Obra Social</label>
+						</div>
+					</div>
+					<div *ngIf="esEspecialista">
+						<div class="form-floating input-group mb-3">
+							<select class="form-select" id="especialidad" name="especialidad" #especialidad [(ngModel)]="usuario.especialidad">
+								<option *ngFor="let item of especialidades | async" value="{{item.nombre}}">{{item.nombre | titlecase}}</option>
+							</select>
+							<label for="especialidad">Especialidad</label>
+							<button class="btn btn-primary p-3" type="button"data-bs-toggle="modal" data-bs-target="#exampleModal">
+									<i class="fa-solid fa-plus"></i>
+								</button>
+
+							<!-- Modal -->
+							<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							  <div class="modal-dialog">
+							    <div class="modal-content">
+							      <div class="modal-header">
+							        <h1 class="modal-title fs-5" id="exampleModalLabel">Nueva especialidad</h1>
+							      </div>
+							      <div class="modal-body">
+							      	<form class="formulario">
+								      	<input type="text" class="form-control" id="nuevaEspecialidad" name="nuevaEspecialidad" #nuevaEspecialidad>
+							      	</form>
+							      </div>
+
+							      <div class="modal-footer">
+							        <button type="button" data-bs-dismiss="modal">Cerrar</button>
+							        <button type="button" data-bs-dismiss="modal" (click)="agregarEspecialidad(nuevaEspecialidad.value)">Guardar</button>
+							      </div>
+							    </div>
+							  </div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+	      	<!-- Mail y contraseña -->
+			<div class="row">
+
+				<div class="col-md-4 form-group">
+					<div class="form-floating mb-3">
+						<input type="email" class="form-control" id="email" name="email" #email placeholder="Email" [(ngModel)]="usuario.email">
+						<label for="email">Email</label>
+					</div>
+				</div>
+
+				<div class="col-md-4 form-group">
+					<div class="form-floating mb-3">
+						<input type="password" class="form-control" id="clave" name="clave" #clave placeholder="Contraseña" [(ngModel)]="usuario.clave">
+						<label for="clave">Contraseña</label>
+					</div>
+				</div>
+
+				<div class="col-md-4 form-group">
+					<div class="form-floating mb-3">
+						<input type="password" class="form-control" id="clave2" name="clave2" placeholder="Repetir Contraseña" [(ngModel)]="clave2">
+						<label for="clave2">Repetir Contraseña</label>
+					</div>
+				</div>
+			</div>
+
+	      	<!-- Imágenes -->
+	      	<!-- Imagen 1 -->
+			<div class="row">
+				
+				<div class="col-md-8 form-group">
+					<input type="file" class="form-control" id="imagen_1">
+				</div>
+			</div>
+
+	      	<!-- Imagen 2 -->
+			<div class="row">
+				<div class="col-md-8 form-group">
+					<input type="file" class="form-control" id="imagen_2">
+				</div>
+			</div>
+
+			<div class="text-center">
+				<button (click)="signUp()">Registrarse</button>
+			</div>
+
+		</form>
+	</div>
+	</div>
+	</ng-template>
+
+</div></section>

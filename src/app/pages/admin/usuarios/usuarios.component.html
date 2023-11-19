@@ -1,33 +1,92 @@
-<div class="container text-center m-3 p-1">
+<section class="appointment">
+	<div class="container">
 
-<div *ngIf="authenticationService.loadingUsuarios; then thenBlock else elseBlock"></div>
-<ng-template #thenBlock>
-	<div class="spinner-border" role="status">
-	  <span class="visually-hidden">Cargando usuarios...</span>
-	</div>
-</ng-template>
+		<div class="section-title">
+	      <h2>Usuarios</h2>
+	    </div>
 
-<ng-template #elseBlock>
- 
-	<div class="row justify-content-md-center">
-	    
-		<div class="col col-lg-2">
-			<h3>Usuarios</h3>
-			<div class="list-group">
-				<button *ngFor="let usuario of authenticationService.usuarios" type="button" class="list-group-item list-group-item-action">{{usuario.nombre}}</button>
+	    <!-- Crear Administrador -->
+	    <div class="icon-toggle">
+			<div class="icon" title="Nuevo Administrador" (click)="crearAdmin()">
+				<i class="fa-solid fa-screwdriver-wrench"></i>
 			</div>
 		</div>
 
-		<div class="col-md-auto">
-		  
-		</div>
+		<div *ngIf="usuarios | async; then contenidoBlock else preloader"></div>
+		<ng-template #preloader>
+			<div id="preloader"></div>
+		</ng-template>
 
-		<div class="col col-lg-2">
-		  
-		</div>
+		<ng-template #contenidoBlock>
+			<div class="row justify-content-md-center">
+			    
+			    <!-- Filtros -->
+				<div class="col col-lg-1 text-center">
+					<div class="icon-toggle" (click)="mostrarEspecialistas()">
+						<div class="icon" title="Especialistas">
+							<i class="fas fa-stethoscope"></i>
+						</div>
+					</div>
+					<div class="icon-toggle" (click)="mostrarPacientes()">
+						<div class="icon" title="Pacientes">
+							<i class="fa-solid fa-hospital-user"></i>
+						</div>
+					</div>
+					<div class="icon-toggle" (click)="mostrarAdmins()">
+						<div class="icon" title="Administradores">
+							<i class="fa-solid fa-screwdriver-wrench"></i>
+						</div>
+					</div>
+					<div class="icon-toggle" (click)="mostrarTodos()">
+						<div class="icon" title="Limpiar filtros">
+							<i class="fa-regular fa-square-minus"></i>
+						</div>
+					</div>
+				</div>
 
-	</div>
+				<!-- Listado -->
+				<div class="col col-lg-5">
+					<div class="list-group">
+						<button *ngFor="let usuario of usuarios | async" type="button" class="list-group-item list-group-item-action"
+							(click)="mostrarDetalle(usuario)">
+							
+							<div class="row g-0 py-1">
+							    <div class="col-md-1">
+							    	<div class="icon"><i class="{{mostrarIcono(usuario)}}"></i></div>
+							    </div>
+							    <div class="col-md-11">
+							      <h5>{{usuario.nombre | titlecase}} {{usuario.apellido | titlecase}}</h5>
+							    </div>
+							</div>
 
-</ng-template>
+						</button>
+					</div>
+				</div>
 
-</div>
+				<!-- Detalles -->
+				<div class="col col-lg-6 usuarios detalle">
+
+					<div *ngIf="usuarioDetalle" class="detalle d-flex align-items-start">
+		              <div class="pic"><img src="assets/img/doctors/doctors-1.jpg" class="img-fluid" alt=""></div>
+		              <div class="detalle-info">
+		                <h4>{{usuarioDetalle.nombre | titlecase}} {{usuarioDetalle.apellido | titlecase}}</h4>
+		                <span>{{usuarioDetalle.rol | titlecase}}</span>
+		                <p>Edad: {{usuarioDetalle.edad}}</p>
+		                <p>DNI: {{usuarioDetalle.dni}}</p>
+		                <p *ngIf="esPaciente">Obra Social: {{usuarioDetalle.obraSocial}}</p>
+		                <p *ngIf="esEspecialista">Especialidad: {{usuarioDetalle.especialidad | titlecase}}</p>
+		                <p>Email: {{usuarioDetalle.email}}</p>
+		                
+		              </div>
+		            </div>
+
+				  
+				</div>
+
+			</div>
+
+		</ng-template>
+  </div>
+
+
+</section>

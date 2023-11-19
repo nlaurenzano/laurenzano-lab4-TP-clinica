@@ -1,20 +1,38 @@
-<nav class="navbar navbar-expand-sm bg-body-tertiary">
-  <div class="container-fluid">
-    <a class="navbar-brand" routerLink="/">Clínica</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav">
+<!-- ======= Header ======= -->
+  <header id="header" class="fixed-top">
+    <div class="container d-flex align-items-center">
 
-        <a routerLink="/" class="nav-link" aria-current="page">Inicio</a>
-        <a routerLink="/admin/usuarios" class="nav-link" aria-current="page">Usuarios</a>
-        <a routerLink="/auth/login" class="nav-link">Ingresar</a>
-        <a routerLink="/auth/register" class="nav-link">Registro</a>
+      <h1 class="logo me-auto">
+        <a routerLink="/">
+          <div class="icon"><i class="fa-solid fa-house-chimney-medical" routerLink="/"></i></div>
+        </a>
+      </h1>
+      <!-- Uncomment below if you prefer to use an image logo -->
+      <!-- <a href="index.html" class="logo me-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
 
-        <a routerLink="" (click)="authenticationService.signOut()" class="nav-link">Salir</a>
+      <nav class="navbar order-last order-lg-0">
+        <ul>
+          <li><a class="nav-link scrollto" routerLink="/">Inicio</a></li>
+          <li><a class="nav-link scrollto" routerLink="/admin/usuarios">Usuarios</a></li>
+          <li><a class="nav-link scrollto" routerLink="/auth/login">Ingresar</a></li>
+          <li><a class="nav-link scrollto" routerLink="/auth/register">Registro</a></li>
 
+          <li><a class="nav-link scrollto" routerLink="" (click)="authenticationService.signOut()">Salir</a></li>
+
+        </ul>
+        <!-- <i class="bi bi-list mobile-nav-toggle"></i> -->
+      </nav>
+
+    </div>
+  </header>
 <!-- 
+
+----------------------------------------
+    navbarlink.classList.add('active')
+  } else {
+    navbarlink.classList.remove('active')
+----------------------------------------
+
         <div *ngIf="authenticationService.isLoggedIn; then thenBlock else elseBlock"></div>
         <ng-template #thenBlock>
           <a routerLink="/menu-juegos">Juegos</a>
@@ -32,10 +50,5 @@
         <a class="nav-link" href="#">Pricing</a>
         <a class="nav-link disabled" aria-disabled="true">Disabled</a>
  -->
-      </div>
-    </div>
-  </div>
-</nav>
-
 
 <ng-content selector="router-outlet"></ng-content>

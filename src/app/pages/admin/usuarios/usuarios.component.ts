@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService, Usuario } from "../../../servicios/authentication.service";
+import { DbService } from "../../../servicios/db.service";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-usuarios',
@@ -8,11 +10,84 @@ import { AuthenticationService, Usuario } from "../../../servicios/authenticatio
 })
 export class UsuariosComponent implements OnInit {
 
-  constructor( public authenticationService: AuthenticationService ) {}
+  public usuarios;
+  public usuarioDetalle: Usuario = null;
+  public creandoAdmin: boolean = false;
+
+  private roles = ['administrador', 'especialista', 'paciente'];
+
+  constructor( 
+    public authenticationService: AuthenticationService,
+    public db: DbService, 
+    public router: Router ) {}
+  // constructor( public db: DbService ) {}
 
   ngOnInit() {
-    this.authenticationService.obtenerUsuarios();
+    this.mostrarTodos();
   }
+
+  mostrarDetalle( usuario ) {
+    this.usuarioDetalle = usuario;
+  }
+
+  mostrarIcono( usuario ): string {
+    let icono = '';
+    switch(usuario.rol) {
+      case this.roles[0]:
+        icono = 'fa-solid fa-screwdriver-wrench';
+        break;
+      case this.roles[1]:
+        icono = 'fas fa-stethoscope';
+        break;
+      case this.roles[2]:
+        icono = 'fa-solid fa-hospital-user';
+        break;
+      default:
+        // nada
+    } 
+    return icono;
+  }
+
+  // Devuelve la lista de todos los usuarios
+  mostrarTodos() {
+    this.usuarioDetalle = null;
+    this.usuarios = this.db.obtenerUsuarios();
+  }
+
+  // Devuelve la lista de todos los pacientes
+  mostrarAdmins() {
+    this.usuarios = this.db.obtenerUsuariosPorRol( this.roles[0] );
+  }
+
+  // Devuelve la lista de todos los pacientes
+  mostrarEspecialistas() {
+    this.usuarioDetalle = null;
+    this.usuarios = this.db.obtenerUsuariosPorRol( this.roles[1] );
+  }
+
+  // Devuelve la lista de todos los pacientes
+  mostrarPacientes() {
+    this.usuarios = this.db.obtenerUsuariosPorRol( this.roles[2] );
+  }
+
+  get esAdmin(): boolean {
+    return this.usuarioDetalle.rol == this.roles[0];
+  }
+
+  get esEspecialista(): boolean {
+    return this.usuarioDetalle.rol == this.roles[1];
+  }
+
+  get esPaciente(): boolean {
+    return this.usuarioDetalle.rol == this.roles[2];
+  }
+
+  crearAdmin() {
+    this.authenticationService.creandoAdmin = true;
+    this.router.navigate(['/auth/register']);
+
+  }
+
 
 
 }
