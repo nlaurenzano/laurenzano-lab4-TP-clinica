@@ -31,7 +31,8 @@ export interface Usuario {
   email: string,
   clave: string,
   obraSocial: string,    // Pacientes
-  especialidad: string,  // Especialistas
+  especialidad: any,  // Especialistas
+  // especialidad: string[],  // Especialistas
   habilitado: boolean,  // Especialistas
 }
 
@@ -122,6 +123,10 @@ export class AuthenticationService implements OnDestroy {
 
   // Registro con email, nombre y clave
   signUp( usuario: Usuario ) {
+// xvddlzah@cj.MintEmail.com
+
+
+
     createUserWithEmailAndPassword(this.auth, usuario.email, usuario.clave)
       .then((resultado) => {
         this.db.agregarUsuario( resultado.user.uid, usuario );
@@ -162,7 +167,6 @@ export class AuthenticationService implements OnDestroy {
 
   // Redirige al usuario según su rol
   async redirigir( user: User, datosUsuario: Usuario ) {
-
     if ( datosUsuario == null ) {
       datosUsuario = await this.db.obtenerUsuarioPorUid( user.uid );
     }

@@ -73,9 +73,13 @@
 		                <span>{{usuarioDetalle.rol | titlecase}}</span>
 		                <p>Edad: {{usuarioDetalle.edad}}</p>
 		                <p>DNI: {{usuarioDetalle.dni}}</p>
-		                <p *ngIf="esPaciente">Obra Social: {{usuarioDetalle.obraSocial}}</p>
-		                <p *ngIf="esEspecialista">Especialidad: {{usuarioDetalle.especialidad | titlecase}}</p>
 		                <p>Email: {{usuarioDetalle.email}}</p>
+		                <p *ngIf="esPaciente">Obra Social: {{usuarioDetalle.obraSocial}}</p>
+		                <p *ngIf="esEspecialista">
+		                	Especialidad:
+		                	<span *ngFor="let item of usuarioDetalle.especialidad" class="ps-3">{{item | titlecase}}</span>
+		                </p>
+		                
 		                
 		              </div>
 		            </div>

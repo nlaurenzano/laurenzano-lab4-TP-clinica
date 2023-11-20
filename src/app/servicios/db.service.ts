@@ -21,8 +21,8 @@ export class DbService {
 
   constructor( public fs: Firestore ) {}
 
-  agregarUsuario( uid, usuario ) {
-    setDoc(doc(this.fs, "usuarios", uid), usuario);
+  async agregarUsuario( uid, usuario ) {
+    await setDoc(doc(this.fs, "usuarios", uid), usuario);
   }
 
   agregarEspecialidad( especialidad: string) {
@@ -83,6 +83,8 @@ export class DbService {
     let usuarioResult = null;
     const docRef = doc(this.fs, "usuarios", uid);
     const docSnap = await getDoc(docRef);
+
+console.log('especialidad: '+docSnap.data()['especialidad']);
 
     usuarioResult = {
       rol: docSnap.data()['rol'],

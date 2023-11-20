@@ -23,6 +23,7 @@ export class RegisterComponent implements OnInit {
     email: '',
     clave: '',
     obraSocial: '',
+    // especialidad: [],
     especialidad: '',
     habilitado: false
   };
@@ -92,5 +93,31 @@ export class RegisterComponent implements OnInit {
   mostrarEspecialidades() {
     this.especialidades = this.db.obtenerEspecialidades();
   }
+
+
+    fileName = '';
+  onFileSelected( event: any ) {
+
+    const file:File = event.target.files[0];
+
+      if (file) {
+
+      this.fileName = file.name;
+
+console.log('file.name: '+file.name);
+
+      const formData = new FormData();
+
+      formData.append("thumbnail", file);
+
+      // TODO: Acá va al storage.
+      // const upload$ = this.http.post("/api/thumbnail-upload", formData);
+      // upload$.subscribe();
+
+
+    }
+
+  }
+
 
 }
