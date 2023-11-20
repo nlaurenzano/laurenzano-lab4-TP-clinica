@@ -24,20 +24,13 @@
 					</div>
 	          	</div>
 	      	</div>
-	<!-- 
-	      <div class="mb-3">
-	        <div class="loading">Loading</div>
-	        <div class="error-message"></div>
-	        <div class="sent-message">Your appointment request has been sent successfully. Thank you!</div>
-	      </div>
-	-->
+
 	      	<div class="text-center">
 	      		<button (click)="authenticationService.signIn(email.value, clave.value)">Ingresar</button>
 	      	</div>
 	    </form>
 	</div>
 	</div>
-
 
 	<div class="section-title mt-4">
 		<h2>Acceso Rápido</h2>
@@ -51,27 +44,15 @@
 	                <div class="col-xl-2 align-items-stretch" *ngFor="let usuario of usuarios; let i = index;" (click)="completarCampos(i)">
 	                  	<div class="icon-box mt-4 mt-xl-0">
 	                  		<i class="{{mostrarIcono(usuario)}}"></i>
-	                    	<!-- <div class="pic"> -->
-	                    		<img src="assets/img/doctors/doctors-1.jpg" class="img-fluid" alt="">
-	                    	<!-- </div> -->
+	                    	<img src="{{usuario.archivoURL}}" class="img-fluid" alt="">
 		                    <h4 class="mt-2">{{usuario.nombre | titlecase}} {{usuario.apellido | titlecase}}</h4>
-		                    
 	                  	</div>
 	                </div>
-<!-- 
-	                <div class="col-xl-2 align-items-stretch" *ngFor="let item of usuarios; let i = index;" (click)="completarCampos(i)">
-	                  	<div class="icon-box mt-4 mt-xl-0">
-	                    	<div class="pic"><img src="assets/img/doctors/doctors-1.jpg" class="img-fluid" alt=""></div>
-		                    <h4>{{item}}</h4>
-		                    <p>Rol...?</p>
-	                  	</div>
-	                </div>
- -->
+
               	</div>
             </div>
         </div>
 	</div>
-
 
   </div>
 </section>

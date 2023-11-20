@@ -84,8 +84,6 @@ export class DbService {
     const docRef = doc(this.fs, "usuarios", uid);
     const docSnap = await getDoc(docRef);
 
-console.log('especialidad: '+docSnap.data()['especialidad']);
-
     usuarioResult = {
       rol: docSnap.data()['rol'],
       nombre: docSnap.data()['nombre'],

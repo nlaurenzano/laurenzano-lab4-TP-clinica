@@ -101,3 +101,7 @@
 .formulario button:hover {
   background: #1c84e3;
 }
+
+.formulario .file-input {
+  display: none;
+}

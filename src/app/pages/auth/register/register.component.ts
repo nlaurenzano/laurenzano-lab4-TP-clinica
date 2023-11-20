@@ -1,5 +1,6 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { AuthenticationService, Usuario } from "../../../servicios/authentication.service";
+import { ArchivosService } from "../../../servicios/archivos.service";
 import { DbService } from "../../../servicios/db.service";
 
 @Component({
@@ -10,6 +11,8 @@ import { DbService } from "../../../servicios/db.service";
 export class RegisterComponent implements OnInit {
 
   clave2 = '';
+  nombreImagen1 = '';
+  nombreImagen2 = '';
 
   @ViewChild('nuevaEspecialidad') private inputNuevaEspecialidad: ElementRef;
 
@@ -36,7 +39,8 @@ export class RegisterComponent implements OnInit {
  
   constructor( 
     public authenticationService: AuthenticationService,
-    public db: DbService
+    public db: DbService,
+    public archivos: ArchivosService
     ) {}
 
   ngOnInit() {
@@ -94,30 +98,31 @@ export class RegisterComponent implements OnInit {
     this.especialidades = this.db.obtenerEspecialidades();
   }
 
+  seleccionarImagen1( event: any ) {
+    const archivo:File = event.target.files[0];
 
-    fileName = '';
-  onFileSelected( event: any ) {
-
-    const file:File = event.target.files[0];
-
-      if (file) {
-
-      this.fileName = file.name;
-
-console.log('file.name: '+file.name);
-
-      const formData = new FormData();
-
-      formData.append("thumbnail", file);
-
-      // TODO: Acá va al storage.
-      // const upload$ = this.http.post("/api/thumbnail-upload", formData);
-      // upload$.subscribe();
-
-
+    if (archivo) {
+      this.nombreImagen1 = archivo.name;
+      this.archivos.seleccionarImagen( archivo, 1 );
     }
-
   }
+
+  seleccionarImagen2( event: any ) {
+    const archivo:File = event.target.files[0];
+
+    if (archivo) {
+      this.nombreImagen2 = archivo.name;
+      this.archivos.seleccionarImagen( archivo, 2 );
+    }
+  }
+
+  // seleccionarImagen( archivo: File, indice: number ) {
+  //   if (archivo) {
+  //     // const formData = new FormData();
+  //     // formData.append("thumbnail", archivo);
+  //     this.archivos.subirArchivo( archivo, this.usuario.email, indice );
+  //   }
+  // }
 
 
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService, Usuario } from "../../../servicios/authentication.service";
+import { ArchivosService } from "../../../servicios/archivos.service";
 import { DbService } from "../../../servicios/db.service";
 import { Router } from '@angular/router';
 
@@ -13,13 +14,16 @@ export class UsuariosComponent implements OnInit {
   public usuarios;
   public usuarioDetalle: Usuario = null;
   public creandoAdmin: boolean = false;
+  public imagenes: any;
 
   private roles = ['administrador', 'especialista', 'paciente'];
 
   constructor( 
     public authenticationService: AuthenticationService,
-    public db: DbService, 
-    public router: Router ) {}
+    public archivos: ArchivosService,
+    public router: Router,
+    public db: DbService
+  ) {}
   // constructor( public db: DbService ) {}
 
   ngOnInit() {
@@ -27,7 +31,13 @@ export class UsuariosComponent implements OnInit {
   }
 
   mostrarDetalle( usuario ) {
+    this.imagenes = [];
     this.usuarioDetalle = usuario;
+    
+    // this.imagenURL = this.archivos.obtenerImagenes(usuario.email)[0];
+    this.imagenes = this.archivos.obtenerImagenes(usuario.email);
+    // this.imagenURL = imagenes[0];
+
   }
 
   mostrarIcono( usuario ): string {

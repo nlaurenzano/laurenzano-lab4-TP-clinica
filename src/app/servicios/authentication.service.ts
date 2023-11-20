@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import { EMPTY, Observable, Subscription } from 'rxjs';
 import Toastify from 'toastify-js';
 
+import { ArchivosService } from "./archivos.service";
 import { DbService } from './db.service';
 import { 
   User,
@@ -49,7 +50,12 @@ export class AuthenticationService implements OnDestroy {
   private readonly userDisposable: Subscription|undefined;
 
   // constructor(@Optional() private auth: Auth) {
-  constructor( public auth: Auth, public db: DbService, public router: Router ) {
+  constructor( 
+    public auth: Auth, 
+    public db: DbService, 
+    public router: Router,
+    public archivos: ArchivosService
+  ) {
     if (auth) {
       this.usuario = authState(this.auth);
       this.userDisposable = authState(this.auth).pipe(
@@ -129,6 +135,9 @@ export class AuthenticationService implements OnDestroy {
 
     createUserWithEmailAndPassword(this.auth, usuario.email, usuario.clave)
       .then((resultado) => {
+        
+        this.archivos.subirArchivos( usuario.email );
+
         this.db.agregarUsuario( resultado.user.uid, usuario );
 
         if ( this.enviarVerificacion(resultado.user, usuario) ) {

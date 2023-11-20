@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService, Usuario } from '../../../servicios/authentication.service';
+import { ArchivosService } from "../../../servicios/archivos.service";
 import { DbService } from '../../../servicios/db.service';
 
 @Component({
@@ -16,7 +17,11 @@ export class LoginComponent implements OnInit{
 
   private roles = ['administrador', 'especialista', 'paciente'];
 
-  constructor( public authenticationService: AuthenticationService, public db: DbService ) { }
+  constructor( 
+    public authenticationService: AuthenticationService,
+    public archivos: ArchivosService,
+    public db: DbService
+  ) { }
 
   ngOnInit() {
     this.mostrarAccesoRapido();
@@ -34,15 +39,19 @@ export class LoginComponent implements OnInit{
       'H2G6lT8VarY2Y0QYKRtIKqjKyJv2',
       'i8eVXG53UybmFk10fkSIpJsKNAB2',
       'SIVh2oT1WcNosem0uiGOs4aJSyu1',
-      '0pR5STCxLkN5QBKnMcUPMEb7kIG3',
+      'sHXGRWQFGSZLV9IkJh6u6cVai5E2',
       'iCs9X2zMctg3LEPFJH6rfOWeC3E3'];
-    let usuario: Usuario;
 
     usuarios.forEach((item) => {
       // console.log('usuario', item);
       this.db.obtenerUsuarioPorUid( item )
         .then((usuario) => {
-          this.usuarios.push(usuario)
+          this.archivos.obtenerImagen_1(usuario.email)
+            .then((archivoURL) => {
+              usuario.archivoURL = archivoURL;
+              this.usuarios.push(usuario);
+            });
+
         });
     });
   }

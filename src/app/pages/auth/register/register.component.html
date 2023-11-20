@@ -156,40 +156,29 @@
 	      	<!-- Imágenes -->
 	      	<!-- Imagen 1 -->
 			<div class="row">
-				
 				<div class="col-md-8 form-group">
-					<!-- <input type="file" class="form-control" id="imagen_1" onchange="console.log(event.target.files)"> -->
-					<input type="file" id="fileUpload2" (change)="onFileSelected($event)" #fileUpload2>
-
+					<input type="file" class="file-input" requiredFileType="image/png" id="fileUpload1" (change)="seleccionarImagen1($event)" #fileUpload1>
 					<div class="form-floating input-group mb-3">
-
-						<input type="text" class="form-control" id="imagen_2" name="imagen_2" #imagen_2 placeholder="Imagen" aria-describedby="imagen_2_button">
-						<label for="imagen_2">Imagen</label>
-						<button class="btn btn-primary p-3" type="button" id="imagen_2_button" (click)="fileUpload.click()">
+						<input type="text" class="form-control" readonly id="imagen_1" name="imagen_1" #imagen_1 placeholder="Imagen 1" aria-describedby="imagen_1_button">
+						<label for="imagen_1">{{nombreImagen1 || "Imagen 1"}}</label>
+						<button class="btn btn-primary p-3" type="button" id="imagen_1_button" (click)="fileUpload1.click()">
 							<i class="fa-solid fa-plus"></i>
 						</button>
-
 					</div>
-
 				</div>
 			</div>
 
 	      	<!-- Imagen 2 -->
-			<div class="row">
+			<div class="row" *ngIf="esPaciente">
 				<div class="col-md-8 form-group">
-					<input type="file" class="form-control" id="fileUpload" (change)="onFileSelected($event)" #fileUpload>
-
-					<div class="file-upload">
-
-					   {{fileName || "No file uploaded yet."}}
-
-					   <button class="btn btn-primary p-3" type="button" (click)="fileUpload.click()">
+					<input type="file" class="file-input" requiredFileType="image/png" id="fileUpload2" (change)="seleccionarImagen2($event)" #fileUpload2>
+					<div class="form-floating input-group mb-3">
+						<input type="text" class="form-control" readonly id="imagen_2" name="imagen_2" #imagen_2 placeholder="Imagen 1" aria-describedby="imagen_2_button">
+						<label for="imagen_2">{{nombreImagen2 || "Imagen 2"}}</label>
+						<button class="btn btn-primary p-3" type="button" id="imagen_2_button" (click)="fileUpload2.click()">
 							<i class="fa-solid fa-plus"></i>
 						</button>
-
 					</div>
-
-
 				</div>
 			</div>
 
