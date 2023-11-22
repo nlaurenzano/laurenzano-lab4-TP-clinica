@@ -42,7 +42,9 @@ export interface Usuario {
 })
 export class AuthenticationService implements OnDestroy {
 
-  public readonly usuario: Observable<User | null> = EMPTY;
+  public readonly usuarioAuth: Observable<User | null> = EMPTY;
+  public usuario: Usuario = null;
+  public usuarioImg;
   public isLoggedIn = false;
   public creandoAdmin = false;
 
@@ -57,7 +59,7 @@ export class AuthenticationService implements OnDestroy {
     public archivos: ArchivosService
   ) {
     if (auth) {
-      this.usuario = authState(this.auth);
+      this.usuarioAuth = authState(this.auth);
       this.userDisposable = authState(this.auth).pipe(
         traceUntilFirst('auth'),
         map(u => !!u)
@@ -79,19 +81,36 @@ export class AuthenticationService implements OnDestroy {
     signInWithEmailAndPassword(this.auth, email, clave)
       .then((resultado) => {
 
-        this.validarIngreso( resultado.user )
-          .then((valido) => {
-            if (valido) {
-              // Log de ingreso
-              // this.logService.signIn(email);
-              
-              // Redirección
-              this.redirigir(resultado.user, null);
-            } else {
-              this.signOut();
-              this.mostrarError('Debe verificar su correo electrónico para ingresar.');
-            }
+        // Primero obtener usuario, después validar ingreso
+        this.db.obtenerUsuarioPorUid( resultado.user.uid )
+          .then((usuario) => {
+            this.usuario = usuario;
+
+            this.validarIngreso( resultado.user )
+              .then((valido) => {
+                if (valido) {
+                  // Log de ingreso
+                  // this.logService.signIn(email);
+
+                  // Obtiene la imagen
+                  this.archivos.obtenerImagen_1( email )
+                    .then((archivoURL) => {
+                      this.usuarioImg = archivoURL;
+                    });
+
+                } else {
+                  this.usuario = null;
+                  this.signOut();
+                  this.mostrarError('Debe verificar su correo electrónico para ingresar.');
+                }
+              });
+
+            // Redirección
+            this.redirigir(resultado.user);
           });
+
+        
+        
       })
       .catch((error) => {
         let mensaje: string;
@@ -114,6 +133,8 @@ export class AuthenticationService implements OnDestroy {
 
   signOut() {
 
+    this.usuario = null;
+    this.usuarioImg = '';
     signOut(this.auth);
 
     // if (this.usuario !== null) {
@@ -152,7 +173,7 @@ export class AuthenticationService implements OnDestroy {
         // this.logService.signUp(email);
         
         // Redirección
-        this.redirigir(resultado.user, usuario);
+        this.redirigir(resultado.user);
       })
       .catch((error) => {
         let mensaje: string;
@@ -175,12 +196,12 @@ export class AuthenticationService implements OnDestroy {
   }
 
   // Redirige al usuario según su rol
-  async redirigir( user: User, datosUsuario: Usuario ) {
-    if ( datosUsuario == null ) {
-      datosUsuario = await this.db.obtenerUsuarioPorUid( user.uid );
+  async redirigir( user: User ) {
+    if ( this.usuario == null ) {
+      this.usuario = await this.db.obtenerUsuarioPorUid( user.uid );
     }
 
-    if ( datosUsuario.rol == 'administrador') {
+    if ( this.usuario.rol == 'administrador') {
       this.router.navigate(['admin/usuarios']);
     } else {
       if ( user.emailVerified ) {
@@ -193,15 +214,16 @@ export class AuthenticationService implements OnDestroy {
 
   // Valida si el usuario puede ingresar
   async validarIngreso( user: User ) {
-
-    const datosUsuario = await this.db.obtenerUsuarioPorUid( user.uid );
+    if ( this.usuario == null ) {
+      this.usuario = await this.db.obtenerUsuarioPorUid( user.uid );
+    }
 
     // Los usuarios con perfil Especialista solo pueden ingresar si un usuario administrador
     // aprobó su cuenta y verificó el mail al momento de registrarse.
     // Los usuarios con perfil Paciente solo pueden ingresar si verificaron su mail al
     // momento de registrarse.
-    if ( (datosUsuario.rol == 'especialista' && (!user.emailVerified || datosUsuario.habilitado)) ||
-      (datosUsuario.rol == 'paciente' && !user.emailVerified) ) {
+    if ( (this.usuario.rol == 'especialista' && (!user.emailVerified || this.usuario.habilitado)) ||
+      (this.usuario.rol == 'paciente' && !user.emailVerified) ) {
       return false;
     }
     return true;

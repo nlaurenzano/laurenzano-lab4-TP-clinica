@@ -1,54 +1,42 @@
 <!-- ======= Header ======= -->
-  <header id="header" class="fixed-top">
-    <div class="container d-flex align-items-center">
+<header id="header" class="fixed-top">
+  <div class="container d-flex align-items-center">
 
-      <h1 class="logo me-auto">
-        <a routerLink="/">
-          <div class="icon"><i class="fa-solid fa-house-chimney-medical" routerLink="/"></i></div>
-        </a>
-      </h1>
-      <!-- Uncomment below if you prefer to use an image logo -->
-      <!-- <a href="index.html" class="logo me-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+    <h1 class="logo me-auto">
+      <a routerLink="/">
+        <div class="icon"><i class="fa-solid fa-house-chimney-medical" routerLink="/"></i></div>
+      </a>
+    </h1>
+    <!-- Uncomment below if you prefer to use an image logo -->
+    <!-- <a href="index.html" class="logo me-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
 
-      <nav class="navbar order-last order-lg-0">
-        <ul>
-          <li><a class="nav-link scrollto" routerLink="/">Inicio</a></li>
-          <li><a class="nav-link scrollto" routerLink="/admin/usuarios">Usuarios</a></li>
-          <li><a class="nav-link scrollto" routerLink="/auth/login">Ingresar</a></li>
-          <li><a class="nav-link scrollto" routerLink="/auth/register">Registro</a></li>
+    <nav class="navbar order-last order-lg-0">
+      <ul>
+        <li><a class="nav-link scrollto" routerLink="/">Inicio</a></li>
+        <li *ngIf="authenticationService.isLoggedIn && esAdmin"><a class="nav-link scrollto" routerLink="/admin/usuarios">Usuarios</a></li>
+        <li *ngIf="!authenticationService.isLoggedIn"><a class="nav-link scrollto" routerLink="/auth/login">Ingresar</a></li>
+        <li *ngIf="!authenticationService.isLoggedIn"><a class="nav-link scrollto" routerLink="/auth/register">Registro</a></li>
 
-          <li><a class="nav-link scrollto" routerLink="" (click)="authenticationService.signOut()">Salir</a></li>
+        <li *ngIf="authenticationService.isLoggedIn" class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <span *ngIf="authenticationService.usuarioImg!=''; then mostrarImagen else mostrarNombre"></span>
+            <ng-template #mostrarImagen>
+              <img src="{{authenticationService.usuarioImg}}" width="40" height="40" class="rounded-circle">
+            </ng-template>
+            <ng-template #mostrarNombre>
+              {{nombreActual | titlecase}}
+            </ng-template>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" routerLink="/">Perfil</a></li>
+            <li><a class="dropdown-item" routerLink="/auth/logout">Salir</a></li>
+          </ul>
+        </li>
+      </ul>
+      <!-- <i class="bi bi-list mobile-nav-toggle"></i> -->
+    </nav>
 
-        </ul>
-        <!-- <i class="bi bi-list mobile-nav-toggle"></i> -->
-      </nav>
-
-    </div>
-  </header>
-<!-- 
-
-----------------------------------------
-    navbarlink.classList.add('active')
-  } else {
-    navbarlink.classList.remove('active')
-----------------------------------------
-
-        <div *ngIf="authenticationService.isLoggedIn; then thenBlock else elseBlock"></div>
-        <ng-template #thenBlock>
-          <a routerLink="/menu-juegos">Juegos</a>
-          <a routerLink="" (click)="authenticationService.signOut()">Salir</a>
-        </ng-template>
-        <ng-template #elseBlock>
-          <a routerLink="/login">Ingresar</a>
-        </ng-template>
-
-        
-        <a [routerLink]="item.link" class="nav-link active" aria-current="page">{{item.etiqueta}}</a>
-
-        <a class="nav-link active" aria-current="page" href="#">Home</a>
-        <a class="nav-link" href="#">Features</a>
-        <a class="nav-link" href="#">Pricing</a>
-        <a class="nav-link disabled" aria-disabled="true">Disabled</a>
- -->
+  </div>
+</header>
 
 <ng-content selector="router-outlet"></ng-content>

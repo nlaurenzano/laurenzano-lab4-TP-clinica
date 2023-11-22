@@ -40,7 +40,8 @@ export class LoginComponent implements OnInit{
       'i8eVXG53UybmFk10fkSIpJsKNAB2',
       'SIVh2oT1WcNosem0uiGOs4aJSyu1',
       'sHXGRWQFGSZLV9IkJh6u6cVai5E2',
-      'iCs9X2zMctg3LEPFJH6rfOWeC3E3'];
+      '0pR5STCxLkN5QBKnMcUPMEb7kIG3'];
+      // 'iCs9X2zMctg3LEPFJH6rfOWeC3E3'];
 
     usuarios.forEach((item) => {
       // console.log('usuario', item);
