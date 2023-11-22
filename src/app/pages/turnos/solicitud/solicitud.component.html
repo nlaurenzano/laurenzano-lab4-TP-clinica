@@ -1,0 +1,100 @@
+<section class="appointment">
+	<div class="container">
+
+		<div class="section-title">
+
+			<!-- Mis turnos, dependiendo del user -->
+	      <h2>Nuevo Turno</h2>
+	    </div>
+
+	    <!-- Solicitar turno -->
+	    <!-- <div class="icon-toggle">
+			<div class="icon" title="Nuevo Turno" (click)="crearTurno()">
+				<i class="fa-solid fa-screwdriver-wrench"></i>
+			</div>
+		</div> -->
+
+		<div *ngIf="turnosDisponibles | async; then contenidoBlock else preloader"></div>
+		<ng-template #preloader>
+			<div id="preloader"></div>
+		</ng-template>
+
+		<ng-template #contenidoBlock>
+			<div class="row justify-content-md-center">
+			    
+			    <!-- Filtros -->
+				<!-- <div class="col col-lg-1 text-center">
+					<div class="icon-toggle" (click)="mostrarEspecialistas()">
+						<div class="icon" title="Especialistas">
+							<i class="fas fa-stethoscope"></i>
+						</div>
+					</div>
+					<div class="icon-toggle" (click)="mostrarPacientes()">
+						<div class="icon" title="Pacientes">
+							<i class="fa-solid fa-hospital-user"></i>
+						</div>
+					</div>
+					<div class="icon-toggle" (click)="mostrarAdmins()">
+						<div class="icon" title="Administradores">
+							<i class="fa-solid fa-screwdriver-wrench"></i>
+						</div>
+					</div>
+					<div class="icon-toggle" (click)="mostrarTodos()">
+						<div class="icon" title="Limpiar filtros">
+							<i class="fa-regular fa-square-minus"></i>
+						</div>
+					</div>
+				</div> -->
+
+				<!-- Listado -->
+				<div class="col col-lg-5">
+					<div class="list-group">
+						<button *ngFor="let turno of turnosDisponibles | async" type="button" class="list-group-item list-group-item-action">
+							<!-- (click)="mostrarDetalle(usuario)"> -->
+							
+							<div class="row g-0 py-1">
+							    <div class="col-md-1">
+							    	<div class="icon"><i class=""></i></div>
+							    </div>
+							    <div class="col-md-11 d-flex">
+							      <h5>{{turno.dia}} - {{turno.hora}}</h5>
+							      <!-- <button type="button" class="btn btn-success btn-sm ms-auto" onclick="console.log('hi!')">Habilitar</button> -->
+							    </div>
+							</div>
+
+						</button>
+					</div>
+				</div>
+
+				<!-- Detalles -->
+				<!-- <div class="col col-lg-6 usuarios detalle">
+
+					<div *ngIf="usuarioDetalle" class="detalle d-flex align-items-start">
+
+		              	<div class="pic d-flex flex-column">
+					        <img *ngFor="let imagen of imagenes | async" src="{{imagen}}" class="img-fluid my-2" alt="">
+		              	</div>
+
+		              	<div class="detalle-info">
+			                <h4>{{usuarioDetalle.nombre | titlecase}} {{usuarioDetalle.apellido | titlecase}}</h4>
+			                <span>{{usuarioDetalle.rol | titlecase}}</span>
+			                <p>Edad: {{usuarioDetalle.edad}}</p>
+			                <p>DNI: {{usuarioDetalle.dni}}</p>
+			                <p>Email: {{usuarioDetalle.email}}</p>
+			                <p *ngIf="esPaciente">Obra Social: {{usuarioDetalle.obraSocial}}</p>
+			                <p *ngIf="esEspecialista">
+			                	Especialidad:
+			                	<span *ngFor="let item of usuarioDetalle.especialidad" class="ps-3">{{item | titlecase}}</span>
+			                </p>
+		                
+		              </div>
+		            </div>
+				</div> -->
+
+			</div>
+
+		</ng-template>
+  </div>
+
+
+</section>

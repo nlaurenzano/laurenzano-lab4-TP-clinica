@@ -114,5 +114,66 @@ export class DbService {
     return especialidadesResult;
   }
 
+  // ------------ TURNOS ------------
+
+  // Crea un turno nuevo
+  async crearTurno( turno ) {
+    await setDoc(doc(this.fs, "turnos"), turno);
+  }
+
+  // Devuelve la lista de todos los turnos
+  async obtenerTurnosUsuario( usuario ) {
+    let turnosResult = [];
+
+    const turnosRef = collection(this.fs, "turnos");
+    const q = query(turnosRef, where("paciente", "==", usuario.email));
+    const querySnapshot = await getDocs(turnosRef);
+
+    querySnapshot.forEach((doc) => {
+      turnosResult.push({
+        dia: doc.data()['dia'],
+        hora: doc.data()['hora'],
+        especialista: doc.data()['especialista'],
+        especialidad: doc.data()['especialidad'],
+        paciente: doc.data()['paciente'],
+        estado: doc.data()['estado'],
+        comentario: doc.data()['comentario'],
+        calificacion: doc.data()['calificacion'],
+        encuesta: doc.data()['encuesta']
+      });
+    });
+
+    return turnosResult;
+  }
+
+  // Devuelve la lista de todos los turnos
+  async obtenerTurnos() {
+    let turnosResult = [];
+    const turnosRef = collection(this.fs, "turnos");
+
+    const querySnapshot = await getDocs(turnosRef);
+
+    querySnapshot.forEach((doc) => {
+      turnosResult.push({
+        dia: doc.data()['dia'],
+        hora: doc.data()['hora'],
+        especialista: doc.data()['especialista'],
+        especialidad: doc.data()['especialidad'],
+        paciente: doc.data()['paciente'],
+        estado: doc.data()['estado'],
+        comentario: doc.data()['comentario'],
+        calificacion: doc.data()['calificacion'],
+        encuesta: doc.data()['encuesta']
+      });
+    });
+
+    return turnosResult;
+  }
+
+  
+
+
+
+
 
 }

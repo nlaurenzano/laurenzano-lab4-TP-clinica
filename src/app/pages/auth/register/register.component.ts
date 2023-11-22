@@ -26,7 +26,6 @@ export class RegisterComponent implements OnInit {
     email: '',
     clave: '',
     obraSocial: '',
-    // especialidad: [],
     especialidad: '',
     habilitado: false
   };

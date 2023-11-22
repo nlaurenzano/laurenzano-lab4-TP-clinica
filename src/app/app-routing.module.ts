@@ -20,6 +20,11 @@ const routes: Routes = [
     loadChildren: () => import('./pages/auth/auth.module').then(m => m.AuthModule),
   },
   {
+    path: 'turnos',
+    loadChildren: () => import('./pages/turnos/turnos.module').then(m => m.TurnosModule),
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'errores',
     loadChildren: () => import('./pages/errores/errores.module').then(m => m.ErroresModule)
   },

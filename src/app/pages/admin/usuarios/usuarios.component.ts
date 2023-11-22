@@ -24,7 +24,6 @@ export class UsuariosComponent implements OnInit {
     public router: Router,
     public db: DbService
   ) {}
-  // constructor( public db: DbService ) {}
 
   ngOnInit() {
     this.mostrarTodos();
