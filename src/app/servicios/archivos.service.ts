@@ -21,6 +21,10 @@ export class ArchivosService {
     // );
   }
 
+  limpiarImagenes() {
+    this.imagenes = [];
+  }
+
   seleccionarImagen( archivo: File, indice: number ) {
     this.imagenes[indice-1] = archivo;
   }

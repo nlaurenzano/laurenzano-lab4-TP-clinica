@@ -153,24 +153,25 @@ export class AuthenticationService implements OnDestroy {
 
     createUserWithEmailAndPassword(this.auth, usuario.email, usuario.clave)
       .then((resultado) => {
-        
         this.archivos.subirArchivos( usuario.email );
 
-        this.db.agregarUsuario( resultado.user.uid, usuario );
+        // this.db.agregarUsuario( resultado.user.uid, usuario );
+        this.db.agregarUsuario( resultado.user.uid, usuario )
+          .then(()=>{
+            // Log de registro
+            // this.logService.signUp(email);
+            
+            // Redirección
+            this.redirigir(resultado.user);
 
-        if ( this.enviarVerificacion(resultado.user, usuario) ) {
-          this.signOut();
-        }
-        
+            if ( this.enviarVerificacion(resultado.user, usuario) ) {
+              this.signOut();
+            }
+          });
 
         // .then(...)
         // .catch(...)
 
-        // Log de registro
-        // this.logService.signUp(email);
-        
-        // Redirección
-        this.redirigir(resultado.user);
       })
       .catch((error) => {
         let mensaje: string;

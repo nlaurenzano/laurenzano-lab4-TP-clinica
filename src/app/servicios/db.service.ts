@@ -24,8 +24,8 @@ export class DbService {
 
   // ------------ USUARIOS ------------
 
-  async agregarUsuario( uid, usuario ) {
-    await setDoc(doc(this.fs, "usuarios", uid), usuario);
+  agregarUsuario( uid, usuario ) {
+    return setDoc(doc(this.fs, "usuarios", uid), usuario);
   }
 
   // Devuelve la lista de todos los usuarios
@@ -54,7 +54,7 @@ export class DbService {
   }
 
   // Devuelve la lista de todos los usuarios con el rol indicado
-  async obtenerUsuariosPorRol( rol ) {
+  async obtenerUsuariosPorRol( rol: string ) {
     let usuariosResult = [];
     const usuariosRef = collection(this.fs, "usuarios");
     const q = query(usuariosRef, where("rol", "==", rol));
@@ -141,7 +141,7 @@ export class DbService {
     let turnosResult = [];
 
     const turnosRef = collection(this.fs, "turnos");
-    const q = query(turnosRef, where("paciente", "==", usuario.email));
+    // const q = query(turnosRef, where("paciente", "==", usuario.email));
     const querySnapshot = await getDocs(turnosRef);
 
     querySnapshot.forEach((doc) => {

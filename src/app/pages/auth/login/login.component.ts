@@ -33,28 +33,39 @@ export class LoginComponent implements OnInit{
     this.fillClave = "password";
   }
 
-  mostrarAccesoRapido() {
-    const usuarios = [
-      '4aMSrSRpi3P38FFk4HJNY12vOti2',
-      'H2G6lT8VarY2Y0QYKRtIKqjKyJv2',
-      'i8eVXG53UybmFk10fkSIpJsKNAB2',
-      'SIVh2oT1WcNosem0uiGOs4aJSyu1',
-      'sHXGRWQFGSZLV9IkJh6u6cVai5E2',
-      '0pR5STCxLkN5QBKnMcUPMEb7kIG3'];
-      // 'iCs9X2zMctg3LEPFJH6rfOWeC3E3'];
+  async mostrarAccesoRapido() {
+    
+    // const usuarios = [
+    //   '4aMSrSRpi3P38FFk4HJNY12vOti2',
+    //   'H2G6lT8VarY2Y0QYKRtIKqjKyJv2',
+    //   'i8eVXG53UybmFk10fkSIpJsKNAB2',
+    //   'SIVh2oT1WcNosem0uiGOs4aJSyu1',
+    //   'sHXGRWQFGSZLV9IkJh6u6cVai5E2',
+    //   '0pR5STCxLkN5QBKnMcUPMEb7kIG3'];
 
-    usuarios.forEach((item) => {
-      // console.log('usuario', item);
-      this.db.obtenerUsuarioPorUid( item )
-        .then((usuario) => {
-          this.archivos.obtenerImagen_1(usuario.email)
-            .then((archivoURL) => {
-              usuario.archivoURL = archivoURL;
-              this.usuarios.push(usuario);
-            });
 
+    let usuarios = [];    
+
+    const pacientes = await this.db.obtenerUsuariosPorRol( this.roles[2] );
+    usuarios.push(pacientes[0]);
+    usuarios.push(pacientes[1]);
+    usuarios.push(pacientes[2]);
+
+    const especialistas = await this.db.obtenerUsuariosPorRol( this.roles[1] );
+    usuarios.push(especialistas[0]);
+    usuarios.push(especialistas[1]);
+    
+    const admins = await this.db.obtenerUsuariosPorRol( this.roles[0] );
+    usuarios.push(admins[0]);
+
+    usuarios.forEach((usuario) => {
+      this.archivos.obtenerImagen_1(usuario.email)
+        .then((archivoURL) => {
+          usuario.archivoURL = archivoURL;
+          // this.usuarios.push(usuario);
         });
     });
+    this.usuarios = usuarios;
   }
 
   mostrarIcono( usuario ): string {
