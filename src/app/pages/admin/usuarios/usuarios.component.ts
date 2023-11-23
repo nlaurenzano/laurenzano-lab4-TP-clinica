@@ -97,6 +97,18 @@ export class UsuariosComponent implements OnInit {
 
   }
 
+  async habilitar( usuario ) {
+    await this.db.habilitarUsuario( usuario.id, true );
+    usuario.habilitado = true;
+  }
+
+  async deshabilitar( usuario ) {
+    await this.db.habilitarUsuario( usuario.id, false );
+    usuario.habilitado = false;
+  }
+
+
+
 
 
 }

@@ -6,6 +6,7 @@ import {
   setDoc,
   getDoc,
   getDocs,
+  updateDoc,
   Firestore, 
   collection,
   collectionData
@@ -21,12 +22,10 @@ export class DbService {
 
   constructor( public fs: Firestore ) {}
 
+  // ------------ USUARIOS ------------
+
   async agregarUsuario( uid, usuario ) {
     await setDoc(doc(this.fs, "usuarios", uid), usuario);
-  }
-
-  agregarEspecialidad( especialidad: string) {
-    setDoc(doc(this.fs, "especialidades", especialidad), {nombre: especialidad});
   }
 
   // Devuelve la lista de todos los usuarios
@@ -38,6 +37,7 @@ export class DbService {
     const querySnapshot = await getDocs(usuariosRef);
     querySnapshot.forEach((doc) => {
       usuariosResult.push({
+        id: doc.id,
         rol: doc.data()['rol'],
         nombre: doc.data()['nombre'],
         apellido: doc.data()['apellido'],
@@ -62,6 +62,7 @@ export class DbService {
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
       usuariosResult.push({
+        id: doc.id,
         rol: doc.data()['rol'],
         nombre: doc.data()['nombre'],
         apellido: doc.data()['apellido'],
@@ -85,6 +86,7 @@ export class DbService {
     const docSnap = await getDoc(docRef);
 
     usuarioResult = {
+      id: docSnap.id,
       rol: docSnap.data()['rol'],
       nombre: docSnap.data()['nombre'],
       apellido: docSnap.data()['apellido'],
@@ -97,6 +99,18 @@ export class DbService {
     }
 
     return usuarioResult;
+  }
+
+  habilitarUsuario( uid: string, valor: boolean ) {
+    const usuarioRef = doc(this.fs, "usuarios", uid);
+    updateDoc(usuarioRef, {habilitado: valor});
+  }
+
+
+  // ------------ ESPECIALIDADES ------------
+
+  agregarEspecialidad( especialidad: string) {
+    setDoc(doc(this.fs, "especialidades", especialidad), {nombre: especialidad});
   }
 
   // Devuelve la lista de todas las especialidades
@@ -113,6 +127,7 @@ export class DbService {
 
     return especialidadesResult;
   }
+
 
   // ------------ TURNOS ------------
 

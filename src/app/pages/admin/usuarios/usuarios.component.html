@@ -55,8 +55,18 @@
 							    	<div class="icon"><i class="{{mostrarIcono(usuario)}}"></i></div>
 							    </div>
 							    <div class="col-md-11 d-flex">
-							      <h5>{{usuario.nombre | titlecase}} {{usuario.apellido | titlecase}}</h5>
-							      <button type="button" class="btn btn-success btn-sm ms-auto" onclick="console.log('hi!')">Habilitar</button>
+							    	<h5>{{usuario.nombre | titlecase}} {{usuario.apellido | titlecase}}</h5>
+
+							    	<div *ngIf="usuario.rol=='especialista'" class="ms-auto">
+								    	<div *ngIf="!usuario.habilitado; then botonHabilitar else botonDeshabilitar"></div>
+										<ng-template #botonHabilitar>
+											<button type="button" class="btn btn-success btn-sm" (click)="habilitar(usuario)">Habilitar</button>
+										</ng-template>
+										<ng-template #botonDeshabilitar>
+								      		<button type="button" class="btn btn-danger btn-sm" (click)="deshabilitar(usuario)">Deshabilitar</button>
+										</ng-template>
+									</div>
+
 							    </div>
 							</div>
 

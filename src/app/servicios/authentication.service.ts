@@ -24,6 +24,7 @@ import {
 
 
 export interface Usuario {
+  id: string,
   rol: string,
   nombre: string,
   apellido: string,
@@ -87,8 +88,8 @@ export class AuthenticationService implements OnDestroy {
             this.usuario = usuario;
 
             this.validarIngreso( resultado.user )
-              .then((valido) => {
-                if (valido) {
+              .then((mensajeValidacion) => {
+                if (mensajeValidacion == '') {
                   // Log de ingreso
                   // this.logService.signIn(email);
 
@@ -97,20 +98,16 @@ export class AuthenticationService implements OnDestroy {
                     .then((archivoURL) => {
                       this.usuarioImg = archivoURL;
                     });
+                  // Redirección
+                  this.redirigir(resultado.user);
 
                 } else {
                   this.usuario = null;
                   this.signOut();
-                  this.mostrarError('Debe verificar su correo electrónico para ingresar.');
+                  this.mostrarError(mensajeValidacion);
                 }
               });
-
-            // Redirección
-            this.redirigir(resultado.user);
           });
-
-        
-        
       })
       .catch((error) => {
         let mensaje: string;
@@ -222,11 +219,16 @@ export class AuthenticationService implements OnDestroy {
     // aprobó su cuenta y verificó el mail al momento de registrarse.
     // Los usuarios con perfil Paciente solo pueden ingresar si verificaron su mail al
     // momento de registrarse.
-    if ( (this.usuario.rol == 'especialista' && (!user.emailVerified || this.usuario.habilitado)) ||
+    if ( (this.usuario.rol == 'especialista' && !user.emailVerified) || 
       (this.usuario.rol == 'paciente' && !user.emailVerified) ) {
-      return false;
+      return 'Debe verificar su correo electrónico para ingresar.';
     }
-    return true;
+
+    if (this.usuario.rol == 'especialista' && !this.usuario.habilitado ) {
+      return 'Su cuenta debe ser habilitada por Administración para ingresar.';
+    }
+
+    return '';
   }
 
   private enviarVerificacion( user: User, datosUsuario: Usuario ): boolean {

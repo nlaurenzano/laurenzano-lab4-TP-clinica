@@ -18,6 +18,7 @@ export class RegisterComponent implements OnInit {
 
   // public loadingUsuarios: boolean = false;
   public usuario: Usuario = {
+    id: '',
     rol: '',
     nombre: '',
     apellido: '',
