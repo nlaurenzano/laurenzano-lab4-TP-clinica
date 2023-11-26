@@ -3,6 +3,8 @@ import { AuthenticationService, Usuario } from "../../../servicios/authenticatio
 import { ArchivosService } from "../../../servicios/archivos.service";
 import { DbService } from "../../../servicios/db.service";
 
+import { RecaptchaErrorParameters } from "ng-recaptcha";
+
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -13,6 +15,7 @@ export class RegisterComponent implements OnInit {
   clave2 = '';
   nombreImagen1 = '';
   nombreImagen2 = '';
+  noEsRobot = false;
 
   @ViewChild('nuevaEspecialidad') private inputNuevaEspecialidad: ElementRef;
 
@@ -117,13 +120,14 @@ export class RegisterComponent implements OnInit {
     }
   }
 
-  // seleccionarImagen( archivo: File, indice: number ) {
-  //   if (archivo) {
-  //     // const formData = new FormData();
-  //     // formData.append("thumbnail", archivo);
-  //     this.archivos.subirArchivo( archivo, this.usuario.email, indice );
-  //   }
-  // }
+  resolved(captchaResponse: string) {
+    console.log(`Resolved captcha with response: ${captchaResponse}`);
+    this.noEsRobot = true;
+  }
 
+  public onError(errorDetails: RecaptchaErrorParameters): void {
+    console.log(`reCAPTCHA error encountered; details:`, errorDetails);
+    this.noEsRobot = false;
+  }
 
 }

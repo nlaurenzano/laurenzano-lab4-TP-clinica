@@ -16,6 +16,7 @@
         <li *ngIf="authenticationService.isLoggedIn && esAdmin"><a class="nav-link scrollto" routerLink="/admin/usuarios">Usuarios</a></li>
         <li *ngIf="authenticationService.isLoggedIn"><a class="nav-link scrollto" routerLink="/turnos/turnos">Turnos</a></li>
         <li *ngIf="authenticationService.isLoggedIn"><a class="nav-link scrollto" routerLink="/turnos/solicitud">Nuevo Turno</a></li>
+        <li *ngIf="authenticationService.isLoggedIn"><a class="nav-link scrollto" routerLink="/inicio/perfil">Perfil</a></li>
         <li *ngIf="!authenticationService.isLoggedIn"><a class="nav-link scrollto" routerLink="/auth/login">Ingresar</a></li>
         <li *ngIf="!authenticationService.isLoggedIn"><a class="nav-link scrollto" routerLink="/auth/register">Registro</a></li>
 

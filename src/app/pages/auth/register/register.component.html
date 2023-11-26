@@ -1,3 +1,5 @@
+
+
 <section><div class="container">
 
 	<div *ngIf="usuario.rol==''; then thenBlock else elseBlock"></div>
@@ -40,7 +42,7 @@
 			</div>
 	    </div>
 
-	    <form class="formulario">
+	    <form class="formulario" (ngSubmit)="signUp()" #formRegistro="ngForm">
 
 	    	<div class="row">
 				<div class="col-md-8">
@@ -49,9 +51,14 @@
 			    		<!-- Nombre y apellido -->
 						<div class="col-md-6 form-group">
 							<div class="form-floating mb-3">
-								<input type="text" class="form-control" id="nombre" name="nombre" #nombre placeholder="Nombre" [(ngModel)]="usuario.nombre">
-								<label for="nombre">Nombre</label>
+								<input type="text" class="form-control" required id="nombre" name="nombre" #nombre="ngModel" placeholder="Nombre" [(ngModel)]="usuario.nombre">
+
+								<label *ngIf="!(nombre.invalid && (nombre.dirty || nombre.touched))" for="nombre">Nombre</label>
+								<label *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)" class="text-danger" for="nombre">
+									<span *ngIf="nombre.errors?.['required']">El nombre es obligatorio.</span>
+								</label>
 							</div>
+
 						</div>
 						<div class="col-md-6 form-group">
 							<div class="form-floating mb-3">
@@ -182,8 +189,11 @@
 				</div>
 			</div>
 
-			<div class="text-center">
-				<button (click)="signUp()">Registrarse</button>
+			<!-- <div class="text-center"> -->
+			<div class="d-flex justify-content-center">
+				<re-captcha *ngIf="!noEsRobot" (resolved)="resolved($event)" (errored)="onError($event)" errorMode="handled" siteKey="6LfWbhopAAAAAFnwvP3z3oefL16sNyTP5aBCLVf6"></re-captcha>
+				<!-- <button *ngIf="noEsRobot" type="submit" (click)="signUp()">Registrarse</button> -->
+				<button *ngIf="noEsRobot" type="submit" [disabled]="!formRegistro.form.valid">Registrarse</button>
 			</div>
 
 		</form>

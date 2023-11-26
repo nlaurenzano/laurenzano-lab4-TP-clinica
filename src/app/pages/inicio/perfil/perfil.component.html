@@ -1,0 +1,26 @@
+<section class="appointment">
+<div class="container">
+
+	<div class="section-title">
+      <h2>Usuarios</h2>
+    </div>
+
+	<div class="row justify-content-md-center">
+
+		<!-- Detalles -->
+		<div class="col col-lg-6">
+			<usuario-detalle [datos]="usuarioDetalle" [imagenes]="usuarioImagenes"></usuario-detalle>
+		</div>
+
+
+		<!-- Mis horarios -->
+		<div *ngIf="esEspecialista" class="col col-lg-6">
+			<h3>Mis horarios...</h3>
+		</div>
+
+
+		
+	</div>
+
+</div>
+</section>

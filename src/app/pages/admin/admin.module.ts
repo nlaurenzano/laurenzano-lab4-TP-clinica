@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { AdminRoutingModule } from './admin-routing.module';
+import { ComponentsModule } from '../../components/components.module';
+
 import { UsuariosComponent } from './usuarios/usuarios.component';
 
 @NgModule({
@@ -10,7 +12,8 @@ import { UsuariosComponent } from './usuarios/usuarios.component';
   ],
   imports: [
     CommonModule,
-    AdminRoutingModule
+    AdminRoutingModule,
+    ComponentsModule
   ]
 })
 export class AdminModule { }

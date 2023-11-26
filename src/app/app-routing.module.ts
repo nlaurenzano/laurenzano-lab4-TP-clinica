@@ -25,6 +25,10 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'inicio',
+    loadChildren: () => import('./pages/inicio/inicio.module').then(m => m.InicioModule)
+  },
+  {
     path: 'errores',
     loadChildren: () => import('./pages/errores/errores.module').then(m => m.ErroresModule)
   },

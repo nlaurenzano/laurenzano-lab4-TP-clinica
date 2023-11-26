@@ -14,7 +14,7 @@ export class UsuariosComponent implements OnInit {
   public usuarios;
   public usuarioDetalle: Usuario = null;
   public creandoAdmin: boolean = false;
-  public imagenes: any;
+  public usuarioImagenes: any;
 
   private roles = ['administrador', 'especialista', 'paciente'];
 
@@ -30,13 +30,9 @@ export class UsuariosComponent implements OnInit {
   }
 
   mostrarDetalle( usuario ) {
-    this.imagenes = [];
+    this.usuarioImagenes = [];
     this.usuarioDetalle = usuario;
-    
-    // this.imagenURL = this.archivos.obtenerImagenes(usuario.email)[0];
-    this.imagenes = this.archivos.obtenerImagenes(usuario.email);
-    // this.imagenURL = imagenes[0];
-
+    this.usuarioImagenes = this.archivos.obtenerImagenes(usuario.email);
   }
 
   mostrarIcono( usuario ): string {

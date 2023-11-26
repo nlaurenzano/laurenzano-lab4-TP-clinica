@@ -102,6 +102,10 @@
   background: #1c84e3;
 }
 
+.formulario button:disabled {
+  background: #ddd;
+}
+
 .formulario .file-input {
   display: none;
 }

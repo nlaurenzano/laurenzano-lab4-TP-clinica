@@ -75,32 +75,9 @@
 				</div>
 
 				<!-- Detalles -->
-				<div class="col col-lg-6 usuarios detalle">
-
-					<div *ngIf="usuarioDetalle" class="detalle d-flex align-items-start">
-
-		              	<!-- <div class="pic"><img src="assets/img/doctors/doctors-1.jpg" class="img-fluid" alt=""></div> -->
-		              	<div class="pic d-flex flex-column">
-					        <img *ngFor="let imagen of imagenes | async" src="{{imagen}}" class="img-fluid my-2" alt="">
-		              	</div>
-
-		              	<div class="detalle-info">
-			                <h4>{{usuarioDetalle.nombre | titlecase}} {{usuarioDetalle.apellido | titlecase}}</h4>
-			                <span>{{usuarioDetalle.rol | titlecase}}</span>
-			                <p>Edad: {{usuarioDetalle.edad}}</p>
-			                <p>DNI: {{usuarioDetalle.dni}}</p>
-			                <p>Email: {{usuarioDetalle.email}}</p>
-			                <p *ngIf="esPaciente">Obra Social: {{usuarioDetalle.obraSocial}}</p>
-			                <p *ngIf="esEspecialista">
-			                	Especialidad:
-			                	<span *ngFor="let item of usuarioDetalle.especialidad" class="ps-3">{{item | titlecase}}</span>
-			                </p>
-		                
-		                
-		              </div>
-		            </div>
-
-				  
+				<div class="col col-lg-6">
+					<!-- Detalles -->
+					<usuario-detalle [datos]="usuarioDetalle" [imagenes]="usuarioImagenes"></usuario-detalle>
 				</div>
 
 			</div>

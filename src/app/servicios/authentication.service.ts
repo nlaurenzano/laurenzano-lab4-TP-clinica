@@ -203,7 +203,7 @@ export class AuthenticationService implements OnDestroy {
       this.router.navigate(['admin/usuarios']);
     } else {
       if ( user.emailVerified ) {
-        this.router.navigate(['/']);
+        this.router.navigate(['inicio/perfil']);
       } else {
         this.router.navigate(['errores/verificar']);
       }

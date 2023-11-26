@@ -7,6 +7,8 @@ import { LoginComponent } from './login/login.component';
 import { LogoutComponent } from './logout/logout.component';
 import { RegisterComponent } from './register/register.component';
 
+import { RecaptchaModule } from "ng-recaptcha";
+
 @NgModule({
   declarations: [
     LoginComponent,
@@ -16,7 +18,8 @@ import { RegisterComponent } from './register/register.component';
   imports: [
     CommonModule,
     AuthRoutingModule,
-    FormsModule
+    FormsModule,
+    RecaptchaModule
   ]
 })
 export class AuthModule { }
