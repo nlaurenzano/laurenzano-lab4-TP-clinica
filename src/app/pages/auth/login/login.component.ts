@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { RecaptchaErrorParameters } from "ng-recaptcha";
+
 import { AuthenticationService, Usuario } from '../../../servicios/authentication.service';
 import { ArchivosService } from "../../../servicios/archivos.service";
 import { DbService } from '../../../servicios/db.service';
@@ -12,6 +14,7 @@ export class LoginComponent implements OnInit{
 
   fillEmail: string = '';
   fillClave: string = '';
+  noEsRobot = false;
 
   public usuarios = [];
 
@@ -28,22 +31,11 @@ export class LoginComponent implements OnInit{
   }
 
   completarCampos( id: number ) {
-    // this.fillEmail = 'admin1@clinica.com';
     this.fillEmail = this.usuarios[id].email;
-    this.fillClave = "password";
+    this.fillClave = this.usuarios[id].clave;
   }
 
   async mostrarAccesoRapido() {
-    
-    // const usuarios = [
-    //   '4aMSrSRpi3P38FFk4HJNY12vOti2',
-    //   'H2G6lT8VarY2Y0QYKRtIKqjKyJv2',
-    //   'i8eVXG53UybmFk10fkSIpJsKNAB2',
-    //   'SIVh2oT1WcNosem0uiGOs4aJSyu1',
-    //   'sHXGRWQFGSZLV9IkJh6u6cVai5E2',
-    //   '0pR5STCxLkN5QBKnMcUPMEb7kIG3'];
-
-
     let usuarios = [];    
 
     const pacientes = await this.db.obtenerUsuariosPorRol( this.roles[2] );
@@ -62,7 +54,6 @@ export class LoginComponent implements OnInit{
       this.archivos.obtenerImagen_1(usuario.email)
         .then((archivoURL) => {
           usuario.archivoURL = archivoURL;
-          // this.usuarios.push(usuario);
         });
     });
     this.usuarios = usuarios;
@@ -84,6 +75,18 @@ export class LoginComponent implements OnInit{
         // nada
     } 
     return icono;
+  }
+
+  resolved(captchaResponse: string) {
+    if (captchaResponse === null) {
+      this.noEsRobot = false;
+    } else {
+      this.noEsRobot = true;
+    }
+  }
+
+  public onError(errorDetails: RecaptchaErrorParameters): void {
+    this.noEsRobot = false;
   }
 
 }

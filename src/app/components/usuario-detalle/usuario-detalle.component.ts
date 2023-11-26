@@ -11,8 +11,22 @@ export class UsuarioDetalleComponent {
   @Input() datos;
   @Input() imagenes: any = null;
 
+  private roles = ['administrador', 'especialista', 'paciente'];
+
   constructor( public archivos: ArchivosService ) {}
 
   ngOnInit() {}
+
+  get esAdmin(): boolean {
+    return this.datos.rol == this.roles[0];
+  }
+
+  get esEspecialista(): boolean {
+    return this.datos.rol == this.roles[1];
+  }
+
+  get esPaciente(): boolean {
+    return this.datos.rol == this.roles[2];
+  }
 
 }

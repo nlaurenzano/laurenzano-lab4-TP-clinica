@@ -1,9 +1,9 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { RecaptchaErrorParameters } from "ng-recaptcha";
+
 import { AuthenticationService, Usuario } from "../../../servicios/authentication.service";
 import { ArchivosService } from "../../../servicios/archivos.service";
 import { DbService } from "../../../servicios/db.service";
-
-import { RecaptchaErrorParameters } from "ng-recaptcha";
 
 @Component({
   selector: 'app-register',
@@ -12,14 +12,15 @@ import { RecaptchaErrorParameters } from "ng-recaptcha";
 })
 export class RegisterComponent implements OnInit {
 
-  clave2 = '';
+  clave2?: any;
+  upload1?: any;
+  upload2?: any;
   nombreImagen1 = '';
   nombreImagen2 = '';
   noEsRobot = false;
 
   @ViewChild('nuevaEspecialidad') private inputNuevaEspecialidad: ElementRef;
 
-  // public loadingUsuarios: boolean = false;
   public usuario: Usuario = {
     id: '',
     rol: '',
@@ -35,7 +36,6 @@ export class RegisterComponent implements OnInit {
   };
 
   public especialidades;
-  // public especialidades = ['Traumatología', 'Cardiología', 'Pediatría', 'Odontología'];
   public obrasSociales = ['OSDE', 'Swiss Medical', 'Hospital Británico', 'Apres', 'PAMI', 'Particular'];
 
   private roles = ['administrador', 'especialista', 'paciente'];
@@ -57,11 +57,12 @@ export class RegisterComponent implements OnInit {
   }
 
   public signUp() {
-    if ( this.usuario.clave != this.clave2 ) {
-      this.authenticationService.mostrarError('Las claves ingresadas no son idénticas.');
-    } else {
+    // if ( this.usuario.clave != this.clave2 ) {
+    //   this.authenticationService.mostrarError('Las claves ingresadas no son idénticas.');
+    // } else {
+    //   this.authenticationService.signUp(this.usuario);
+    // }
       this.authenticationService.signUp(this.usuario);
-    }
   }
 
   public setAdmin() {
@@ -121,12 +122,14 @@ export class RegisterComponent implements OnInit {
   }
 
   resolved(captchaResponse: string) {
-    console.log(`Resolved captcha with response: ${captchaResponse}`);
-    this.noEsRobot = true;
+    if (captchaResponse === null) {
+      this.noEsRobot = false;
+    } else {
+      this.noEsRobot = true;
+    }
   }
 
   public onError(errorDetails: RecaptchaErrorParameters): void {
-    console.log(`reCAPTCHA error encountered; details:`, errorDetails);
     this.noEsRobot = false;
   }
 

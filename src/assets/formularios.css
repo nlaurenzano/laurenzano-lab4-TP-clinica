@@ -103,7 +103,7 @@
 }
 
 .formulario button:disabled {
-  background: #ddd;
+  background: #ccc;
 }
 
 .formulario .file-input {

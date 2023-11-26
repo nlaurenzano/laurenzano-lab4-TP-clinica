@@ -69,6 +69,7 @@ export class DbService {
         edad: doc.data()['edad'],
         dni: doc.data()['dni'],
         email: doc.data()['email'],
+        clave: doc.data()['clave'],
         obraSocial: doc.data()['obraSocial'],
         especialidad: doc.data()['especialidad'],
         habilitado: doc.data()['habilitado']

@@ -1,58 +1,72 @@
-<section>
-  <div class="container">
-	<div class="card card-login m-3 p-1 mx-auto">
-	<div class="card-body">
+<section><div class="container">
+<div class="card card-login m-3 p-1 mx-auto">
+<div class="card-body">
 
-	    <div class="section-title">
-				<h2>Ingresar</h2>
-	    </div>
-
-	    <form class="formulario">
-			<div class="row">
-	            <div class="form-group">
-			        <div class="form-floating mb-3">
-						<input type="email" class="form-control" id="email" #email placeholder="Email" value="{{fillEmail}}">
-						<label for="email">Email</label>
-					</div>
-	            </div>
-	      	</div>
-	      	<div class="row">
-	            <div class="form-group">
-			        <div class="form-floating mb-3">
-						<input type="password" class="form-control" id="clave" #clave placeholder="Contraseña" value="{{fillClave}}">
-						<label for="clave">Contraseña</label>
-					</div>
-	          	</div>
-	      	</div>
-
-	      	<div class="text-center">
-	      		<button (click)="authenticationService.signIn(email.value, clave.value)">Ingresar</button>
-	      	</div>
-	    </form>
-	</div>
-	</div>
-
-	<div class="section-title mt-4">
-		<h2>Acceso Rápido</h2>
+    <div class="section-title">
+			<h2>Ingresar</h2>
     </div>
 
-	<div class="row why-us">
-		<div class="col-lg-12 align-items-stretch">
-            <div class="icon-boxes flex-column justify-content-center">
-	            <div class="row">
+    <form class="formulario" (ngSubmit)="authenticationService.signIn(email.value, clave.value)" #formLogin="ngForm">
+		
+			<div class="row">
+        <div class="form-group">
+        	<div class="form-floating mb-3">
+						<input type="email" class="form-control" required id="email" name="email" #email="ngModel" placeholder="Email" [(ngModel)]="fillEmail">
+						
+						<label *ngIf="!(email.invalid && (email.dirty || email.touched))" for="email">Email</label>
+						<label *ngIf="email.invalid && (email.dirty || email.touched)" class="text-danger" for="email">
+							<span *ngIf="email.errors?.['required']">El email es obligatorio.</span>
+						</label>
+					</div>
+	      </div>
+	    </div>
 
-	                <div class="col-xl-2 align-items-stretch" *ngFor="let usuario of usuarios; let i = index;" (click)="completarCampos(i)">
-	                  	<div class="icon-box mt-4 mt-xl-0">
-	                  		<i class="{{mostrarIcono(usuario)}}"></i>
-	                    	<img src="{{usuario.archivoURL}}" class="img-fluid" alt="">
-		                    <h4 class="mt-2">{{usuario.nombre | titlecase}} {{usuario.apellido | titlecase}}</h4>
-	                  	</div>
-	                </div>
+    	<div class="row">
+          <div class="form-group">
+		        <div class="form-floating mb-3">
+							<input type="password" class="form-control" required id="clave" name="clave" #clave="ngModel" placeholder="Contraseña" [(ngModel)]="fillClave">
+							
+							<label *ngIf="!(clave.invalid && (clave.dirty || clave.touched))" for="clave">Contraseña</label>
+							<label *ngIf="clave.invalid && (clave.dirty || clave.touched)" class="text-danger" for="clave">
+								<span *ngIf="clave.errors?.['required']">La contraseña es obligatoria.</span>
+							</label>
+						</div>
+        	</div>
+    	</div>
 
-              	</div>
-            </div>
-        </div>
-	</div>
+    	<div class="d-flex justify-content-center">	
+    		<re-captcha *ngIf="!noEsRobot" (resolved)="resolved($event)" (errored)="onError($event)" errorMode="handled" siteKey="6LfWbhopAAAAAFnwvP3z3oefL16sNyTP5aBCLVf6"></re-captcha>
+    	</div>
 
+    	<div class="d-flex justify-content-center">	
+    		<button type="submit" [disabled]="!formLogin.form.valid">Ingresar</button>
+    		<!-- <button *ngIf="noEsRobot" type="submit" [disabled]="!formLogin.form.valid || !noEsRobot">Ingresar</button> -->
+    	</div>
+      	
+    </form>
+</div>
+</div>
+
+<div class="section-title mt-4">
+	<h2>Acceso Rápido</h2>
   </div>
-</section>
+
+<div class="row why-us">
+	<div class="col-lg-12 align-items-stretch">
+          <div class="icon-boxes flex-column justify-content-center">
+            <div class="row">
+
+                <div class="col-xl-2 align-items-stretch" *ngFor="let usuario of usuarios; let i = index;" (click)="completarCampos(i)">
+                  	<div class="icon-box mt-4 mt-xl-0">
+                  		<i class="{{mostrarIcono(usuario)}}"></i>
+                    	<img src="{{usuario.archivoURL}}" class="img-fluid" alt="">
+	                    <h4 class="mt-2">{{usuario.nombre | titlecase}} {{usuario.apellido | titlecase}}</h4>
+                  	</div>
+                </div>
+
+            	</div>
+          </div>
+      </div>
+</div>
+
+</div></section>
