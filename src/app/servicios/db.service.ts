@@ -3,10 +3,12 @@ import {
   doc,
   where,
   query,
+  addDoc,
   setDoc,
   getDoc,
   getDocs,
   updateDoc,
+  Timestamp,
   Firestore, 
   collection,
   collectionData
@@ -134,7 +136,10 @@ export class DbService {
 
   // Crea un turno nuevo
   async crearTurno( turno ) {
-    await setDoc(doc(this.fs, "turnos"), turno);
+    // turno.horario = Timestamp.fromDate(turno.horario);
+
+    const turnosRef = collection(this.fs, "turnos");
+    await addDoc( turnosRef, turno );
   }
 
   // Devuelve la lista de todos los turnos
@@ -147,8 +152,7 @@ export class DbService {
 
     querySnapshot.forEach((doc) => {
       turnosResult.push({
-        dia: doc.data()['dia'],
-        hora: doc.data()['hora'],
+        horario: doc.data()['horario'].toDate(),
         especialista: doc.data()['especialista'],
         especialidad: doc.data()['especialidad'],
         paciente: doc.data()['paciente'],
@@ -171,8 +175,7 @@ export class DbService {
 
     querySnapshot.forEach((doc) => {
       turnosResult.push({
-        dia: doc.data()['dia'],
-        hora: doc.data()['hora'],
+        horario: doc.data()['horario'].toDate(),
         especialista: doc.data()['especialista'],
         especialidad: doc.data()['especialidad'],
         paciente: doc.data()['paciente'],
@@ -187,7 +190,33 @@ export class DbService {
   }
 
   
+  // Devuelve la lista de todos los turnos existentes del paciente, para la especialidad y el especialista indicados
+  async obtenerTurnosExistentes( paciente, especialista, especialidad ) {
+    let turnosResult = [];
+    const turnosRef = collection(this.fs, "turnos");
+    const q = query(turnosRef, 
+      where("paciente", "==", paciente), 
+      where("especialista", "==", especialista), 
+      where("especialidad", "==", especialidad));
 
+    const querySnapshot = await getDocs(q);
+
+    querySnapshot.forEach((doc) => {
+      turnosResult.push({
+        horario: doc.data()['horario'].toDate(),
+        especialista: doc.data()['especialista'],
+        especialidad: doc.data()['especialidad'],
+        paciente: doc.data()['paciente'],
+        estado: doc.data()['estado'],
+        comentario: doc.data()['comentario'],
+        calificacion: doc.data()['calificacion'],
+        encuesta: doc.data()['encuesta']
+      });
+    });
+    return turnosResult;
+  }
+
+  
 
 
 

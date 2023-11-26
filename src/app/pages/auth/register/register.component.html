@@ -126,28 +126,29 @@
 								<button class="btn btn-primary p-3" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
 									<i class="fa-solid fa-plus"></i>
 								</button>
-
-								<!-- Modal -->
-								<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-								  <div class="modal-dialog">
-								    <div class="modal-content">
-								      <div class="modal-header">
-								        <h1 class="modal-title fs-5" id="exampleModalLabel">Nueva especialidad</h1>
-								      </div>
-								      <div class="modal-body">
-								      	<form class="formulario">
-									      	<input type="text" class="form-control" required id="nuevaEspecialidad" name="nuevaEspecialidad" #nuevaEspecialidad>
-								      	</form>
-								      </div>
-
-								      <div class="modal-footer">
-								        <button type="button" data-bs-dismiss="modal">Cerrar</button>
-								        <button type="button" data-bs-dismiss="modal" (click)="agregarEspecialidad(nuevaEspecialidad.value)">Guardar</button>
-								      </div>
-								    </div>
-								  </div>
-								</div>
 							</div>
+
+							<!-- Modal -->
+							<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							  <div class="modal-dialog">
+							    <div class="modal-content">
+							      <div class="modal-header">
+							        <h1 class="modal-title fs-5" id="exampleModalLabel">Nueva especialidad</h1>
+							      </div>
+							      <div class="modal-body">
+							      	<form class="formulario">
+								      	<input type="text" class="form-control" required id="nuevaEspecialidad" name="nuevaEspecialidad" #nuevaEspecialidad>
+							      	</form>
+							      </div>
+
+							      <div class="modal-footer formulario">
+							        <button type="button" data-bs-dismiss="modal">Cerrar</button>
+							        <button type="button" data-bs-dismiss="modal" (click)="agregarEspecialidad(nuevaEspecialidad.value)">Guardar</button>
+							      </div>
+							    </div>
+							  </div>
+							</div>
+
 						</div>
 					</div>
 				</div>

@@ -35,15 +35,19 @@ export class TurnosComponent implements OnInit {
 
     const horaInicio: number = 9;
     const horaFin: number = 19;
-    const duracion: number = 0.5;
+    const duracion: number = 30;  // En minutos
+    const duracionHoras: number = duracion / 60;  // En horas
 
     const d = new Date();
-    let fecha: string = d.toLocaleString("es-CL");
+    d.setHours(horaInicio, 0, 0);
 
-    for ( let hora = horaInicio; hora < horaFin; hora+=duracion ) {
+    for ( let hora = horaInicio; hora < horaFin; hora+=duracionHoras ) {
+
+      d.setMinutes(d.getMinutes() + duracion); 
+      const fecha: string = d.toLocaleString("es-CL");
+
       turnosResult.push({
-        dia: fecha,
-        hora: hora,
+        horario: fecha,
         // especialista: '',
         // especialidad: '',
         paciente: this.authenticationService.usuario.email,
