@@ -35,24 +35,6 @@ export class UsuariosComponent implements OnInit {
     this.usuarioImagenes = this.archivos.obtenerImagenes(usuario.email);
   }
 
-  mostrarIcono( usuario ): string {
-    let icono = '';
-    switch(usuario.rol) {
-      case this.roles[0]:
-        icono = 'fa-solid fa-screwdriver-wrench';
-        break;
-      case this.roles[1]:
-        icono = 'fas fa-stethoscope';
-        break;
-      case this.roles[2]:
-        icono = 'fa-solid fa-hospital-user';
-        break;
-      default:
-        // nada
-    } 
-    return icono;
-  }
-
   // Devuelve la lista de todos los usuarios
   mostrarTodos() {
     this.usuarioDetalle = null;
@@ -93,14 +75,9 @@ export class UsuariosComponent implements OnInit {
 
   }
 
-  async habilitar( usuario ) {
-    await this.db.habilitarUsuario( usuario.id, true );
-    usuario.habilitado = true;
-  }
-
-  async deshabilitar( usuario ) {
-    await this.db.habilitarUsuario( usuario.id, false );
-    usuario.habilitado = false;
+  async toggleHabilitar( usuario ) {
+    await this.db.habilitarUsuario( usuario.id, !usuario.habilitado );
+    usuario.habilitado = !usuario.habilitado;
   }
 
 

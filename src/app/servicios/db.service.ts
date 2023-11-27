@@ -34,7 +34,6 @@ export class DbService {
   async obtenerUsuarios() {
     let usuariosResult = [];
     const usuariosRef = collection(this.fs, "usuarios");
-    // this.usuarios$ = collectionData(usuariosRef) as Observable<Usuario[]>;
 
     const querySnapshot = await getDocs(usuariosRef);
     querySnapshot.forEach((doc) => {

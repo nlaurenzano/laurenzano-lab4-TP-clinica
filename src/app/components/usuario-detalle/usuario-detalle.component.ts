@@ -15,8 +15,6 @@ export class UsuarioDetalleComponent {
 
   constructor( public archivos: ArchivosService ) {}
 
-  ngOnInit() {}
-
   get esAdmin(): boolean {
     return this.datos.rol == this.roles[0];
   }

@@ -46,37 +46,11 @@
 
 				<!-- Listado -->
 				<div class="col col-lg-5">
-					<div class="list-group">
-						<button *ngFor="let usuario of usuarios | async" type="button" class="list-group-item list-group-item-action"
-							(click)="mostrarDetalle(usuario)">
-							
-							<div class="row g-0 py-1">
-							    <div class="col-md-1">
-							    	<div class="icon"><i class="{{mostrarIcono(usuario)}}"></i></div>
-							    </div>
-							    <div class="col-md-11 d-flex">
-							    	<h5>{{usuario.nombre | titlecase}} {{usuario.apellido | titlecase}}</h5>
-
-							    	<div *ngIf="usuario.rol=='especialista'" class="ms-auto">
-								    	<div *ngIf="!usuario.habilitado; then botonHabilitar else botonDeshabilitar"></div>
-										<ng-template #botonHabilitar>
-											<button type="button" class="btn btn-success btn-sm" (click)="habilitar(usuario)">Habilitar</button>
-										</ng-template>
-										<ng-template #botonDeshabilitar>
-								      		<button type="button" class="btn btn-danger btn-sm" (click)="deshabilitar(usuario)">Deshabilitar</button>
-										</ng-template>
-									</div>
-
-							    </div>
-							</div>
-
-						</button>
-					</div>
+					<usuarios-lista [lista]="usuarios" [conHabilitacion]="true" (seleccionado)="mostrarDetalle($event)" (toggleHabilitacion)="toggleHabilitar($event)"></usuarios-lista>
 				</div>
 
 				<!-- Detalles -->
 				<div class="col col-lg-6">
-					<!-- Detalles -->
 					<usuario-detalle [datos]="usuarioDetalle" [imagenes]="usuarioImagenes"></usuario-detalle>
 				</div>
 

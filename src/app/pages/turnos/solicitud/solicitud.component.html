@@ -2,51 +2,52 @@
 	<div class="container">
 
 		<div class="section-title">
-
-			<!-- Mis turnos, dependiendo del user -->
 	      <h2>Nuevo Turno</h2>
 	    </div>
 
-	    <!-- Solicitar turno -->
-	    <!-- <div class="icon-toggle">
-			<div class="icon" title="Nuevo Turno" (click)="crearTurno()">
-				<i class="fa-solid fa-screwdriver-wrench"></i>
+		<div *ngIf="usuarios; then especialistasContenido else especialistasPreloader"></div>
+		<ng-template #especialistasPreloader>
+			<div id="preloader"></div>
+		</ng-template>
+
+		<ng-template #especialistasContenido>
+		    <!-- Filtros -->
+			<!-- Especialistas -->
+		    
+			<div class="row tarjetitas">
+				<div class="col-lg-12 align-items-stretch">
+			          <div class="icon-boxes flex-column justify-content-center">
+			            <div class="row">
+
+			                <div class="col-xl-2 align-items-stretch" *ngFor="let usuario of usuarios" (click)="mostrarEspecialidades(usuario)">
+			                  	<div class="icon-box mt-4 mt-xl-0">
+			                  		<!-- <i class="{{mostrarIcono(usuario)}}"></i> -->
+			                    	<img src="{{usuario.archivoURL}}" class="img-fluid" alt="">
+			                  	</div>
+				                <h4 class="mt-2">{{usuario.nombre | titlecase}} {{usuario.apellido | titlecase}}</h4>
+			                </div>
+
+			            </div>
+			        </div>
+			    </div>
 			</div>
-		</div> -->
+
+
+		</ng-template>
+
+
+
+
 
 		<div *ngIf="turnosDisponibles | async; then contenidoBlock else preloader"></div>
 		<ng-template #preloader>
-			<div id="preloader"></div>
+			<!-- <div id="preloader"></div> -->
 		</ng-template>
 
 		<ng-template #contenidoBlock>
 			<div class="row justify-content-md-center">
-			    
-			    <!-- Filtros -->
-				<!-- <div class="col col-lg-1 text-center">
-					<div class="icon-toggle" (click)="mostrarEspecialistas()">
-						<div class="icon" title="Especialistas">
-							<i class="fas fa-stethoscope"></i>
-						</div>
-					</div>
-					<div class="icon-toggle" (click)="mostrarPacientes()">
-						<div class="icon" title="Pacientes">
-							<i class="fa-solid fa-hospital-user"></i>
-						</div>
-					</div>
-					<div class="icon-toggle" (click)="mostrarAdmins()">
-						<div class="icon" title="Administradores">
-							<i class="fa-solid fa-screwdriver-wrench"></i>
-						</div>
-					</div>
-					<div class="icon-toggle" (click)="mostrarTodos()">
-						<div class="icon" title="Limpiar filtros">
-							<i class="fa-regular fa-square-minus"></i>
-						</div>
-					</div>
-				</div> -->
 
-				<!-- Listado -->
+				<!-- Turnos -->
 				<div class="col col-lg-5">
 					<div class="list-group">
 						<button *ngFor="let turno of turnosDisponibles | async" type="button" class="list-group-item list-group-item-action" 

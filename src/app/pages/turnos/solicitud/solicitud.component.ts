@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { AuthenticationService } from "../../../servicios/authentication.service";
+import { ArchivosService } from "../../../servicios/archivos.service";
 import { DbService } from "../../../servicios/db.service";
 
 @Component({
@@ -10,6 +11,9 @@ import { DbService } from "../../../servicios/db.service";
 })
 export class SolicitudComponent implements OnInit {
 
+  public usuarios;
+  public especialista = null;
+  public especialidad = null;
   public turnosDisponibles;
   public turnoSeleccionado = null;
 
@@ -23,11 +27,47 @@ export class SolicitudComponent implements OnInit {
 
   constructor( 
     public authenticationService: AuthenticationService,
+    public archivos: ArchivosService,
     public db: DbService ) {}
 
   ngOnInit() {
-    this.mostrarTurnos();
+    this.mostrarEspecialistas();
+    // this.mostrarTurnos();
   }
+
+  // Obtiene los especialistas y muestra el listado
+  async mostrarEspecialistas() {
+    let usuarios = [];
+    // const especialistas = await this.db.obtenerUsuariosPorRol( 'especialista' );
+
+    await this.db.obtenerUsuariosPorRol( 'especialista' )
+            .then((especialistas) => {
+              usuarios = especialistas;
+            });
+
+    usuarios.forEach((especialista) => {
+      this.archivos.obtenerImagen_1(especialista.email)
+        .then((archivoURL) => {
+          especialista.archivoURL = archivoURL;
+        });
+    });
+    this.usuarios = usuarios;
+
+  }
+
+
+  // Recibe la selección de la lista y muestra las especialidades para ese especialista
+  mostrarEspecialidades( usuario ) {
+    this.especialista = usuario;
+    console.log('email: '+this.especialista.email);
+    console.log('especialidades: '+this.especialista.especialidad);
+
+
+
+  }
+
+
+
 
   // Muestra los turnos generados
   mostrarTurnos() {
@@ -42,8 +82,9 @@ export class SolicitudComponent implements OnInit {
         this.turnosExistentes = turnosExistentes;
         this.turnosDisponibles = this.generarTurnos();
       });
-
   }
+
+  
 
   // Genera la lista de todos los turnos disponibles
   async generarTurnos() {

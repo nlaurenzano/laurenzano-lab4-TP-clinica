@@ -3,15 +3,18 @@ import { CommonModule } from '@angular/common';
 import { LayoutComponent } from './layout/layout.component';
 import { RouterModule } from '@angular/router';
 import { UsuarioDetalleComponent } from './usuario-detalle/usuario-detalle.component';
+import { UsuariosListaComponent } from './usuarios-lista/usuarios-lista.component';
 
 @NgModule({
   declarations: [
     LayoutComponent,
-    UsuarioDetalleComponent
+    UsuarioDetalleComponent,
+    UsuariosListaComponent
   ],
   exports: [
     LayoutComponent,
-    UsuarioDetalleComponent
+    UsuarioDetalleComponent,
+    UsuariosListaComponent
   ],
   imports: [
     CommonModule,
