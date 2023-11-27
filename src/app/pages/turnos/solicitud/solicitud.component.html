@@ -1,121 +1,106 @@
-<section class="appointment">
-	<div class="container">
+<section class="appointment"><div class="container">
 
-		<div class="section-title">
-	      <h2>Nuevo Turno</h2>
+	<div class="section-title">
+      <h2>Nuevo Turno</h2>
+    </div>
+
+	<!-- Filtro de especialistas -->
+	<div *ngIf="usuarios; then especialistasContenido else especialistasPreloader"></div>
+	<ng-template #especialistasPreloader>
+		<div *ngIf="!especialista" id="preloader"></div>
+	</ng-template>
+
+	<ng-template #especialistasContenido>
+	    
+	    <!-- Lista de especialistas -->
+		<div class="row tarjetitas">
+			<div class="col-lg-12 align-items-stretch">
+		          <div class="row icon-boxes justify-content-center">
+
+		                <div class="col-xl-2 align-items-stretch text-center" *ngFor="let usuario of usuarios" (click)="mostrarEspecialidades(usuario)">
+		                  	<div class="icon-box mt-4 mt-xl-0">
+		                  		<!-- <i class="{{mostrarIcono(usuario)}}"></i> -->
+		                    	<img src="{{usuario.archivoURL}}" class="img-fluid" alt="">
+		                  	</div>
+			                <h4 class="mt-2">{{usuario.nombre | titlecase}} {{usuario.apellido | titlecase}}</h4>
+		                </div>
+
+		        </div>
+		    </div>
+		</div>
+	</ng-template>
+	<!-- Fin filtro de especialistas -->
+
+
+	<div *ngIf="especialista" class="row align-items-stretch">
+
+		<!-- Mostrar especialista y especialidad seleccionados -->
+		<div class="col-lg-2 align-items-stretch tarjetitas text-center">
+
+			<div class="icon-boxes">
+              	<div class="icon-box mt-4 mt-xl-0">
+                	<img src="{{especialista.archivoURL}}" class="img-fluid" alt="">
+              	</div>
+                <h4 class="mt-2">{{especialista.nombre | titlecase}} {{especialista.apellido | titlecase}}</h4>
+                <h5 *ngIf="especialidad" class="mt-2">{{especialidad | titlecase}}</h5>
+	    	</div>
+
 	    </div>
 
-		<div *ngIf="usuarios; then especialistasContenido else especialistasPreloader"></div>
-		<ng-template #especialistasPreloader>
-			<div id="preloader"></div>
-		</ng-template>
 
-		<ng-template #especialistasContenido>
-		    <!-- Filtros -->
-			<!-- Especialistas -->
-		    
-			<div class="row tarjetitas">
-				<div class="col-lg-12 align-items-stretch">
-			          <div class="icon-boxes flex-column justify-content-center">
-			            <div class="row">
+	    <!-- Especialidad / Turno -->
+		<div *ngIf="especialidad; then seleccionTurno else seleccionEspecialidad"></div>
 
-			                <div class="col-xl-2 align-items-stretch" *ngFor="let usuario of usuarios" (click)="mostrarEspecialidades(usuario)">
-			                  	<div class="icon-box mt-4 mt-xl-0">
-			                  		<!-- <i class="{{mostrarIcono(usuario)}}"></i> -->
-			                    	<img src="{{usuario.archivoURL}}" class="img-fluid" alt="">
-			                  	</div>
-				                <h4 class="mt-2">{{usuario.nombre | titlecase}} {{usuario.apellido | titlecase}}</h4>
-			                </div>
+	    <!-- Mostrar selección de especialidad -->
+		<ng-template #seleccionEspecialidad>
+		<div class="col-lg-10 about">
 
-			            </div>
-			        </div>
-			    </div>
+			<div class="icon-boxes d-flex flex-column align-items-stretch justify-content-center py-5 px-lg-5">
+				<div *ngFor="let item of especialista.especialidad" class="icon-box" (click)="mostrarTurnos(item)">
+					<div class="icon"><i class="fas fa-stethoscope"></i></div>
+					<h4 class="title mt-2">{{item | titlecase}}</h4>
+				</div>
 			</div>
-
-
+		</div>
 		</ng-template>
 
 
 
 
 
-		<div *ngIf="turnosDisponibles | async; then contenidoBlock else preloader"></div>
-		<ng-template #preloader>
-			<!-- <div id="preloader"></div> -->
-		</ng-template>
+		<!-- Mostrar selección de turno -->
+	    <ng-template #seleccionTurno>
+    	<div class="col-lg-10">
 
-		<ng-template #contenidoBlock>
-			<div class="row justify-content-md-center">
+    		<div *ngIf="turnosDisponibles | async; then contenidoTurnos else preloaderTurnos"></div>
+			<ng-template #preloaderTurnos>
+				<!-- <div id="preloader"></div> -->
+			</ng-template>
 
-				<!-- Turnos -->
-				<div class="col col-lg-5">
-					<div class="list-group">
-						<button *ngFor="let turno of turnosDisponibles | async" type="button" class="list-group-item list-group-item-action" 
-						data-bs-toggle="modal" data-bs-target="#confirmarModal" (click)="setTurno=turno">
-							
-							<div class="row g-0 py-1">
-							    <div class="col-md-1">
-							    	<div class="icon"><i class=""></i></div>
-							    </div>
-							    <div class="col-md-11 d-flex">
-							      	<h5>{{turno.horario | date:'short'}}</h5>
-							    </div>
-							</div>
-						</button>
+			<ng-template #contenidoTurnos>
+				<div class="row justify-content-md-center">
 
-						<!-- Modal -->
-						<div class="modal fade" id="confirmarModal" tabindex="-1" aria-labelledby="confirmarModalLabel" aria-hidden="true">
-						  <div class="modal-dialog">
-						    <div class="modal-content">
-						      <div class="modal-header">
-						        <h1 class="modal-title fs-5" id="confirmarModalLabel">Confirmar turno</h1>
-						      </div>
-						      <div class="modal-body">
-						      	<form class="formulario">
-							      	<h3 *ngIf="turnoSeleccionado">{{turnoSeleccionado.horario | date:'short'}}</h3>
-						      	</form>
-						      </div>
+					<!-- Turnos -->
+					<div class="col col-lg-5">
 
-						      <div class="modal-footer formulario">
-						        <button type="button" data-bs-dismiss="modal">Cancelar</button>
-						        <button type="button" data-bs-dismiss="modal" (click)="confirmarTurno()">Confirmar</button>
-						      </div>
-						    </div>
-						  </div>
-						</div>
+						<turnos-lista [lista]="turnosDisponibles" (seleccionado)="confirmarTurno($event)"></turnos-lista>
+						
+
 
 					</div>
+
 				</div>
 
-				<!-- Detalles -->
-				<!-- <div class="col col-lg-6 usuarios detalle">
+			</ng-template>
 
-					<div *ngIf="usuarioDetalle" class="detalle d-flex align-items-start">
 
-		              	<div class="pic d-flex flex-column">
-					        <img *ngFor="let imagen of imagenes | async" src="{{imagen}}" class="img-fluid my-2" alt="">
-		              	</div>
 
-		              	<div class="detalle-info">
-			                <h4>{{usuarioDetalle.nombre | titlecase}} {{usuarioDetalle.apellido | titlecase}}</h4>
-			                <span>{{usuarioDetalle.rol | titlecase}}</span>
-			                <p>Edad: {{usuarioDetalle.edad}}</p>
-			                <p>DNI: {{usuarioDetalle.dni}}</p>
-			                <p>Email: {{usuarioDetalle.email}}</p>
-			                <p *ngIf="esPaciente">Obra Social: {{usuarioDetalle.obraSocial}}</p>
-			                <p *ngIf="esEspecialista">
-			                	Especialidad:
-			                	<span *ngFor="let item of usuarioDetalle.especialidad" class="ps-3">{{item | titlecase}}</span>
-			                </p>
-		                
-		              </div>
-		            </div>
-				</div> -->
 
-			</div>
 
+
+    	</div>
 		</ng-template>
-  </div>
 
+	</div>
 
-</section>
+</div></section>

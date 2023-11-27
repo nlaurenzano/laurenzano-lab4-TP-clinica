@@ -12,10 +12,10 @@ import { DbService } from "../../../servicios/db.service";
 export class SolicitudComponent implements OnInit {
 
   public usuarios;
+  public paciente = null;
   public especialista = null;
   public especialidad = null;
   public turnosDisponibles;
-  public turnoSeleccionado = null;
 
 // TODO: Eliminar harcodeo
   public especialistaSeleccion = '8tk9r5ua@cj.MintEmail.com';
@@ -31,15 +31,13 @@ export class SolicitudComponent implements OnInit {
     public db: DbService ) {}
 
   ngOnInit() {
+    this.paciente = this.authenticationService.usuario;
     this.mostrarEspecialistas();
-    // this.mostrarTurnos();
   }
 
   // Obtiene los especialistas y muestra el listado
   async mostrarEspecialistas() {
     let usuarios = [];
-    // const especialistas = await this.db.obtenerUsuariosPorRol( 'especialista' );
-
     await this.db.obtenerUsuariosPorRol( 'especialista' )
             .then((especialistas) => {
               usuarios = especialistas;
@@ -52,32 +50,23 @@ export class SolicitudComponent implements OnInit {
         });
     });
     this.usuarios = usuarios;
-
   }
-
 
   // Recibe la selección de la lista y muestra las especialidades para ese especialista
   mostrarEspecialidades( usuario ) {
+    this.usuarios = [];
     this.especialista = usuario;
-    console.log('email: '+this.especialista.email);
-    console.log('especialidades: '+this.especialista.especialidad);
-
-
-
   }
 
-
-
-
   // Muestra los turnos generados
-  mostrarTurnos() {
-    const usuario = this.authenticationService.usuario;
+  mostrarTurnos( especialidad ) {
 
 
     // TODO: Obtener disponibilidad del especialista y duración de los turnos
 
+    this.especialidad = especialidad;
 
-    this.db.obtenerTurnosExistentes( usuario.email, this.especialistaSeleccion, this.especialidadSeleccion )
+    this.db.obtenerTurnosExistentes( this.paciente.email, this.especialista, this.especialidad )
       .then((turnosExistentes) => {
         this.turnosExistentes = turnosExistentes;
         this.turnosDisponibles = this.generarTurnos();
@@ -101,9 +90,9 @@ export class SolicitudComponent implements OnInit {
       if ( this.turnoDisponible( horario ) ) {
         turnosResult.push({
           horario: new Date(horario.toString()),
-          especialista: this.especialistaSeleccion,
-          especialidad: this.especialidadSeleccion,
-          paciente: this.authenticationService.usuario.email
+          especialista: this.especialista,
+          especialidad: this.especialidad,
+          paciente: this.paciente.email
         });
       }
 
@@ -112,17 +101,18 @@ export class SolicitudComponent implements OnInit {
     return turnosResult;
   }
 
-  async confirmarTurno() {
-    this.turnoSeleccionado.estado = this.estados[0];
-    await this.db.crearTurno( this.turnoSeleccionado );
-    this.mostrarTurnos();
+  async confirmarTurno( turno ) {
+
+    turno.estado = this.estados[0];
+    await this.db.crearTurno( turno );
+    
+
+    // TODO: Redirigir a Mis Turnos
+    this.mostrarTurnos(this.especialidad);
   }
 
-  set setTurno( turno ) {
-    this.turnoSeleccionado = turno;
-  }
 
-
+  // Valido que el turno propuesto no se superpone con alguno existente
   turnoDisponible( horario ): boolean {
     let resultado = true;
     const duracion = this.duracion;
@@ -135,7 +125,6 @@ export class SolicitudComponent implements OnInit {
         let existenteFin = new Date(turnoExistente.horario.toString());
         existenteFin.setMinutes(existenteFin.getMinutes() + duracion); 
 
-        // Valido que el turno propuesto no se superpone con alguno existente
         if ( horario < existenteFin && turnoFin > turnoExistente.horario ) {
           resultado = false;
         }

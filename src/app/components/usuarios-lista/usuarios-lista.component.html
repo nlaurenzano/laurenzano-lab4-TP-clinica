@@ -38,9 +38,6 @@
 	            <div class="col-xl-2 align-items-stretch" *ngFor="let usuario of lista" (click)="seleccionar(usuario)">
 	              	<div class="icon-box mt-4 mt-xl-0">
 	              		<i class="{{mostrarIcono(usuario)}}"></i>
-
-	                	<img *ngIf="true" src="{{usuario.archivoURL}}" class="img-fluid" alt="">
-
 	                    <h4 class="mt-2">{{usuario.nombre | titlecase}} {{usuario.apellido | titlecase}}</h4>
 	              	</div>
 	            </div>

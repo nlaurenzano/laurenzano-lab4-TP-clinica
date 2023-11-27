@@ -1,0 +1,39 @@
+
+<div class="list-group">
+	<button *ngFor="let turno of lista | async" type="button" class="list-group-item list-group-item-action" 
+	data-bs-toggle="modal" data-bs-target="#confirmarModal" (click)="setTurno=turno">
+		
+		<div class="row g-0 py-1">
+		    <div class="col-md-1">
+		    	<div class="icon"><i class=""></i></div>
+		    </div>
+		    <div class="col-md-11 d-flex">
+		      	<h5>{{turno.horario | date:'short'}}</h5>
+		    </div>
+		</div>
+	</button>
+
+	<!-- Modal -->
+	<div class="modal fade" id="confirmarModal" tabindex="-1" aria-labelledby="confirmarModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h1 class="modal-title fs-5" id="confirmarModalLabel">Confirmar turno</h1>
+	      </div>
+	      <div class="modal-body">
+	      	<form *ngIf="turnoSeleccionado" class="formulario">
+		      	<h4>{{turnoSeleccionado.especialista.nombre | titlecase}} {{turnoSeleccionado.especialista.apellido | titlecase}}</h4>
+		      	<h5>{{turnoSeleccionado.especialidad | titlecase}}</h5>
+		      	<h5>{{turnoSeleccionado.horario | date:'short'}}</h5>
+	      	</form>
+	      </div>
+
+	      <div class="modal-footer formulario">
+	        <button type="button" data-bs-dismiss="modal">Cancelar</button>
+	        <button type="button" data-bs-dismiss="modal" (click)="seleccionar()">Confirmar</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+</div>
