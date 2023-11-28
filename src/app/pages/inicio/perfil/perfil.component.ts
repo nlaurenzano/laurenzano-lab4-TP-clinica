@@ -12,6 +12,8 @@ export class PerfilComponent implements OnInit {
 
   public usuarioDetalle: Usuario = null;
   public usuarioImagenes: any;
+  public configurandoHorario: boolean = false;
+  public especialidadSeleccionada = '';
 
   private roles = ['administrador', 'especialista', 'paciente'];
 
@@ -29,6 +31,15 @@ export class PerfilComponent implements OnInit {
 
   get esEspecialista(): boolean {
     return this.usuarioDetalle.rol == this.roles[1];
+  }
+
+  mostrarHorarios( especialidad ) {
+    this.especialidadSeleccionada = especialidad;
+    this.configurandoHorario = true;
+  }
+
+  mostrarEspecialidades() {
+    this.configurandoHorario = false;
   }
 
 

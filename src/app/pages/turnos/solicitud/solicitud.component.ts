@@ -16,6 +16,7 @@ export class SolicitudComponent implements OnInit {
   public especialista = null;
   public especialidad = null;
   public turnosDisponibles;
+  public subtitulo: string = 'Seleccionar Especialista';
 
 // TODO: Eliminar harcodeo
   public especialistaSeleccion = '8tk9r5ua@cj.MintEmail.com';
@@ -56,13 +57,18 @@ export class SolicitudComponent implements OnInit {
   mostrarEspecialidades( usuario ) {
     this.usuarios = [];
     this.especialista = usuario;
+    this.subtitulo = 'Seleccionar Especialidad';
   }
 
   // Muestra los turnos generados
   mostrarTurnos( especialidad ) {
 
-
     // TODO: Obtener disponibilidad del especialista y duración de los turnos
+
+    // Un elemento por cada día de la semana, empezando por el lunes
+    // horaInicio = []
+    // horaFin = []
+
 
     this.especialidad = especialidad;
 
@@ -71,6 +77,8 @@ export class SolicitudComponent implements OnInit {
         this.turnosExistentes = turnosExistentes;
         this.turnosDisponibles = this.generarTurnos();
       });
+
+    this.subtitulo = 'Seleccionar Turno';
   }
 
   
@@ -82,19 +90,11 @@ export class SolicitudComponent implements OnInit {
     const horaInicio: number = 9;
     const horaFin: number = 19;
     const duracionHoras: number = this.duracion / 60;  // En horas
+
     const horario = new Date();
     horario.setHours(horaInicio, 0, 0);
 
     for ( let hora = horaInicio; hora < horaFin; hora+=duracionHoras ) {
-
-      // if ( this.turnoDisponible( horario ) ) {
-      //   turnosResult.push({
-      //     horario: new Date(horario.toString()),
-      //     especialista: this.especialista,
-      //     especialidad: this.especialidad,
-      //     paciente: this.paciente.email
-      //   });
-      // }
 
       turnosResult.push({
         disponible: this.turnoDisponible( horario ),

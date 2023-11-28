@@ -4,6 +4,8 @@
       <h2>Nuevo Turno</h2>
     </div>
 
+    <h3 class="text-center mb-2">{{subtitulo}}</h3>
+
 	<!-- Filtro de especialistas -->
 	<div *ngIf="usuarios; then especialistasContenido else especialistasPreloader"></div>
 	<ng-template #especialistasPreloader>
@@ -47,20 +49,16 @@
 
 	    </div>
 
-
 	    <!-- Especialidad / Turno -->
 		<div *ngIf="especialidad; then seleccionTurno else seleccionEspecialidad"></div>
 
 	    <!-- Mostrar selección de especialidad -->
 		<ng-template #seleccionEspecialidad>
-		<div class="col-lg-10 about">
+		<div class="col-lg-10">
 
-			<div class="icon-boxes d-flex flex-column align-items-stretch justify-content-center py-5 px-lg-5">
-				<div *ngFor="let item of especialista.especialidad" class="icon-box" (click)="mostrarTurnos(item)">
-					<div class="icon"><i class="fas fa-stethoscope"></i></div>
-					<h4 class="title mt-2">{{item | titlecase}}</h4>
-				</div>
-			</div>
+			<!-- Especialidades -->
+			<especialidades-lista [lista]="especialista.especialidad" (seleccionado)="mostrarTurnos($event)"></especialidades-lista>
+
 		</div>
 		</ng-template>
 

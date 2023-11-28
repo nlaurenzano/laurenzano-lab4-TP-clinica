@@ -5,19 +5,22 @@ import { RouterModule } from '@angular/router';
 import { UsuarioDetalleComponent } from './usuario-detalle/usuario-detalle.component';
 import { UsuariosListaComponent } from './usuarios-lista/usuarios-lista.component';
 import { TurnosListaComponent } from './turnos-lista/turnos-lista.component';
+import { EspecialidadesListaComponent } from './especialidades-lista/especialidades-lista.component';
 
 @NgModule({
   declarations: [
     LayoutComponent,
     UsuarioDetalleComponent,
     UsuariosListaComponent,
-    TurnosListaComponent
+    TurnosListaComponent,
+    EspecialidadesListaComponent
   ],
   exports: [
     LayoutComponent,
     UsuarioDetalleComponent,
     UsuariosListaComponent,
-    TurnosListaComponent
+    TurnosListaComponent,
+    EspecialidadesListaComponent
   ],
   imports: [
     CommonModule,

@@ -5,6 +5,7 @@ import { InicioRoutingModule } from './inicio-routing.module';
 import { HomeComponent } from './home/home.component';
 import { PerfilComponent } from './perfil/perfil.component';
 import { ComponentsModule } from '../../components/components.module';
+import { TurnosModule } from '../turnos/turnos.module';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { ComponentsModule } from '../../components/components.module';
   imports: [
     CommonModule,
     InicioRoutingModule,
-    ComponentsModule
+    ComponentsModule,
+    TurnosModule
   ]
 })
 export class InicioModule { }

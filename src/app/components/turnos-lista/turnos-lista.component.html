@@ -48,7 +48,7 @@
 		-->
 		<button *ngFor="let turno of turnosDia" [disabled]=!turno.disponible type="button" class="btn btn-success btn-sm m-1"
 		data-bs-toggle="modal" data-bs-target="#confirmarModal" (click)="setTurno=turno">
-			{{turno.horario | date:'short'}}
+			{{turno.horario | date:'dd-LL HH:mm'}}
 		</button>
 
 	</div>

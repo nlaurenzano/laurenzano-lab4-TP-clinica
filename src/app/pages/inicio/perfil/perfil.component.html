@@ -15,7 +15,22 @@
 
 		<!-- Mis horarios -->
 		<div *ngIf="esEspecialista" class="col col-lg-6">
-			<h3>Mis horarios...</h3>
+			<h4 class="px-lg-5">Mis horarios</h4>
+
+				<div *ngIf="configurandoHorario; then configuracionHorarios else seleccionEspecialidad"></div>
+				<!-- Especialidades -->
+				<ng-template #seleccionEspecialidad>
+					<especialidades-lista [lista]="usuarioDetalle.especialidad" (seleccionado)="mostrarHorarios($event)"></especialidades-lista>
+				</ng-template>
+				
+				<!-- Configuración de horarios -->
+				<ng-template #configuracionHorarios>
+					<app-horarios (salir)="mostrarEspecialidades($event)"></app-horarios>
+				</ng-template>
+
+
+
+
 		</div>
 
 
