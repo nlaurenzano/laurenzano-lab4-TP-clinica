@@ -78,18 +78,9 @@
 			</ng-template>
 
 			<ng-template #contenidoTurnos>
-				<div class="row justify-content-md-center">
 
-					<!-- Turnos -->
-					<div class="col col-lg-5">
-
-						<turnos-lista [lista]="turnosDisponibles" (seleccionado)="confirmarTurno($event)"></turnos-lista>
-						
-
-
-					</div>
-
-				</div>
+				<!-- Turnos -->
+				<turnos-lista [lista]="turnosDisponibles" (seleccionado)="confirmarTurno($event)"></turnos-lista>
 
 			</ng-template>
 

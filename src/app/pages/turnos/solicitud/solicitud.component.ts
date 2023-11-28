@@ -87,14 +87,22 @@ export class SolicitudComponent implements OnInit {
 
     for ( let hora = horaInicio; hora < horaFin; hora+=duracionHoras ) {
 
-      if ( this.turnoDisponible( horario ) ) {
-        turnosResult.push({
-          horario: new Date(horario.toString()),
-          especialista: this.especialista,
-          especialidad: this.especialidad,
-          paciente: this.paciente.email
-        });
-      }
+      // if ( this.turnoDisponible( horario ) ) {
+      //   turnosResult.push({
+      //     horario: new Date(horario.toString()),
+      //     especialista: this.especialista,
+      //     especialidad: this.especialidad,
+      //     paciente: this.paciente.email
+      //   });
+      // }
+
+      turnosResult.push({
+        disponible: this.turnoDisponible( horario ),
+        horario: new Date(horario.toString()),
+        especialista: this.especialista,
+        especialidad: this.especialidad,
+        paciente: this.paciente.email
+      });
 
       horario.setMinutes(horario.getMinutes() + this.duracion); 
     }
