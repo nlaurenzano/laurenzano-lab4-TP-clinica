@@ -18,13 +18,9 @@ export class SolicitudComponent implements OnInit {
   public turnosDisponibles;
   public subtitulo: string = 'Seleccionar Especialista';
 
-// TODO: Eliminar harcodeo
-  public especialistaSeleccion = '8tk9r5ua@cj.MintEmail.com';
-  public especialidadSeleccion = 'traumatología';
-  private duracion: number = 30;  // En minutos
-
   private estados = ['asignado'];
   private turnosExistentes = null;
+  private duracion: number = 30;
 
   constructor( 
     public authenticationService: AuthenticationService,
@@ -65,10 +61,6 @@ export class SolicitudComponent implements OnInit {
 
     // TODO: Obtener disponibilidad del especialista y duración de los turnos
 
-    // Un elemento por cada día de la semana, empezando por el lunes
-    // horaInicio = []
-    // horaFin = []
-
 
     this.especialidad = especialidad;
 
@@ -82,33 +74,103 @@ export class SolicitudComponent implements OnInit {
   }
 
   
-
   // Genera la lista de todos los turnos disponibles
   async generarTurnos() {
+    
+    const cantidadDias = 15;
+
     let turnosResult = [];
+    let horariosInicio;
+    let horariosFin;
 
-    const horaInicio: number = 9;
-    const horaFin: number = 19;
-    const duracionHoras: number = this.duracion / 60;  // En horas
+    // Un elemento por cada día de la semana, empezando por el lunes
+    // Obtengo la disponibilidad real del especialista, para la especialidad seleccionada.
+    // Y la duración mínima de un turno, en minutos.
+    const horarios = await this.db.obtenerHorarios( this.especialista, this.especialidad );
 
-    const horario = new Date();
-    horario.setHours(horaInicio, 0, 0);
+    // Si no hay resultados, se configuran los valores por defecto (para toda la semana)
+    // Lunes a viernes 8:00 a 19:00 y sábados de 8:00 a 14:00. Turnos de 30 muinutos.
+    if ( horarios == null ) {
 
-    for ( let hora = horaInicio; hora < horaFin; hora+=duracionHoras ) {
+      const horariosInicioAux = [0, 8, 8, 8, 8, 8, 8];
+      horariosInicio = horariosInicioAux.map(
+        (value) => {
+          let inicioAux = new Date();
+          inicioAux.setHours( value, 0, 0 );
+          return inicioAux; 
+        });
 
-      turnosResult.push({
-        disponible: this.turnoDisponible( horario ),
-        horario: new Date(horario.toString()),
-        especialista: this.especialista,
-        especialidad: this.especialidad,
-        paciente: this.paciente.email
-      });
+      const horariosFinAux = [0, 19, 19, 19, 19, 19, 14];
+      horariosFin = horariosFinAux.map(
+        (value) => {
+          let finAux = new Date();
+          finAux.setHours( value, 0, 0 );
+          return finAux; 
+        });
 
-      horario.setMinutes(horario.getMinutes() + this.duracion); 
+    } else {
+      // Se usan los horarios configurados por el especialista
+      horariosInicio = horarios.horariosInicio;
+      horariosFin = horarios.horariosFin;
+      this.duracion = horarios.duracion;
     }
+
+    // En horas
+    const duracionHoras: number = this.duracion / 60;
+
+    // Para cada día: generar turnos, con los horarios obtenidos.
+    for ( let i=0; i < cantidadDias; i++ ) {
+
+      // Creo el día donde se van a generar los turnos
+      let turno = new Date();
+      turno.setDate( turno.getDate() + i );
+
+      let diaSemana = turno.getDay();
+      if ( diaSemana == 0) {
+        // Es domingo, no damos turnos
+        continue;
+      }
+
+      // TODO: Si el turno es hoy y ya pasó el horario de inicio, se marca como no disponible
+      // if ( i == 0 && turno >  ) {
+      //   deshabilitar = true;
+      // }
+
+
+      let horaInicio = horariosInicio[diaSemana].getHours();
+      let minutosInicio = horariosInicio[diaSemana].getMinutes();
+      turno.setHours( horaInicio, minutosInicio, 0 );
+      let inicioDia = horaInicio + ( minutosInicio / 60 )  // En horas
+
+      let horaFin = horariosFin[diaSemana].getHours();
+      let minutosFin = horariosFin[diaSemana].getMinutes();
+      let finDia = horaFin + ( minutosFin / 60 )  // En horas
+
+      let turnosDia = [];
+
+      for ( let hora = inicioDia; hora < finDia; hora+=duracionHoras ) {
+
+        turnosDia.push({
+          disponible: this.turnoDisponible( turno ),
+          horario: new Date(turno.toString()),
+          especialista: this.especialista,
+          especialidad: this.especialidad,
+          paciente: this.paciente.email
+        });
+
+        turno.setMinutes( turno.getMinutes() + this.duracion );
+      }
+
+      turnosResult.push(turnosDia);
+
+    }
+
     return turnosResult;
   }
 
+
+  // Crea el turno en DB y 
+    // TODO: muestra confirmación o redirige
   async confirmarTurno( turno ) {
 
     turno.estado = this.estados[0];

@@ -14,7 +14,7 @@ export class TurnosListaComponent implements OnInit {
   public turnoSeleccionado = null;
 
   ngOnInit() {
-    this.listaPorDias();
+    // this.listaPorDias();
     // this.lista = this.listaPorDias();
   }
 

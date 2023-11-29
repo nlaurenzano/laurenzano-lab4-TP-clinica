@@ -36,4 +36,11 @@ export class LayoutComponent {
     return false;
   }
 
+  get esPaciente() {
+    if (this.authenticationService.usuario != null) {
+      return this.authenticationService.usuario.rol == 'paciente';
+    }
+    return false;
+  }
+
 }
