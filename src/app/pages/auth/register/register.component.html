@@ -1,3 +1,5 @@
+
+
 <section><div class="container">
 
 	<div *ngIf="usuario.rol==''; then thenBlock else elseBlock"></div>
@@ -6,7 +8,7 @@
 		<h2>Seleccione el tipo de usuario</h2>
     </div>
 
-    <div class="row justify-content-md-center">
+    <div class="row justify-content-md-center seleccion">
 		<div class="col-lg-4 col-md-6 mx-4 mb-2 align-items-stretch">
 			<div class="icon-box" (click)="setEspecialista()">
 				<div class="icon"><i class="fas fa-stethoscope"></i></div>
@@ -40,60 +42,91 @@
 			</div>
 	    </div>
 
-	    <form class="formulario">
+	    <form class="formulario" (ngSubmit)="signUp()" #formRegistro="ngForm">
 
-	    	<!-- Nombre y apellido -->
 	    	<div class="row">
+				<div class="col-md-8">
+		    		<div class="row">
 
-				<div class="col-md-4 form-group">
-					<div class="form-floating mb-3">
-						<input type="text" class="form-control" id="nombre" name="nombre" #nombre placeholder="Nombre" [(ngModel)]="usuario.nombre">
-						<label for="nombre">Nombre</label>
-					</div>
-				</div>
-				<div class="col-md-4 form-group">
-					<div class="form-floating mb-3">
-						<input type="text" class="form-control" id="apellido" name="apellido" #apellido placeholder="Apellido" [(ngModel)]="usuario.apellido">
-						<label for="apellido">Apellido</label>
-					</div>
-				</div>
-	      	</div>
+			    		<!-- Nombre y apellido -->
+						<div class="col-md-6 form-group">
+							<div class="form-floating mb-3">
+								<input type="text" class="form-control" required id="nombre" name="nombre" #nombre="ngModel" placeholder="Nombre" [(ngModel)]="usuario.nombre">
 
-	      	<!-- Edad y DNI + Especialidad / Obra Social -->
-	      	<div class="row">
-				<div class="col-md-4 form-group">
-					<div class="form-floating mb-3">
-						<input type="text" class="form-control" id="edad" name="edad" #edad placeholder="Edad" [(ngModel)]="usuario.edad">
-						<label for="edad">Edad</label>
-					</div>
-				</div>
+								<label *ngIf="!(nombre.invalid && (nombre.dirty || nombre.touched))" for="nombre">Nombre</label>
+								<label *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)" class="text-danger" for="nombre">
+									<span *ngIf="nombre.errors?.['required']">El nombre es obligatorio.</span>
+								</label>
+							</div>
 
-				<div class="col-md-4 form-group">
-					<div class="form-floating mb-3">
-						<input type="text" class="form-control" id="dni" name="dni" #dni placeholder="DNI" [(ngModel)]="usuario.dni">
-						<label for="dni">DNI</label>
-					</div>
-				</div>
-
-				<!-- Especialidad / Obra Social -->
-				<div class="col-md-4 form-group">
-					<div *ngIf="esPaciente">
-						<div class="form-floating mb-3">
-							<select class="form-select" id="obrasocial" name="obrasocial" #obrasocial [(ngModel)]="usuario.obraSocial">
-								<option *ngFor="let item of obrasSociales" value="{{item}}">{{item | titlecase}}</option>
-							</select>
-							<label for="obrasocial">Obra Social</label>
 						</div>
-					</div>
-					<div *ngIf="esEspecialista">
-						<div class="form-floating input-group mb-3">
-							<select class="form-select" id="especialidad" name="especialidad" #especialidad [(ngModel)]="usuario.especialidad">
-								<option *ngFor="let item of especialidades | async" value="{{item.nombre}}">{{item.nombre | titlecase}}</option>
-							</select>
-							<label for="especialidad">Especialidad</label>
-							<button class="btn btn-primary p-3" type="button"data-bs-toggle="modal" data-bs-target="#exampleModal">
+						<div class="col-md-6 form-group">
+							<div class="form-floating mb-3">
+								<input type="text" class="form-control" required id="apellido" name="apellido" #apellido="ngModel" placeholder="Apellido" [(ngModel)]="usuario.apellido">
+								
+								<label *ngIf="!(apellido.invalid && (apellido.dirty || apellido.touched))" for="apellido">Apellido</label>
+								<label *ngIf="apellido.invalid && (apellido.dirty || apellido.touched)" class="text-danger" for="apellido">
+									<span *ngIf="apellido.errors?.['required']">El apellido es obligatorio.</span>
+								</label>
+							</div>
+						</div>
+						</div>
+
+						<!-- Edad y DNI -->
+				    	<div class="row">
+				    	<div class="col-md-6 form-group">
+							<div class="form-floating mb-3">
+								<input type="text" class="form-control" required id="edad" name="edad" #edad="ngModel" placeholder="Edad" [(ngModel)]="usuario.edad">
+								
+								<label *ngIf="!(edad.invalid && (edad.dirty || edad.touched))" for="edad">Edad</label>
+								<label *ngIf="edad.invalid && (edad.dirty || edad.touched)" class="text-danger" for="edad">
+									<span *ngIf="edad.errors?.['required']">La edad es obligatoria.</span>
+								</label>
+							</div>
+						</div>
+
+						<div class="col-md-6 form-group">
+							<div class="form-floating mb-3">
+								<input type="text" class="form-control" required id="dni" name="dni" #dni="ngModel" placeholder="DNI" [(ngModel)]="usuario.dni">
+								
+								<label *ngIf="!(dni.invalid && (dni.dirty || dni.touched))" for="dni">DNI</label>
+								<label *ngIf="dni.invalid && (dni.dirty || dni.touched)" class="text-danger" for="dni">
+									<span *ngIf="dni.errors?.['required']">El DNI es obligatorio.</span>
+								</label>
+							</div>
+						</div>
+		    		</div>
+		    	</div>
+
+		    	<!-- Especialidad / Obra Social -->
+		    	<div class="col-md-4">
+		    		<!-- Especialidad / Obra Social -->
+					<div class="col-md-12 form-group h-100">
+						<div *ngIf="esPaciente">
+							<div class="form-floating mb-3">
+								<select class="form-select" id="obrasocial" name="obrasocial" #obrasocial="ngModel" [(ngModel)]="usuario.obraSocial">
+									<option *ngFor="let item of obrasSociales" value="{{item}}">{{item | titlecase}}</option>
+								</select>
+								
+								<label *ngIf="!(obrasocial.invalid && (obrasocial.dirty || obrasocial.touched))" for="obrasocial">Obra Social</label>
+								<label *ngIf="obrasocial.invalid && (obrasocial.dirty || obrasocial.touched)" class="text-danger" for="obrasocial">
+									<span *ngIf="obrasocial.errors?.['required']">La obra social es obligatoria.</span>
+								</label>
+							</div>
+						</div>
+						<div *ngIf="esEspecialista">
+							<div class="form-floating input-group mb-3">
+								<select class="form-select h-100" multiple size="4" id="especialidad" name="especialidad" #especialidad="ngModel" [(ngModel)]="usuario.especialidad">
+									<option *ngFor="let item of especialidades | async" value="{{item.nombre}}">{{item.nombre | titlecase}}</option>
+								</select>
+								<label *ngIf="!(especialidad.invalid && (especialidad.dirty || especialidad.touched))" for="especialidad">Especialidad</label>
+								<label *ngIf="especialidad.invalid && (especialidad.dirty || especialidad.touched)" class="text-danger" for="especialidad">
+									<span *ngIf="especialidad.errors?.['required']">La especialidad es obligatoria.</span>
+								</label>
+								<button class="btn btn-primary p-3" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
 									<i class="fa-solid fa-plus"></i>
 								</button>
+							</div>
 
 							<!-- Modal -->
 							<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -104,11 +137,11 @@
 							      </div>
 							      <div class="modal-body">
 							      	<form class="formulario">
-								      	<input type="text" class="form-control" id="nuevaEspecialidad" name="nuevaEspecialidad" #nuevaEspecialidad>
+								      	<input type="text" class="form-control" required id="nuevaEspecialidad" name="nuevaEspecialidad" #nuevaEspecialidad>
 							      	</form>
 							      </div>
 
-							      <div class="modal-footer">
+							      <div class="modal-footer formulario">
 							        <button type="button" data-bs-dismiss="modal">Cerrar</button>
 							        <button type="button" data-bs-dismiss="modal" (click)="agregarEspecialidad(nuevaEspecialidad.value)">Guardar</button>
 							      </div>
@@ -119,7 +152,7 @@
 						</div>
 					</div>
 				</div>
-			</div>
+			</div><!-- Row -->
 
 
 	      	<!-- Mail y contraseña -->
@@ -127,22 +160,34 @@
 
 				<div class="col-md-4 form-group">
 					<div class="form-floating mb-3">
-						<input type="email" class="form-control" id="email" name="email" #email placeholder="Email" [(ngModel)]="usuario.email">
-						<label for="email">Email</label>
+						<input type="email" class="form-control" required id="email" name="email" #email="ngModel" placeholder="Email" [(ngModel)]="usuario.email">
+						
+						<label *ngIf="!(email.invalid && (email.dirty || email.touched))" for="email">Email</label>
+						<label *ngIf="email.invalid && (email.dirty || email.touched)" class="text-danger" for="email">
+							<span *ngIf="email.errors?.['required']">El email es obligatorio.</span>
+						</label>
 					</div>
 				</div>
 
 				<div class="col-md-4 form-group">
 					<div class="form-floating mb-3">
-						<input type="password" class="form-control" id="clave" name="clave" #clave placeholder="Contraseña" [(ngModel)]="usuario.clave">
-						<label for="clave">Contraseña</label>
+						<input type="password" class="form-control" required id="clave" name="clave" #clave="ngModel" placeholder="Contraseña" [(ngModel)]="usuario.clave">
+						
+						<label *ngIf="!(clave.invalid && (clave.dirty || clave.touched))" for="clave">Contraseña</label>
+						<label *ngIf="clave.invalid && (clave.dirty || clave.touched)" class="text-danger" for="clave">
+							<span *ngIf="clave.errors?.['required']">La contraseña es obligatoria.</span>
+						</label>
 					</div>
 				</div>
 
 				<div class="col-md-4 form-group">
 					<div class="form-floating mb-3">
-						<input type="password" class="form-control" id="clave2" name="clave2" placeholder="Repetir Contraseña" [(ngModel)]="clave2">
-						<label for="clave2">Repetir Contraseña</label>
+						<input type="password" class="form-control" required id="campoClave2" name="campoClave2" #campoClave2="ngModel" placeholder="Repetir Contraseña" [(ngModel)]="clave2">
+						
+						<label *ngIf="!(campoClave2.invalid && (campoClave2.dirty || campoClave2.touched))" for="campoClave2">Repetir Contraseña</label>
+						<label *ngIf="campoClave2.invalid && (campoClave2.dirty || campoClave2.touched)" class="text-danger" for="campoClave2">
+							<span *ngIf="campoClave2.errors?.['required']">Repetir contraseña es obligatorio.</span>
+						</label>
 					</div>
 				</div>
 			</div>
@@ -150,21 +195,50 @@
 	      	<!-- Imágenes -->
 	      	<!-- Imagen 1 -->
 			<div class="row">
-				
 				<div class="col-md-8 form-group">
-					<input type="file" class="form-control" id="imagen_1">
+					<input type="file" class="file-input" requiredFileType="image/png" id="fileUpload1" name="fileUpload1" #fileUpload1 (change)="seleccionarImagen1($event)">
+					<div class="form-floating input-group mb-3">
+						<input type="text" class="form-control" readonly id="imagen_1" name="imagen_1" #imagen_1="ngModel" [(ngModel)]="upload1" placeholder="Imagen 1" aria-describedby="imagen_1_button">
+						<label for="imagen_1">{{nombreImagen1 || "Imagen 1"}}</label>
+						<!-- 
+						<label *ngIf="!(imagen_1.invalid && (imagen_1.dirty || imagen_1.touched))" for="imagen_1">{{nombreImagen1 || "Imagen 1"}}</label>
+						<label *ngIf="imagen_1.invalid && (imagen_1.dirty || imagen_1.touched)" class="text-danger" for="imagen_1">
+							<span *ngIf="imagen_1.errors?.['required']">La imagen es obligatoria.</span>
+						</label>
+ -->
+						<button class="btn btn-primary p-3" type="button" id="imagen_1_button" (click)="fileUpload1.click()">
+							<i class="fa-solid fa-plus"></i>
+						</button>
+					</div>
 				</div>
 			</div>
 
 	      	<!-- Imagen 2 -->
-			<div class="row">
+			<div class="row" *ngIf="esPaciente">
 				<div class="col-md-8 form-group">
-					<input type="file" class="form-control" id="imagen_2">
+					<input type="file" class="file-input" requiredFileType="image/png" id="fileUpload2" name="fileUpload2" #fileUpload2 (change)="seleccionarImagen2($event)">
+					<div class="form-floating input-group mb-3">
+						<input type="text" class="form-control" readonly id="imagen_2" name="imagen_2" #imagen_2="ngModel" [(ngModel)]="upload2" placeholder="Imagen 2" aria-describedby="imagen_2_button">
+						<label for="imagen_2">{{nombreImagen2 || "Imagen 2"}}</label>
+						<!-- 
+						<label *ngIf="!(imagen_2.invalid && (imagen_2.dirty || imagen_2.touched))" for="imagen_2">{{nombreImagen2 || "Imagen 2"}}</label>
+						<label *ngIf="imagen_2.invalid && (imagen_2.dirty || imagen_2.touched)" class="text-danger" for="imagen_2">
+							<span *ngIf="imagen_2.errors?.['required']">La imagen es obligatoria.</span>
+						</label>
+ -->
+						<button class="btn btn-primary p-3" type="button" id="imagen_2_button" (click)="fileUpload2.click()">
+							<i class="fa-solid fa-plus"></i>
+						</button>
+					</div>
 				</div>
 			</div>
 
-			<div class="text-center">
-				<button (click)="signUp()">Registrarse</button>
+			<div class="d-flex justify-content-center">
+				<re-captcha (resolved)="resolved($event)" (errored)="onError($event)" errorMode="handled" siteKey="6LfWbhopAAAAAFnwvP3z3oefL16sNyTP5aBCLVf6"></re-captcha>
+			</div>
+
+			<div class="d-flex justify-content-center mt-2">
+				<button *ngIf="noEsRobot" type="submit" [disabled]="!formRegistro.form.valid || !noEsRobot">Registrarse</button>
 			</div>
 
 		</form>

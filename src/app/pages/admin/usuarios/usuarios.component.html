@@ -5,7 +5,8 @@
 	      <h2>Usuarios</h2>
 	    </div>
 
-	    <!-- Crear Administrador -->
+<!-- TODO -->
+	    <!-- Crear usuario -->
 	    <div class="icon-toggle">
 			<div class="icon" title="Nuevo Administrador" (click)="crearAdmin()">
 				<i class="fa-solid fa-screwdriver-wrench"></i>
@@ -46,41 +47,12 @@
 
 				<!-- Listado -->
 				<div class="col col-lg-5">
-					<div class="list-group">
-						<button *ngFor="let usuario of usuarios | async" type="button" class="list-group-item list-group-item-action"
-							(click)="mostrarDetalle(usuario)">
-							
-							<div class="row g-0 py-1">
-							    <div class="col-md-1">
-							    	<div class="icon"><i class="{{mostrarIcono(usuario)}}"></i></div>
-							    </div>
-							    <div class="col-md-11">
-							      <h5>{{usuario.nombre | titlecase}} {{usuario.apellido | titlecase}}</h5>
-							    </div>
-							</div>
-
-						</button>
-					</div>
+					<usuarios-lista [lista]="usuarios" [conHabilitacion]="true" (seleccionado)="mostrarDetalle($event)" (toggleHabilitacion)="toggleHabilitar($event)"></usuarios-lista>
 				</div>
 
 				<!-- Detalles -->
-				<div class="col col-lg-6 usuarios detalle">
-
-					<div *ngIf="usuarioDetalle" class="detalle d-flex align-items-start">
-		              <div class="pic"><img src="assets/img/doctors/doctors-1.jpg" class="img-fluid" alt=""></div>
-		              <div class="detalle-info">
-		                <h4>{{usuarioDetalle.nombre | titlecase}} {{usuarioDetalle.apellido | titlecase}}</h4>
-		                <span>{{usuarioDetalle.rol | titlecase}}</span>
-		                <p>Edad: {{usuarioDetalle.edad}}</p>
-		                <p>DNI: {{usuarioDetalle.dni}}</p>
-		                <p *ngIf="esPaciente">Obra Social: {{usuarioDetalle.obraSocial}}</p>
-		                <p *ngIf="esEspecialista">Especialidad: {{usuarioDetalle.especialidad | titlecase}}</p>
-		                <p>Email: {{usuarioDetalle.email}}</p>
-		                
-		              </div>
-		            </div>
-
-				  
+				<div class="col col-lg-6">
+					<usuario-detalle [datos]="usuarioDetalle" [imagenes]="usuarioImagenes"></usuario-detalle>
 				</div>
 
 			</div>

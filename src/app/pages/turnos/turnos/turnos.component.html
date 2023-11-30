@@ -1,0 +1,42 @@
+<section class="appointment"><div class="container">
+
+	<div class="section-title">
+      	<h2><span *ngIf="!esAdmin">Mis </span>Turnos</h2>
+    </div>
+
+    <!-- <h3 class="text-center mb-2">{{subtitulo}}</h3> -->
+
+	<div *ngIf="!filtro" class="row  justify-content-md-center">
+
+		<!-- Mostrar botón Filtrar -->
+		<div class="col col-lg-2 text-center">
+			<div class="icon-toggle" (click)="filtrar()">
+				<div class="icon" title="Filtrar">
+					<i class="fa-solid fa-filter"></i>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-lg-10">
+
+    		<div *ngIf="turnos | async; then contenidoTurnos else preloaderTurnos"></div>
+			<ng-template #preloaderTurnos>
+				<!-- <div id="preloader"></div> -->
+			</ng-template>
+
+			<ng-template #contenidoTurnos>
+
+				<!-- Turnos -->
+				<turnos-lista [lista]="turnos" [tipo]="listado" (seleccionado)="seleccionarTurno($event)"></turnos-lista>
+
+			</ng-template>
+
+
+
+
+
+
+    	</div>
+	</div>
+
+</div></section>

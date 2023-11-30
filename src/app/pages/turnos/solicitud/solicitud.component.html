@@ -1,0 +1,95 @@
+<section class="appointment"><div class="container">
+
+	<div class="section-title">
+      <h2>Nuevo Turno</h2>
+    </div>
+
+    <h3 class="text-center mb-2">{{subtitulo}}</h3>
+
+	<!-- Filtro de especialistas -->
+	<div *ngIf="usuarios; then especialistasContenido else especialistasPreloader"></div>
+	<ng-template #especialistasPreloader>
+		<div *ngIf="!especialista" id="preloader"></div>
+	</ng-template>
+
+	<ng-template #especialistasContenido>
+	    
+	    <!-- Lista de especialistas -->
+		<div class="row tarjetitas">
+			<div class="col-lg-12 align-items-stretch">
+		          <div class="row icon-boxes justify-content-center">
+
+		                <div class="col-xl-2 align-items-stretch text-center" *ngFor="let usuario of usuarios" (click)="mostrarEspecialidades(usuario)">
+		                  	<div class="icon-box mt-4 mt-xl-0">
+		                  		<!-- <i class="{{mostrarIcono(usuario)}}"></i> -->
+		                    	<img src="{{usuario.archivoURL}}" class="img-fluid" alt="">
+		                  	</div>
+			                <h4 class="mt-2">{{usuario.nombre | titlecase}} {{usuario.apellido | titlecase}}</h4>
+		                </div>
+
+		        </div>
+		    </div>
+		</div>
+	</ng-template>
+	<!-- Fin filtro de especialistas -->
+
+
+	<div *ngIf="especialista" class="row align-items-stretch">
+
+		<!-- Mostrar especialista y especialidad seleccionados -->
+		<div class="col-lg-2 align-items-stretch tarjetitas text-center">
+
+			<div class="icon-boxes">
+              	<div class="icon-box mt-4 mt-xl-0">
+                	<img src="{{especialista.archivoURL}}" class="img-fluid" alt="">
+              	</div>
+                <h4 class="mt-2">{{especialista.nombre | titlecase}} {{especialista.apellido | titlecase}}</h4>
+                <h5 *ngIf="especialidad" class="mt-2">{{especialidad | titlecase}}</h5>
+	    	</div>
+
+	    </div>
+
+	    <!-- Especialidad / Turno -->
+		<div *ngIf="especialidad; then seleccionTurno else seleccionEspecialidad"></div>
+
+	    <!-- Mostrar selección de especialidad -->
+		<ng-template #seleccionEspecialidad>
+		<div class="col-lg-10">
+
+			<!-- Especialidades -->
+			<especialidades-lista [lista]="especialista.especialidad" (seleccionado)="mostrarTurnos($event)"></especialidades-lista>
+
+		</div>
+		</ng-template>
+
+
+
+
+
+		<!-- Mostrar selección de turno -->
+	    <ng-template #seleccionTurno>
+    	<div class="col-lg-10">
+
+    		<div *ngIf="turnosDisponibles | async; then contenidoTurnos else preloaderTurnos"></div>
+			<ng-template #preloaderTurnos>
+				<!-- <div id="preloader"></div> -->
+			</ng-template>
+
+			<ng-template #contenidoTurnos>
+
+				<!-- Turnos -->
+				<turnos-lista [lista]="turnosDisponibles" [tipo]="solicitud" (seleccionado)="confirmarTurno($event)"></turnos-lista>
+
+			</ng-template>
+
+
+
+
+
+
+    	</div>
+		</ng-template>
+
+	</div>
+
+</div></section>

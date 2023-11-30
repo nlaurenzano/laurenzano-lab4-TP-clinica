@@ -1,0 +1,8 @@
+<div class="about">
+	<div class="icon-boxes d-flex flex-column align-items-stretch justify-content-center px-lg-5">
+		<div *ngFor="let item of lista" class="icon-box" (click)="seleccionar(item)">
+			<div class="icon"><i class="fas fa-stethoscope"></i></div>
+			<h4 class="title mt-2">{{item | titlecase}}</h4>
+		</div>
+	</div>
+</div>

@@ -666,24 +666,24 @@ section {
 /*--------------------------------------------------------------
 # Why Us
 --------------------------------------------------------------*/
-.why-us .content {
+.tarjetitas .content {
   padding: 30px;
   background: #1977cc;
   border-radius: 4px;
   color: #fff;
 }
 
-.why-us .content h3 {
+.tarjetitas .content h3 {
   font-weight: 700;
   font-size: 34px;
   margin-bottom: 30px;
 }
 
-.why-us .content p {
+.tarjetitas .content p {
   margin-bottom: 30px;
 }
 
-.why-us .content .more-btn {
+.tarjetitas .content .more-btn {
   display: inline-block;
   background: rgba(255, 255, 255, 0.2);
   padding: 6px 30px 8px 30px;
@@ -692,16 +692,16 @@ section {
   transition: all ease-in-out 0.4s;
 }
 
-.why-us .content .more-btn i {
+.tarjetitas .content .more-btn i {
   font-size: 14px;
 }
 
-.why-us .content .more-btn:hover {
+.tarjetitas .content .more-btn:hover {
   color: #1977cc;
   background: #fff;
 }
 
-.why-us .icon-boxes .icon-box {
+.tarjetitas .icon-boxes .icon-box {
   text-align: center;
   border-radius: 10px;
   background: #fff;
@@ -710,19 +710,19 @@ section {
   width: 100%;
 }
 
-.why-us .icon-boxes .icon-box i {
+.tarjetitas .icon-boxes .icon-box i {
   font-size: 40px;
   color: #1977cc;
   margin-bottom: 30px;
 }
 
-.why-us .icon-boxes .icon-box h4 {
+.tarjetitas .icon-boxes .icon-box h4 {
   font-size: 20px;
   font-weight: 700;
   margin: 0 0 30px 0;
 }
 
-.why-us .icon-boxes .icon-box p {
+.tarjetitas .icon-boxes .icon-box p {
   font-size: 15px;
   color: #848484;
 }
@@ -744,7 +744,7 @@ section {
 }
 
 .about .icon-box {
-  margin-top: 40px;
+  margin-bottom: 40px;
 }
 
 .about .icon-box .icon {
@@ -798,79 +798,6 @@ section {
   margin-left: 85px;
   line-height: 24px;
   font-size: 14px;
-}
-
-.about .video-box {
-  background: url("assets/img/about.jpg") center center no-repeat;
-  background-size: cover;
-  min-height: 500px;
-}
-
-.about .play-btn {
-  width: 94px;
-  height: 94px;
-  background: radial-gradient(#1977cc 50%, rgba(25, 119, 204, 0.4) 52%);
-  border-radius: 50%;
-  display: block;
-  position: absolute;
-  left: calc(50% - 47px);
-  top: calc(50% - 47px);
-  overflow: hidden;
-}
-
-.about .play-btn::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translateX(-40%) translateY(-50%);
-  width: 0;
-  height: 0;
-  border-top: 10px solid transparent;
-  border-bottom: 10px solid transparent;
-  border-left: 15px solid #fff;
-  z-index: 100;
-  transition: all 400ms cubic-bezier(0.55, 0.055, 0.675, 0.19);
-}
-
-.about .play-btn::before {
-  content: "";
-  position: absolute;
-  width: 120px;
-  height: 120px;
-  animation-delay: 0s;
-  animation: pulsate-btn 2s;
-  animation-direction: forwards;
-  animation-iteration-count: infinite;
-  animation-timing-function: steps;
-  opacity: 1;
-  border-radius: 50%;
-  border: 5px solid rgba(25, 119, 204, 0.7);
-  top: -15%;
-  left: -15%;
-  background: rgba(198, 16, 0, 0);
-}
-
-.about .play-btn:hover::after {
-  border-left: 15px solid #1977cc;
-  transform: scale(20);
-}
-
-.about .play-btn:hover::before {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translateX(-40%) translateY(-50%);
-  width: 0;
-  height: 0;
-  border: none;
-  border-top: 10px solid transparent;
-  border-bottom: 10px solid transparent;
-  border-left: 15px solid #fff;
-  z-index: 200;
-  animation: none;
-  border-radius: 0;
 }
 
 @keyframes pulsate-btn {
@@ -934,7 +861,7 @@ section {
 /*--------------------------------------------------------------
 # Icon box
 --------------------------------------------------------------*/
-.icon-box {
+.seleccion .icon-box {
   background: #fff;
   text-align: center;
   border: 1px solid #d5e1ed;
@@ -942,7 +869,7 @@ section {
   transition: all ease-in-out 0.3s;
 }
 
-.icon-box .icon {
+.seleccion .icon-box .icon {
   margin: 0 auto;
   width: 64px;
   height: 64px;
@@ -958,13 +885,13 @@ section {
   z-index: 2;
 }
 
-.icon-box .icon i {
+.seleccion .icon-box .icon i {
   color: #fff;
   font-size: 28px;
   transition: ease-in-out 0.3s;
 }
 
-.icon-box .icon::before {
+.seleccion .icon-box .icon::before {
   position: absolute;
   content: "";
   left: -8px;
@@ -978,41 +905,41 @@ section {
   z-index: -1;
 }
 
-.icon-box h4 {
+.seleccion .icon-box h4 {
   font-weight: 700;
   margin-bottom: 15px;
   font-size: 24px;
 }
 
-.icon-box h4 a {
+.seleccion .icon-box h4 a {
   color: #2c4964;
 }
 
-.icon-box p {
+.seleccion .icon-box p {
   line-height: 24px;
   font-size: 14px;
   margin-bottom: 0;
 }
 
-.icon-box:hover {
+.seleccion .icon-box:hover {
   background: #1977cc;
   border-color: #1977cc;
 }
 
-.icon-box:hover .icon {
+.seleccion .icon-box:hover .icon {
   background: #fff;
 }
 
-.icon-box:hover .icon i {
+.seleccion .icon-box:hover .icon i {
   color: #1977cc;
 }
 
-.icon-box:hover .icon::before {
+.seleccion .icon-box:hover .icon::before {
   background: rgba(255, 255, 255, 0.3);
 }
 
-.icon-box:hover h4 a,
-.icon-box:hover p {
+.seleccion .icon-box:hover h4 a,
+.seleccion .icon-box:hover p {
   color: #fff;
 }
 

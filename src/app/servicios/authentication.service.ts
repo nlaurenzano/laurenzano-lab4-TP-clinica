@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import { EMPTY, Observable, Subscription } from 'rxjs';
 import Toastify from 'toastify-js';
 
+import { ArchivosService } from "./archivos.service";
 import { DbService } from './db.service';
 import { 
   User,
@@ -23,6 +24,7 @@ import {
 
 
 export interface Usuario {
+  id: string,
   rol: string,
   nombre: string,
   apellido: string,
@@ -31,7 +33,8 @@ export interface Usuario {
   email: string,
   clave: string,
   obraSocial: string,    // Pacientes
-  especialidad: string,  // Especialistas
+  especialidad: any,  // Especialistas
+  // especialidad: string[],  // Especialistas
   habilitado: boolean,  // Especialistas
 }
 
@@ -40,7 +43,9 @@ export interface Usuario {
 })
 export class AuthenticationService implements OnDestroy {
 
-  public readonly usuario: Observable<User | null> = EMPTY;
+  public readonly usuarioAuth: Observable<User | null> = EMPTY;
+  public usuario: Usuario = null;
+  public usuarioImg;
   public isLoggedIn = false;
   public creandoAdmin = false;
 
@@ -48,9 +53,14 @@ export class AuthenticationService implements OnDestroy {
   private readonly userDisposable: Subscription|undefined;
 
   // constructor(@Optional() private auth: Auth) {
-  constructor( public auth: Auth, public db: DbService, public router: Router ) {
+  constructor( 
+    public auth: Auth, 
+    public db: DbService, 
+    public router: Router,
+    public archivos: ArchivosService
+  ) {
     if (auth) {
-      this.usuario = authState(this.auth);
+      this.usuarioAuth = authState(this.auth);
       this.userDisposable = authState(this.auth).pipe(
         traceUntilFirst('auth'),
         map(u => !!u)
@@ -72,18 +82,31 @@ export class AuthenticationService implements OnDestroy {
     signInWithEmailAndPassword(this.auth, email, clave)
       .then((resultado) => {
 
-        this.validarIngreso( resultado.user )
-          .then((valido) => {
-            if (valido) {
-              // Log de ingreso
-              // this.logService.signIn(email);
-              
-              // Redirección
-              this.redirigir(resultado.user, null);
-            } else {
-              this.signOut();
-              this.mostrarError('Debe verificar su correo electrónico para ingresar.');
-            }
+        // Primero obtener usuario, después validar ingreso
+        this.db.obtenerUsuarioPorUid( resultado.user.uid )
+          .then((usuario) => {
+            this.usuario = usuario;
+
+            this.validarIngreso( resultado.user )
+              .then((mensajeValidacion) => {
+                if (mensajeValidacion == '') {
+                  // Log de ingreso
+                  // this.logService.signIn(email);
+
+                  // Obtiene la imagen
+                  this.archivos.obtenerImagen_1( email )
+                    .then((archivoURL) => {
+                      this.usuarioImg = archivoURL;
+                    });
+                  // Redirección
+                  this.redirigir(resultado.user);
+
+                } else {
+                  this.usuario = null;
+                  this.signOut();
+                  this.mostrarError(mensajeValidacion);
+                }
+              });
           });
       })
       .catch((error) => {
@@ -107,6 +130,8 @@ export class AuthenticationService implements OnDestroy {
 
   signOut() {
 
+    this.usuario = null;
+    this.usuarioImg = '';
     signOut(this.auth);
 
     // if (this.usuario !== null) {
@@ -122,23 +147,31 @@ export class AuthenticationService implements OnDestroy {
 
   // Registro con email, nombre y clave
   signUp( usuario: Usuario ) {
+// xvddlzah@cj.MintEmail.com
+
+
+
     createUserWithEmailAndPassword(this.auth, usuario.email, usuario.clave)
       .then((resultado) => {
-        this.db.agregarUsuario( resultado.user.uid, usuario );
+        this.archivos.subirArchivos( usuario.email );
 
-        if ( this.enviarVerificacion(resultado.user, usuario) ) {
-          this.signOut();
-        }
-        
+        // this.db.agregarUsuario( resultado.user.uid, usuario );
+        this.db.agregarUsuario( resultado.user.uid, usuario )
+          .then(()=>{
+            // Log de registro
+            // this.logService.signUp(email);
+            
+            // Redirección
+            this.redirigir(resultado.user);
+
+            if ( this.enviarVerificacion(resultado.user, usuario) ) {
+              this.signOut();
+            }
+          });
 
         // .then(...)
         // .catch(...)
 
-        // Log de registro
-        // this.logService.signUp(email);
-        
-        // Redirección
-        this.redirigir(resultado.user, usuario);
       })
       .catch((error) => {
         let mensaje: string;
@@ -161,17 +194,16 @@ export class AuthenticationService implements OnDestroy {
   }
 
   // Redirige al usuario según su rol
-  async redirigir( user: User, datosUsuario: Usuario ) {
-
-    if ( datosUsuario == null ) {
-      datosUsuario = await this.db.obtenerUsuarioPorUid( user.uid );
+  async redirigir( user: User ) {
+    if ( this.usuario == null ) {
+      this.usuario = await this.db.obtenerUsuarioPorUid( user.uid );
     }
 
-    if ( datosUsuario.rol == 'administrador') {
+    if ( this.usuario.rol == 'administrador') {
       this.router.navigate(['admin/usuarios']);
     } else {
       if ( user.emailVerified ) {
-        this.router.navigate(['/']);
+        this.router.navigate(['inicio/perfil']);
       } else {
         this.router.navigate(['errores/verificar']);
       }
@@ -180,18 +212,24 @@ export class AuthenticationService implements OnDestroy {
 
   // Valida si el usuario puede ingresar
   async validarIngreso( user: User ) {
-
-    const datosUsuario = await this.db.obtenerUsuarioPorUid( user.uid );
+    if ( this.usuario == null ) {
+      this.usuario = await this.db.obtenerUsuarioPorUid( user.uid );
+    }
 
     // Los usuarios con perfil Especialista solo pueden ingresar si un usuario administrador
     // aprobó su cuenta y verificó el mail al momento de registrarse.
     // Los usuarios con perfil Paciente solo pueden ingresar si verificaron su mail al
     // momento de registrarse.
-    if ( (datosUsuario.rol == 'especialista' && (!user.emailVerified || datosUsuario.habilitado)) ||
-      (datosUsuario.rol == 'paciente' && !user.emailVerified) ) {
-      return false;
+    if ( (this.usuario.rol == 'especialista' && !user.emailVerified) || 
+      (this.usuario.rol == 'paciente' && !user.emailVerified) ) {
+      return 'Debe verificar su correo electrónico para ingresar.';
     }
-    return true;
+
+    if (this.usuario.rol == 'especialista' && !this.usuario.habilitado ) {
+      return 'Su cuenta debe ser habilitada por Administración para ingresar.';
+    }
+
+    return '';
   }
 
   private enviarVerificacion( user: User, datosUsuario: Usuario ): boolean {

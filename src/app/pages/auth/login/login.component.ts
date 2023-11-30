@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { RecaptchaErrorParameters } from "ng-recaptcha";
+
 import { AuthenticationService, Usuario } from '../../../servicios/authentication.service';
+import { ArchivosService } from "../../../servicios/archivos.service";
 import { DbService } from '../../../servicios/db.service';
 
 @Component({
@@ -11,40 +14,49 @@ export class LoginComponent implements OnInit{
 
   fillEmail: string = '';
   fillClave: string = '';
+  noEsRobot = false;
 
   public usuarios = [];
 
   private roles = ['administrador', 'especialista', 'paciente'];
 
-  constructor( public authenticationService: AuthenticationService, public db: DbService ) { }
+  constructor( 
+    public authenticationService: AuthenticationService,
+    public archivos: ArchivosService,
+    public db: DbService
+  ) { }
 
   ngOnInit() {
     this.mostrarAccesoRapido();
   }
 
   completarCampos( id: number ) {
-    // this.fillEmail = 'admin1@clinica.com';
     this.fillEmail = this.usuarios[id].email;
-    this.fillClave = "password";
+    this.fillClave = this.usuarios[id].clave;
   }
 
-  mostrarAccesoRapido() {
-    const usuarios = [
-      '4aMSrSRpi3P38FFk4HJNY12vOti2',
-      'H2G6lT8VarY2Y0QYKRtIKqjKyJv2',
-      'i8eVXG53UybmFk10fkSIpJsKNAB2',
-      'SIVh2oT1WcNosem0uiGOs4aJSyu1',
-      '0pR5STCxLkN5QBKnMcUPMEb7kIG3',
-      'iCs9X2zMctg3LEPFJH6rfOWeC3E3'];
-    let usuario: Usuario;
+  async mostrarAccesoRapido() {
+    let usuarios = [];    
 
-    usuarios.forEach((item) => {
-      // console.log('usuario', item);
-      this.db.obtenerUsuarioPorUid( item )
-        .then((usuario) => {
-          this.usuarios.push(usuario)
+    const pacientes = await this.db.obtenerUsuariosPorRol( this.roles[2] );
+    usuarios.push(pacientes[0]);
+    usuarios.push(pacientes[1]);
+    usuarios.push(pacientes[2]);
+
+    const especialistas = await this.db.obtenerUsuariosPorRol( this.roles[1] );
+    usuarios.push(especialistas[0]);
+    usuarios.push(especialistas[1]);
+    
+    const admins = await this.db.obtenerUsuariosPorRol( this.roles[0] );
+    usuarios.push(admins[0]);
+
+    usuarios.forEach((usuario) => {
+      this.archivos.obtenerImagen_1(usuario.email)
+        .then((archivoURL) => {
+          usuario.archivoURL = archivoURL;
         });
     });
+    this.usuarios = usuarios;
   }
 
   mostrarIcono( usuario ): string {
@@ -63,6 +75,18 @@ export class LoginComponent implements OnInit{
         // nada
     } 
     return icono;
+  }
+
+  resolved(captchaResponse: string) {
+    if (captchaResponse === null) {
+      this.noEsRobot = false;
+    } else {
+      this.noEsRobot = true;
+    }
+  }
+
+  public onError(errorDetails: RecaptchaErrorParameters): void {
+    this.noEsRobot = false;
   }
 
 }

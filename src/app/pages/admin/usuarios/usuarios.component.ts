@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService, Usuario } from "../../../servicios/authentication.service";
+import { ArchivosService } from "../../../servicios/archivos.service";
 import { DbService } from "../../../servicios/db.service";
 import { Router } from '@angular/router';
 
@@ -13,39 +14,25 @@ export class UsuariosComponent implements OnInit {
   public usuarios;
   public usuarioDetalle: Usuario = null;
   public creandoAdmin: boolean = false;
+  public usuarioImagenes: any;
 
   private roles = ['administrador', 'especialista', 'paciente'];
 
   constructor( 
     public authenticationService: AuthenticationService,
-    public db: DbService, 
-    public router: Router ) {}
-  // constructor( public db: DbService ) {}
+    public archivos: ArchivosService,
+    public router: Router,
+    public db: DbService
+  ) {}
 
   ngOnInit() {
     this.mostrarTodos();
   }
 
   mostrarDetalle( usuario ) {
+    this.usuarioImagenes = [];
     this.usuarioDetalle = usuario;
-  }
-
-  mostrarIcono( usuario ): string {
-    let icono = '';
-    switch(usuario.rol) {
-      case this.roles[0]:
-        icono = 'fa-solid fa-screwdriver-wrench';
-        break;
-      case this.roles[1]:
-        icono = 'fas fa-stethoscope';
-        break;
-      case this.roles[2]:
-        icono = 'fa-solid fa-hospital-user';
-        break;
-      default:
-        // nada
-    } 
-    return icono;
+    this.usuarioImagenes = this.archivos.obtenerImagenes(usuario.email);
   }
 
   // Devuelve la lista de todos los usuarios
@@ -87,6 +74,13 @@ export class UsuariosComponent implements OnInit {
     this.router.navigate(['/auth/register']);
 
   }
+
+  async toggleHabilitar( usuario ) {
+    await this.db.habilitarUsuario( usuario.id, !usuario.habilitado );
+    usuario.habilitado = !usuario.habilitado;
+  }
+
+
 
 
 

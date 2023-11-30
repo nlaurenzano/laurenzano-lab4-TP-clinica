@@ -1,0 +1,39 @@
+<section class="appointment">
+<div class="container">
+
+	<div class="section-title">
+      <h2>Usuarios</h2>
+    </div>
+
+	<div class="row justify-content-md-center">
+
+		<!-- Detalles -->
+		<div class="col col-lg-6">
+			<usuario-detalle [datos]="usuarioDetalle" [imagenes]="usuarioImagenes"></usuario-detalle>
+		</div>
+
+
+		<!-- Mis horarios -->
+		<div *ngIf="esEspecialista" class="col col-lg-6">
+
+				<div *ngIf="configurandoHorario; then configuracionHorarios else seleccionEspecialidad"></div>
+				<!-- Especialidades -->
+				<ng-template #seleccionEspecialidad>
+					<h4 class="px-lg-5">Mis horarios</h4>
+					<especialidades-lista [lista]="usuarioDetalle.especialidad" (seleccionado)="mostrarHorarios($event)"></especialidades-lista>
+				</ng-template>
+				
+				<!-- Configuración de horarios -->
+				<ng-template #configuracionHorarios>
+					<app-horarios [especialidad]="especialidadSeleccionada" [especialista]="usuarioDetalle" (salir)="mostrarEspecialidades($event)"></app-horarios>
+				</ng-template>
+
+
+		</div>
+
+
+		
+	</div>
+
+</div>
+</section>
