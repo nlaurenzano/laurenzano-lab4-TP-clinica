@@ -8,6 +8,7 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 export class TurnosListaComponent implements OnInit {
 
   @Input() lista;
+  @Input() tipo;
   @Output() seleccionado = new EventEmitter<string>();
 
   public turnos= [];
@@ -53,7 +54,13 @@ export class TurnosListaComponent implements OnInit {
     }
   }
 
+  get esSolicitud() {
+    return this.tipo = 'solicitud';
+  }
 
+  get esListado() {
+    return this.tipo = 'listado';
+  }
 
 
 }

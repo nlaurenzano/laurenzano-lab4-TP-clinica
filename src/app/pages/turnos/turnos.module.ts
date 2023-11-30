@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 import { TurnosRoutingModule } from './turnos-routing.module';
 import { ComponentsModule } from '../../components/components.module';
@@ -19,6 +20,7 @@ import { HorariosComponent } from './horarios/horarios.component';
   imports: [
     CommonModule,
     TurnosRoutingModule,
+    FormsModule,
     ComponentsModule
   ]
 })

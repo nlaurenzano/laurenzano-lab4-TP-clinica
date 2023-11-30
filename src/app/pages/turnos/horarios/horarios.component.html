@@ -1,1 +1,50 @@
-<p>horarios works!</p>
+
+<div class="usuarios">
+<div class="detalle">
+
+	<h4>Horarios para {{especialidad | titlecase}}</h4>
+
+    <form class="formulario">
+		
+		<div class="row mb-3">
+	    	<label for="lunes" class="col-sm-2 col-form-label">Lunes</label>
+	    	<div class="col-sm-5 d-flex flex-row">
+	      		<select class="form-select" name="horaILunes" #horaILunes [(ngModel)]="horasInicio[1]">
+				  <option *ngFor="let hora of horas" value="hora" [attr.value]="h" [attr.selected]="h == 8 ? true : null">{{hora}}</option>
+
+				</select>
+				<select class="form-select" name="minutosILunes" #minutosILunes  [(ngModel)]="minutosInicio[1]">
+				  <option *ngFor="let minuto of minutos" value="hora">{{minuto}}</option>
+				</select>
+	      		<!-- <input type="number" step="15" class="form-control" id="lunes" name="lunes" #lunes> -->
+	      		<!-- [(ngModel)]="fillEmail" -->
+	    	</div>
+	    	<div class="col-sm-5 d-flex flex-row">
+	      		<select class="form-select">
+				  <option *ngFor="let hora of horas" value="hora">{{hora}}</option>
+				</select>
+				<select class="form-select">
+				  <option *ngFor="let minuto of minutos" value="hora">{{minuto}}</option>
+				</select>
+	      		<!-- <input type="number" step="15" class="form-control" id="lunes" name="lunes" #lunes> -->
+	      		<!-- [(ngModel)]="fillEmail" -->
+	    	</div>
+	  	</div>
+
+		<div class="row mb-3">
+	    	<label for="martes" class="col-sm-2 col-form-label">Martes</label>
+	    	<div class="col-sm-10">
+	      		<input type="text" class="form-control" id="martes" name="martes" #martes>
+	    	</div>
+	  	</div>
+
+
+
+
+    	<div class="d-flex justify-content-center mt-2">	
+    		<button (click)="cerrarConfiguracion()">Salir</button>
+    	</div>
+      	
+    </form>
+</div>
+</div>

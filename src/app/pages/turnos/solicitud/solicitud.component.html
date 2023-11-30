@@ -78,7 +78,7 @@
 			<ng-template #contenidoTurnos>
 
 				<!-- Turnos -->
-				<turnos-lista [lista]="turnosDisponibles" (seleccionado)="confirmarTurno($event)"></turnos-lista>
+				<turnos-lista [lista]="turnosDisponibles" [tipo]="solicitud" (seleccionado)="confirmarTurno($event)"></turnos-lista>
 
 			</ng-template>
 

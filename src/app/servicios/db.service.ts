@@ -146,8 +146,8 @@ export class DbService {
     let turnosResult = [];
 
     const turnosRef = collection(this.fs, "turnos");
-    // const q = query(turnosRef, where("paciente", "==", usuario.email));
-    const querySnapshot = await getDocs(turnosRef);
+    const q = query(turnosRef, where("paciente", "==", usuario.email));
+    const querySnapshot = await getDocs(q);
 
     querySnapshot.forEach((doc) => {
       turnosResult.push({

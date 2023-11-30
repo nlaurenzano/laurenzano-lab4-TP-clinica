@@ -1,5 +1,6 @@
-<!-- 
-<div class="list-group">
+<!-- Para listado de turnos -->
+<div *ngIf="esListado" class="list-group">
+
 	<button *ngFor="let turno of lista | async" type="button" class="list-group-item list-group-item-action" 
 	data-bs-toggle="modal" data-bs-target="#confirmarModal" (click)="setTurno=turno">
 		
@@ -13,33 +14,12 @@
 		</div>
 	</button>
 
-	Modal
-	<div class="modal fade" id="confirmarModal" tabindex="-1" aria-labelledby="confirmarModalLabel" aria-hidden="true">
-	  <div class="modal-dialog">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <h1 class="modal-title fs-5" id="confirmarModalLabel">Confirmar turno</h1>
-	      </div>
-	      <div class="modal-body">
-	      	<form *ngIf="turnoSeleccionado" class="formulario">
-		      	<h4>{{turnoSeleccionado.especialista.nombre | titlecase}} {{turnoSeleccionado.especialista.apellido | titlecase}}</h4>
-		      	<h5>{{turnoSeleccionado.especialidad | titlecase}}</h5>
-		      	<h5>{{turnoSeleccionado.horario | date:'short'}}</h5>
-	      	</form>
-	      </div>
-
-	      <div class="modal-footer formulario">
-	        <button type="button" data-bs-dismiss="modal">Cancelar</button>
-	        <button type="button" data-bs-dismiss="modal" (click)="seleccionar()">Confirmar</button>
-	      </div>
-	    </div>
-	  </div>
-	</div>
-
 </div>
- -->
 
-<div class="d-flex flex-row">
+
+
+<!-- Para solicitud de turno -->
+<div *ngIf="esSolicitud" class="d-flex flex-row">
 	<!-- <div *ngFor="let turnosDia of turnos" class="d-flex flex-column"> -->
 	<div *ngFor="let turnosDia of lista | async" class="d-flex flex-column">
 
@@ -53,9 +33,8 @@
 		</button>
 
 	</div>
-
-
 </div>
+
 
 <!-- Modal -->
 <div class="modal fade" id="confirmarModal" tabindex="-1" aria-labelledby="confirmarModalLabel" aria-hidden="true">
