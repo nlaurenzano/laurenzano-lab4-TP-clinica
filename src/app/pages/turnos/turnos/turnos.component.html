@@ -4,7 +4,7 @@
       	<h2><span *ngIf="!esAdmin">Mis </span>Turnos</h2>
     </div>
 
-    <!-- <h3 class="text-center mb-2">{{subtitulo}}</h3> -->
+
 
 	<div *ngIf="!filtro" class="row  justify-content-md-center">
 
@@ -17,26 +17,23 @@
 			</div>
 		</div>
 
-		<div class="col-lg-10">
-
+		<div class="col col-lg-4">
     		<div *ngIf="turnos | async; then contenidoTurnos else preloaderTurnos"></div>
 			<ng-template #preloaderTurnos>
 				<!-- <div id="preloader"></div> -->
 			</ng-template>
 
+			<!-- Listado de turnos -->
 			<ng-template #contenidoTurnos>
-
-				<!-- Turnos -->
-				<turnos-lista [lista]="turnos" [tipo]="listado" (seleccionado)="seleccionarTurno($event)"></turnos-lista>
-
+				<turnos-lista [lista]="turnos" [tipo]="'listado'" (seleccionado)="seleccionarTurno($event)"></turnos-lista>
 			</ng-template>
-
-
-
-
-
-
     	</div>
+
+    	<!-- Detalle del turno seleccionado -->
+		<div class="col col-lg-6">
+			<app-turno-detalle [datos]="turnoSeleccionado"></app-turno-detalle>
+		</div>
+
 	</div>
 
 </div></section>

@@ -6,6 +6,7 @@ import { UsuarioDetalleComponent } from './usuario-detalle/usuario-detalle.compo
 import { UsuariosListaComponent } from './usuarios-lista/usuarios-lista.component';
 import { TurnosListaComponent } from './turnos-lista/turnos-lista.component';
 import { EspecialidadesListaComponent } from './especialidades-lista/especialidades-lista.component';
+import { TurnoDetalleComponent } from './turno-detalle/turno-detalle.component';
 
 @NgModule({
   declarations: [
@@ -13,14 +14,16 @@ import { EspecialidadesListaComponent } from './especialidades-lista/especialida
     UsuarioDetalleComponent,
     UsuariosListaComponent,
     TurnosListaComponent,
-    EspecialidadesListaComponent
+    EspecialidadesListaComponent,
+    TurnoDetalleComponent
   ],
   exports: [
     LayoutComponent,
     UsuarioDetalleComponent,
     UsuariosListaComponent,
     TurnosListaComponent,
-    EspecialidadesListaComponent
+    EspecialidadesListaComponent,
+    TurnoDetalleComponent
   ],
   imports: [
     CommonModule,

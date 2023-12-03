@@ -39,15 +39,15 @@ export class DbService {
     querySnapshot.forEach((doc) => {
       usuariosResult.push({
         id: doc.id,
-        rol: doc.data()['rol'],
-        nombre: doc.data()['nombre'],
-        apellido: doc.data()['apellido'],
-        edad: doc.data()['edad'],
-        dni: doc.data()['dni'],
-        email: doc.data()['email'],
-        obraSocial: doc.data()['obraSocial'],
-        especialidad: doc.data()['especialidad'],
-        habilitado: doc.data()['habilitado']
+        rol: doc.data().rol,
+        nombre: doc.data().nombre,
+        apellido: doc.data().apellido,
+        edad: doc.data().edad,
+        dni: doc.data().dni,
+        email: doc.data().email,
+        obraSocial: doc.data().obraSocial,
+        especialidad: doc.data().especialidad,
+        habilitado: doc.data().habilitado
       });
     });
 
@@ -64,16 +64,16 @@ export class DbService {
     querySnapshot.forEach((doc) => {
       usuariosResult.push({
         id: doc.id,
-        rol: doc.data()['rol'],
-        nombre: doc.data()['nombre'],
-        apellido: doc.data()['apellido'],
-        edad: doc.data()['edad'],
-        dni: doc.data()['dni'],
-        email: doc.data()['email'],
-        clave: doc.data()['clave'],
-        obraSocial: doc.data()['obraSocial'],
-        especialidad: doc.data()['especialidad'],
-        habilitado: doc.data()['habilitado']
+        rol: doc.data().rol,
+        nombre: doc.data().nombre,
+        apellido: doc.data().apellido,
+        edad: doc.data().edad,
+        dni: doc.data().dni,
+        email: doc.data().email,
+        clave: doc.data().clave,
+        obraSocial: doc.data().obraSocial,
+        especialidad: doc.data().especialidad,
+        habilitado: doc.data().habilitado
       });
     });
 
@@ -89,15 +89,15 @@ export class DbService {
 
     usuarioResult = {
       id: docSnap.id,
-      rol: docSnap.data()['rol'],
-      nombre: docSnap.data()['nombre'],
-      apellido: docSnap.data()['apellido'],
-      edad: docSnap.data()['edad'],
-      dni: docSnap.data()['dni'],
-      email: docSnap.data()['email'],
-      obraSocial: docSnap.data()['obraSocial'],
-      especialidad: docSnap.data()['especialidad'],
-      habilitado: docSnap.data()['habilitado']
+      rol: docSnap.data().rol,
+      nombre: docSnap.data().nombre,
+      apellido: docSnap.data().apellido,
+      edad: docSnap.data().edad,
+      dni: docSnap.data().dni,
+      email: docSnap.data().email,
+      obraSocial: docSnap.data().obraSocial,
+      especialidad: docSnap.data().especialidad,
+      habilitado: docSnap.data().habilitado
     }
 
     return usuarioResult;
@@ -123,7 +123,7 @@ export class DbService {
     const querySnapshot = await getDocs(especialidadesRef);
     querySnapshot.forEach((doc) => {
       especialidadesResult.push({
-        nombre: doc.data()['nombre'],
+        nombre: doc.data().nombre,
       });
     });
 
@@ -141,8 +141,8 @@ export class DbService {
     await addDoc( turnosRef, turno );
   }
 
-  // Devuelve la lista de todos los turnos
-  async obtenerTurnosUsuario( usuario ) {
+  // Devuelve la lista de todos los turnos del paciente
+  async obtenerTurnosPaciente( usuario ) {
     let turnosResult = [];
 
     const turnosRef = collection(this.fs, "turnos");
@@ -151,17 +151,17 @@ export class DbService {
 
     querySnapshot.forEach((doc) => {
       turnosResult.push({
-        horario: doc.data()['horario'].toDate(),
-        especialista: doc.data()['especialista'],
-        especialidad: doc.data()['especialidad'],
-        paciente: doc.data()['paciente'],
-        estado: doc.data()['estado'],
-        comentario: doc.data()['comentario'],
-        calificacion: doc.data()['calificacion'],
-        encuesta: doc.data()['encuesta']
+        horario: doc.data().horario.toDate(),
+        especialista: doc.data().especialista,
+        especialidad: doc.data().especialidad,
+        paciente: doc.data().paciente,
+        estado: doc.data().estado,
+        comentario: doc.data().comentario,
+        calificacion: doc.data().calificacion,
+        encuesta: doc.data().encuesta,
+        resena: doc.data().resena
       });
     });
-
     return turnosResult;
   }
 
@@ -174,14 +174,15 @@ export class DbService {
 
     querySnapshot.forEach((doc) => {
       turnosResult.push({
-        horario: doc.data()['horario'].toDate(),
-        especialista: doc.data()['especialista'],
-        especialidad: doc.data()['especialidad'],
-        paciente: doc.data()['paciente'],
-        estado: doc.data()['estado'],
-        comentario: doc.data()['comentario'],
-        calificacion: doc.data()['calificacion'],
-        encuesta: doc.data()['encuesta']
+        horario: doc.data().horario.toDate(),
+        especialista: doc.data().especialista,
+        especialidad: doc.data().especialidad,
+        paciente: doc.data().paciente,
+        estado: doc.data().estado,
+        comentario: doc.data().comentario,
+        calificacion: doc.data().calificacion,
+        encuesta: doc.data().encuesta,
+        resena: doc.data().resena
       });
     });
 
@@ -202,14 +203,15 @@ export class DbService {
 
     querySnapshot.forEach((doc) => {
       turnosResult.push({
-        horario: doc.data()['horario'].toDate(),
-        especialista: doc.data()['especialista'],
-        especialidad: doc.data()['especialidad'],
-        paciente: doc.data()['paciente'],
-        estado: doc.data()['estado'],
-        comentario: doc.data()['comentario'],
-        calificacion: doc.data()['calificacion'],
-        encuesta: doc.data()['encuesta']
+        horario: doc.data().horario.toDate(),
+        especialista: doc.data().especialista,
+        especialidad: doc.data().especialidad,
+        paciente: doc.data().paciente,
+        estado: doc.data().estado,
+        comentario: doc.data().comentario,
+        calificacion: doc.data().calificacion,
+        encuesta: doc.data().encuesta,
+        resena: doc.data().resena
       });
     });
     return turnosResult;

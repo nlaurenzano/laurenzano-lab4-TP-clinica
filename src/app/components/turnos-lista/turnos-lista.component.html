@@ -1,15 +1,14 @@
 <!-- Para listado de turnos -->
 <div *ngIf="esListado" class="list-group">
 
-	<button *ngFor="let turno of lista | async" type="button" class="list-group-item list-group-item-action" 
-	data-bs-toggle="modal" data-bs-target="#confirmarModal" (click)="setTurno=turno">
+	<button *ngFor="let turno of lista | async" type="button" class="list-group-item list-group-item-action" (click)="seleccionarTurno(turno)">
 		
 		<div class="row g-0 py-1">
 		    <div class="col-md-1">
 		    	<div class="icon"><i class=""></i></div>
 		    </div>
 		    <div class="col-md-11 d-flex">
-		      	<h5>{{turno.horario | date:'short'}}</h5>
+		      	<h5>{{turno.horario | date:'short'}} - {{turno.estado | titlecase}}</h5>
 		    </div>
 		</div>
 	</button>

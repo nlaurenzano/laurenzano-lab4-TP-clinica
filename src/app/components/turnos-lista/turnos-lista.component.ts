@@ -27,6 +27,10 @@ export class TurnosListaComponent implements OnInit {
     this.seleccionado.emit(this.turnoSeleccionado);
   }
 
+  seleccionarTurno( turno ) {
+    this.seleccionado.emit(turno);
+  }
+
   // Devuelve un array que contiene un array por cada día, con los turnos para ese día.
   listaPorDias() {
 

@@ -1,0 +1,40 @@
+<!-- Detalles -->
+<div class="usuarios detalle">
+	<div *ngIf="datos" class="detalle">
+
+      	<div class="detalle-info">
+            <h4>{{datos.estado | titlecase}}</h4>
+            <h4>{{datos.especialista.nombre | titlecase}} {{datos.especialista.apellido | titlecase}}</h4>
+            
+            <p>Especialidad: {{datos.especialidad | titlecase}}</p>
+            <p>Horario: {{datos.horario | date:'short'}}</p>
+            <p *ngIf="datos.resena">Reseña: {{datos.resena}}</p>
+
+
+
+<!-- 
+            <p *ngIf="esPaciente">Obra Social: {{datos.obraSocial}}</p>
+ -->
+      	</div>
+
+      	<form class="formulario">
+
+      		<div class="d-flex justify-content-center mt-2">	
+	    		<button *ngIf="esCancelable" class="ms-1" (click)="cancelarTurno()">Cancelar</button>
+	    		<button *ngIf="esRechazable" class="ms-1" (click)="rechazarTurno()">Rechazar</button>
+	    		<button *ngIf="esAceptable" class="ms-1" (click)="aceptarTurno()">Aceptar</button>
+	    		<button *ngIf="esFinalizable" class="ms-1" (click)="finalizarTurno()">Finalizar</button>
+
+	    		<button *ngIf="esEncuestable" class="ms-1" (click)="completarEncuesta()">Encuesta</button>
+	    		<button *ngIf="esCalificable" class="ms-1" (click)="calificarAtencion()">Calificar</button>
+    		</div>
+
+
+
+      	</form>
+
+
+    </div>
+</div>
+
+<!-- agregar modal para dejar comentarios o reseñas -->
