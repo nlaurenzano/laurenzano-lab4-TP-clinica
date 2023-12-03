@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { RecaptchaErrorParameters } from "ng-recaptcha";
 
 import { AuthenticationService, Usuario } from '../../../servicios/authentication.service';
 import { ArchivosService } from "../../../servicios/archivos.service";
@@ -14,7 +13,6 @@ export class LoginComponent implements OnInit{
 
   fillEmail: string = '';
   fillClave: string = '';
-  noEsRobot = false;
 
   public usuarios = [];
 
@@ -75,18 +73,6 @@ export class LoginComponent implements OnInit{
         // nada
     } 
     return icono;
-  }
-
-  resolved(captchaResponse: string) {
-    if (captchaResponse === null) {
-      this.noEsRobot = false;
-    } else {
-      this.noEsRobot = true;
-    }
-  }
-
-  public onError(errorDetails: RecaptchaErrorParameters): void {
-    this.noEsRobot = false;
   }
 
 }

@@ -55,11 +55,11 @@ export class TurnosListaComponent implements OnInit {
   }
 
   get esSolicitud() {
-    return this.tipo = 'solicitud';
+    return this.tipo == 'solicitud';
   }
 
   get esListado() {
-    return this.tipo = 'listado';
+    return this.tipo == 'listado';
   }
 
 
