@@ -26,7 +26,21 @@ export class TurnosComponent implements OnInit {
 
   // Devuelve la lista de todos los turnos del usuario
   mostrarTodos() {
-    this.turnos = this.db.obtenerTurnosPaciente( this.usuario );
+
+    switch (this.usuario.rol) {
+      case 'paciente':
+        this.turnos = this.db.obtenerTurnosPaciente( this.usuario );
+      break;
+
+      case 'especialista':
+        this.turnos = this.db.obtenerTurnosEspecialista( this.usuario );
+      break;
+
+      default:
+        // admin
+        this.turnos = this.db.obtenerTurnos();
+      break;
+    }
   }
 
   get esAdmin() {

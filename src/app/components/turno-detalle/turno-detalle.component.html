@@ -6,27 +6,39 @@
             <h4>{{datos.estado | titlecase}}</h4>
             <h4>{{datos.especialista.nombre | titlecase}} {{datos.especialista.apellido | titlecase}}</h4>
             
+            <p>Paciente: {{datos.paciente.nombre | titlecase}} {{datos.paciente.apellido | titlecase}}</p>
             <p>Especialidad: {{datos.especialidad | titlecase}}</p>
             <p>Horario: {{datos.horario | date:'short'}}</p>
-            <p *ngIf="datos.resena">Reseña: {{datos.resena}}</p>
+
+            <p *ngIf="datos.comentario && datos.comentario!=''">Comentario: {{datos.comentario}}</p>
+            <p *ngIf="datos.calificacion && datos.calificacion!=''">Calificación: {{datos.calificacion}}</p>
+            <p *ngIf="datos.encuesta && datos.encuesta!=''">Encuesta: {{datos.encuesta}}</p>
 
 
 
-<!-- 
-            <p *ngIf="esPaciente">Obra Social: {{datos.obraSocial}}</p>
- -->
+            <!-- <p *ngIf="datos.calificacion">Calificación: <i *ngFor="let item of calificacionDisplay" class="fa-solid fa-star text-primary"></i></p> -->
+			<!-- <i class="fa-regular fa-star"></i> -->
       	</div>
 
       	<form class="formulario">
 
-      		<div class="d-flex justify-content-center mt-2">	
-	    		<button *ngIf="esCancelable" class="ms-1" (click)="cancelarTurno()">Cancelar</button>
-	    		<button *ngIf="esRechazable" class="ms-1" (click)="rechazarTurno()">Rechazar</button>
-	    		<button *ngIf="esAceptable" class="ms-1" (click)="aceptarTurno()">Aceptar</button>
-	    		<button *ngIf="esFinalizable" class="ms-1" (click)="finalizarTurno()">Finalizar</button>
-
-	    		<button *ngIf="esEncuestable" class="ms-1" (click)="completarEncuesta()">Encuesta</button>
-	    		<button *ngIf="esCalificable" class="ms-1" (click)="calificarAtencion()">Calificar</button>
+      		<div class="d-flex justify-content-center mt-4">	
+	    		<button type="button" *ngIf="esCancelable" class="ms-1" data-bs-toggle="modal" data-bs-target="#turnoModal" (click)="setAccion='cancelar'">
+	    			Cancelar
+	    		</button>
+	    		<button type="button" *ngIf="esRechazable" class="ms-1" data-bs-toggle="modal" data-bs-target="#turnoModal" (click)="setAccion='rechazar'">
+	    			Rechazar
+	    		</button>
+	    		<button type="button" *ngIf="esFinalizable" class="ms-1" data-bs-toggle="modal" data-bs-target="#turnoModal" (click)="setAccion='finalizar'">
+	    			Finalizar
+	    		</button>
+	    		<button type="button" *ngIf="esEncuestable" class="ms-1" data-bs-toggle="modal" data-bs-target="#turnoModal" (click)="setAccion='encuesta'">
+	    			Encuesta
+	    		</button>
+	    		<button type="button" *ngIf="esCalificable" class="ms-1" data-bs-toggle="modal" data-bs-target="#turnoModal" (click)="setAccion='calificar'">
+		    		Calificar
+		    	</button>
+	    		<button type="button" *ngIf="esAceptable" class="ms-1" (click)="aceptarTurno()">Aceptar</button>
     		</div>
 
 
@@ -37,4 +49,30 @@
     </div>
 </div>
 
-<!-- agregar modal para dejar comentarios o reseñas -->
+<!-- Modal para dejar comentarios, encuesta y calificación -->
+<div class="modal fade" id="turnoModal" tabindex="-1" aria-labelledby="turnoModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      	<div class="modal-header">
+	        <h1 *ngIf="getAccion=='cancelar'" class="modal-title fs-5" id="turnoModalLabel">Razón de la cancelación</h1>
+	        <h1 *ngIf="getAccion=='finalizar'" class="modal-title fs-5" id="turnoModalLabel">Comentario de la consulta</h1>
+	        <h1 *ngIf="getAccion=='calificar'" class="modal-title fs-5" id="turnoModalLabel">Calificar atención</h1>
+	        <h1 *ngIf="getAccion=='rechazar'" class="modal-title fs-5" id="turnoModalLabel">Razón del rechazo</h1>
+	        <h1 *ngIf="getAccion=='encuesta'" class="modal-title fs-5" id="turnoModalLabel">Encuesta: ¿Qué opina de nuestra clínica?</h1>
+      	</div>
+
+      <div class="modal-body">
+      	<form *ngIf="datos" class="formulario">
+			<textarea *ngIf="getAccion=='finalizar' || getAccion=='rechazar' || getAccion=='cancelar'" class="form-control" id="comentario" name="comentario" #comentario [(ngModel)]="info.comentario"></textarea>
+			<textarea *ngIf="getAccion=='encuesta'" class="form-control" id="comentarioEncuesta" name="comentarioEncuesta" #comentarioEncuesta [(ngModel)]="info.encuesta"></textarea>
+			<textarea *ngIf="getAccion=='calificar'" class="form-control" id="calificacion" name="calificacion" #calificacion [(ngModel)]="info.calificacion"></textarea>
+      	</form>
+      </div>
+
+      <div class="modal-footer formulario">
+        <button type="button" data-bs-dismiss="modal" (click)="resetearInfo()">Cancelar</button>
+        <button type="button" data-bs-dismiss="modal" (click)="confirmarAccion()">Confirmar</button>
+      </div>
+    </div>
+  </div>
+</div>

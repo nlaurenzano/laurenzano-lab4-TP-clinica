@@ -64,7 +64,7 @@ export class SolicitudComponent implements OnInit {
 
     this.especialidad = especialidad;
 
-    this.db.obtenerTurnosExistentes( this.paciente.email, this.especialista, this.especialidad )
+    this.db.obtenerTurnosExistentes( this.paciente, this.especialista, this.especialidad )
       .then((turnosExistentes) => {
         this.turnosExistentes = turnosExistentes;
         this.turnosDisponibles = this.generarTurnos();
@@ -155,7 +155,7 @@ export class SolicitudComponent implements OnInit {
           horario: new Date(turno.toString()),
           especialista: this.especialista,
           especialidad: this.especialidad,
-          paciente: this.paciente.email
+          paciente: this.paciente
         });
 
         turno.setMinutes( turno.getMinutes() + this.duracion );

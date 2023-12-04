@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 
 import { AuthenticationService } from "../../servicios/authentication.service";
+import { DbService } from "../../servicios/db.service";
 
 @Component({
   selector: 'app-turno-detalle',
@@ -12,8 +13,18 @@ export class TurnoDetalleComponent {
   @Input() datos;
 
   private roles = ['administrador', 'especialista', 'paciente'];
+  private accion: string = '';
+  public info = {comentario:'', calificacion:'', encuesta:''};
 
-    constructor( public authenticationService: AuthenticationService ) {}
+  constructor( public authenticationService: AuthenticationService, public db: DbService ) {}
+
+  set setAccion( valor ) {
+    this.accion = valor;
+  }
+
+  get getAccion() {
+    return this.accion;
+  }
 
   get esAdmin(): boolean {
     return this.authenticationService.usuario.rol == this.roles[0];
@@ -32,12 +43,11 @@ export class TurnoDetalleComponent {
 
     // TODO: Ver si considero que el horario haya pasado
     if (this.esEspecialista && 
-        this.datos.estado != 'aceptado' && this.datos.estado != 'finalizado' && this.datos.estado != 'rechazado') {
+        this.datos.estado != 'aceptado' && this.datos.estado != 'finalizado' && this.datos.estado != 'rechazado' && this.datos.estado != 'cancelado') {
       return true;
     }
 
-    // if (this.esPaciente && this.datos.estado != 'finalizado' ) {
-    if (this.esPaciente ) {
+    if (this.esPaciente && this.datos.estado != 'cancelado' && this.datos.estado != 'finalizado' ) {
       return true;
     }
     
@@ -46,7 +56,7 @@ export class TurnoDetalleComponent {
 
   get esRechazable() {
     if (this.esEspecialista && 
-        this.datos.estado != 'aceptado' && this.datos.estado != 'finalizado' && this.datos.estado != 'cancelado') {
+        this.datos.estado != 'aceptado' && this.datos.estado != 'finalizado' && this.datos.estado != 'cancelado' && this.datos.estado != 'rechazado') {
       return true;
     }
     return false;
@@ -54,7 +64,7 @@ export class TurnoDetalleComponent {
 
   get esAceptable() {
     if (this.esEspecialista && 
-        this.datos.estado != 'rechazado' && this.datos.estado != 'finalizado' && this.datos.estado != 'cancelado') {
+        this.datos.estado != 'rechazado' && this.datos.estado != 'finalizado' && this.datos.estado != 'cancelado' && this.datos.estado != 'aceptado') {
       return true;
     }
     return false;
@@ -82,31 +92,47 @@ export class TurnoDetalleComponent {
     }
     return false;
   }
+  
+  get calificacionDisplay() {
+    let resultado = [];
+    let datos = this.datos;
+    if (datos.calificacion != '') {
 
-  cancelarTurno() {
-
+      for ( let i=0; i<datos.calificacion; i++) {
+        resultado.push(1);
+      }
+    }
+    return resultado;
   }
 
-  rechazarTurno() {
-
-  }
 
   aceptarTurno() {
-
+    this.datos.estado = 'aceptado';
+    this.db.actualizarTurno(this.datos, this.info);
   }
 
-  finalizarTurno() {
-
+  confirmarAccion() {
+    switch (this.accion) {
+      case 'cancelar':
+        this.datos.estado = 'cancelado';
+        break;
+      case 'finalizar':
+        this.datos.estado = 'finalizado';
+        break;
+      case 'rechazar':
+        this.datos.estado = 'rechazado';
+        break;
+    }
+    this.db.actualizarTurno(this.datos, this.info);
+    this.resetearInfo();
   }
 
-
-  completarEncuesta() {
-
+  resetearInfo() {
+    this.info.comentario = '';
+    this.info.calificacion = '';
+    this.info.encuesta = '';
   }
 
-  calificarAtencion() {
-
-  }
 
 
 }
