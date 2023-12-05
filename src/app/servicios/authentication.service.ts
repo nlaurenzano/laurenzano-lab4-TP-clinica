@@ -8,6 +8,7 @@ import Toastify from 'toastify-js';
 
 import { ArchivosService } from "./archivos.service";
 import { DbService } from './db.service';
+import { LogService } from './log.service';
 import { 
   User,
   Auth,
@@ -57,6 +58,7 @@ export class AuthenticationService implements OnDestroy {
     public auth: Auth, 
     public db: DbService, 
     public router: Router,
+    public log: LogService, 
     public archivos: ArchivosService
   ) {
     if (auth) {
@@ -90,20 +92,21 @@ export class AuthenticationService implements OnDestroy {
             this.validarIngreso( resultado.user )
               .then((mensajeValidacion) => {
                 if (mensajeValidacion == '') {
-                  // Log de ingreso
-                  // this.logService.signIn(email);
-
                   // Obtiene la imagen
                   this.archivos.obtenerImagen_1( email )
                     .then((archivoURL) => {
                       this.usuarioImg = archivoURL;
                     });
+
+                  // Log de ingreso
+                  this.log.signIn(usuario);
+
                   // Redirección
                   this.redirigir(resultado.user);
 
                 } else {
                   this.usuario = null;
-                  this.signOut();
+                  this.signOut( false );
                   this.mostrarError(mensajeValidacion);
                 }
               });
@@ -128,28 +131,20 @@ export class AuthenticationService implements OnDestroy {
 
   }
 
-  signOut() {
+  // El parámetro 'log' indica si se registra la actividad en el log
+  signOut( log: boolean ) {
+    if ( log ) {
+      // Log de salida
+      this.log.signOut(this.usuario);
+    }
 
     this.usuario = null;
     this.usuarioImg = '';
     signOut(this.auth);
-
-    // if (this.usuario !== null) {
-    //   // Log de salida
-    //   this.logService.signOut(this.usuario.email);
-
-    //   this.afAuth.signOut().then(() => {
-    //     // Redirección
-    //     this.router.navigate(['home']);
-    //   });
-    // }
   }
 
   // Registro con email, nombre y clave
   signUp( usuario: Usuario ) {
-// xvddlzah@cj.MintEmail.com
-
-
 
     createUserWithEmailAndPassword(this.auth, usuario.email, usuario.clave)
       .then((resultado) => {
@@ -159,13 +154,13 @@ export class AuthenticationService implements OnDestroy {
         this.db.agregarUsuario( resultado.user.uid, usuario )
           .then(()=>{
             // Log de registro
-            // this.logService.signUp(email);
+            this.log.signUp(usuario);
             
             // Redirección
             this.redirigir(resultado.user);
 
             if ( this.enviarVerificacion(resultado.user, usuario) ) {
-              this.signOut();
+              this.signOut( false );
             }
           });
 

@@ -12,7 +12,7 @@ export class LogoutComponent implements OnInit {
   constructor( public authenticationService: AuthenticationService, public router: Router ) {}
 
   ngOnInit() {
-    this.authenticationService.signOut();
+    this.authenticationService.signOut(true);
     this.router.navigate(['auth/login']);
   }
 }
