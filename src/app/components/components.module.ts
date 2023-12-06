@@ -8,6 +8,7 @@ import { UsuariosListaComponent } from './usuarios-lista/usuarios-lista.componen
 import { TurnosListaComponent } from './turnos-lista/turnos-lista.component';
 import { EspecialidadesListaComponent } from './especialidades-lista/especialidades-lista.component';
 import { TurnoDetalleComponent } from './turno-detalle/turno-detalle.component';
+import { SpinnerComponent } from './spinner/spinner.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { TurnoDetalleComponent } from './turno-detalle/turno-detalle.component';
     UsuariosListaComponent,
     TurnosListaComponent,
     EspecialidadesListaComponent,
-    TurnoDetalleComponent
+    TurnoDetalleComponent,
+    SpinnerComponent
   ],
   exports: [
     LayoutComponent,
@@ -24,7 +26,8 @@ import { TurnoDetalleComponent } from './turno-detalle/turno-detalle.component';
     UsuariosListaComponent,
     TurnosListaComponent,
     EspecialidadesListaComponent,
-    TurnoDetalleComponent
+    TurnoDetalleComponent,
+    SpinnerComponent
   ],
   imports: [
     CommonModule,

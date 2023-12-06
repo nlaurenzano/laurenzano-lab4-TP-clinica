@@ -5,8 +5,12 @@
     </div>
 
 
-
+    <!-- Listado de turnos -->
 	<div *ngIf="!filtro" class="row  justify-content-md-center">
+
+		<!-- Paciente: Especialidad -> Especialista -->
+		<!-- Especialista: Especialidad -> Paciente -->
+
 
 		<!-- Mostrar botón Filtrar -->
 		<div class="col col-lg-2 text-center">
@@ -17,16 +21,9 @@
 			</div>
 		</div>
 
+		<!-- Listado de turnos -->
 		<div class="col col-lg-4">
-    		<div *ngIf="turnos | async; then contenidoTurnos else preloaderTurnos"></div>
-			<ng-template #preloaderTurnos>
-				<!-- <div id="preloader"></div> -->
-			</ng-template>
-
-			<!-- Listado de turnos -->
-			<ng-template #contenidoTurnos>
-				<turnos-lista [lista]="turnos" [tipo]="'listado'" (seleccionado)="seleccionarTurno($event)"></turnos-lista>
-			</ng-template>
+			<turnos-lista [lista]="turnos" [tipo]="'listado'" (seleccionado)="seleccionarTurno($event)"></turnos-lista>
     	</div>
 
     	<!-- Detalle del turno seleccionado -->
@@ -35,5 +32,49 @@
 		</div>
 
 	</div>
+    <!-- Fin Listado de turnos -->
+
+
+    <!-- Filtro -->
+	<div *ngIf="filtro" class="row  justify-content-md-center">
+
+
+		<!-- Mostrar selección de especialidad -->
+
+		<div *ngIf="!especialidadSeleccionada" class="col-lg-12">
+
+			<!-- Especialidades -->
+			<especialidades-lista [lista]="especialidades" (seleccionado)="seleccionarEspecialidad($event)"></especialidades-lista>
+		</div>
+		<!-- Fin selección de especialidad -->
+
+
+
+
+
+		<!-- Mostrar selección de especialistas -->
+		<div *ngIf="especialidadSeleccionada" class="row tarjetitas">
+			<div class="col-lg-12 align-items-stretch">
+		          <div class="row icon-boxes justify-content-center">
+
+		                <div class="col-xl-2 align-items-stretch text-center" *ngFor="let usuario of usuarios" (click)="seleccionarUsuario(usuario)">
+		                  	<div class="icon-box mt-4 mt-xl-0">
+		                    	<img src="{{usuario.archivoURL}}" class="img-fluid" alt="">
+		                  	</div>
+			                <h4 class="mt-2">{{usuario.nombre | titlecase}} {{usuario.apellido | titlecase}}</h4>
+		                </div>
+
+		        </div>
+		    </div>
+		</div>
+		<!-- Fin selección de especialistas -->
+
+
+
+
+
+	</div>
+    <!-- Fin Filtro -->
+
 
 </div></section>
