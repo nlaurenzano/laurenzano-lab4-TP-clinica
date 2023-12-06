@@ -14,6 +14,7 @@ export class TurnosComponent implements OnInit {
   usuario = this.authenticationService.usuario;
   public filtro: boolean = false;
   public turnos;
+  private turnosInicial;
   public especialidades;
   public turnoSeleccionado = null;
   public especialidadSeleccionada = '';
@@ -31,6 +32,7 @@ export class TurnosComponent implements OnInit {
 
   // Devuelve la lista de todos los turnos del usuario
   mostrarTodos() {
+    this.turnoSeleccionado = null;
 
     switch (this.usuario.rol) {
       case 'paciente':
@@ -46,6 +48,9 @@ export class TurnosComponent implements OnInit {
         this.turnos = this.db.obtenerTurnos();
       break;
     }
+    this.turnos.then((turnos)=>{
+        this.turnosInicial = turnos;
+      });
   }
 
   get esAdmin() {
@@ -54,40 +59,33 @@ export class TurnosComponent implements OnInit {
 
   filtrar() {
     this.filtro = true;
+    this.turnoSeleccionado = null;
     this.especialidadSeleccionada = '';
     this.usuarioSeleccionado = null;
     this.especialidades = [];
-    this.turnos
-      .then((turnos)=>{
-        turnos.forEach((item)=>{
-          if (!this.especialidades.includes(item.especialidad)) {
-            this.especialidades.push(item.especialidad);
-          }
-        });
+
+    this.turnosInicial.filter((item)=>{
+        if (!this.especialidades.includes(item.especialidad)) {
+          this.especialidades.push(item.especialidad);
+        }
       });
   }
 
   aplicarFiltro() {
-    let turnosFiltrados = [];
-    
     this.filtro = false;
+
     return this.turnos
       .then((turnos)=>{
-        // console.log('turnos '+item.especialidad);
-        turnos.forEach((item)=>{
+        return  this.turnosInicial.filter((item)=>{
           let email = item.especialista.email;
           if ( this.usuario.rol == 'especialista' ) {
             email = item.paciente.email;
           }
-
           if ( item.especialidad == this.especialidadSeleccionada && email == this.usuarioSeleccionado.email ) {
-            turnosFiltrados.push(item);
+            return item;
           }
         });
-        return turnosFiltrados;
       });
-
-    // this.turnos = turnosFiltrados;
   }
 
   seleccionarTurno( valor ) {
@@ -114,36 +112,26 @@ export class TurnosComponent implements OnInit {
       rol = 'paciente';
     }
 
-    this.turnos
-      .then((turnos)=>{
-
-        turnos.forEach((item)=>{
-          if ( item.especialidad == this.especialidadSeleccionada ) {
-            let usuario = item.especialista;
-            if ( this.usuario.rol == 'especialista' ) {
-              usuario = item.paciente;
-            }
-            if ( usuarios.every((usuarioTest)=>{return usuarioTest.email!=usuario.email}) ) {
-              usuarios.push(usuario);
-            }
+    this.turnosInicial.forEach((item)=>{
+        if ( item.especialidad == this.especialidadSeleccionada ) {
+          let usuario = item.especialista;
+          if ( this.usuario.rol == 'especialista' ) {
+            usuario = item.paciente;
           }
-        });
+          if ( usuarios.every((usuarioTest)=>{return usuarioTest.email!=usuario.email}) ) {
+            usuarios.push(usuario);
+          }
+        }
+      });
 
-        usuarios.forEach((usuario) => {
-          this.archivos.obtenerImagen_1(usuario.email)
-            .then((archivoURL) => {
-              usuario.archivoURL = archivoURL;
-            });
-        });
+    usuarios.forEach((usuario) => {
+        this.archivos.obtenerImagen_1(usuario.email)
+          .then((archivoURL) => {
+            usuario.archivoURL = archivoURL;
+          });
       });
 
     this.usuarios = usuarios;
   }
-
-
-
-
-
-
 
 }
