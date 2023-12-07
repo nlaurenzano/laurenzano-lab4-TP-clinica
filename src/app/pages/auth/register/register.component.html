@@ -9,21 +9,28 @@
     </div>
 
     <div class="row justify-content-md-center seleccion">
-		<div class="col-lg-4 col-md-6 mx-4 mb-2 align-items-stretch">
+		<div class="col-lg-3 col-md-6 mx-2 mb-2 mt-4 align-items-stretch">
 			<div class="icon-box" (click)="setEspecialista()">
 				<div class="icon"><i class="fas fa-stethoscope"></i></div>
 				<h4><a href="">Especialista</a></h4>
 			</div>
 		</div>
 
-		<div class="col-lg-4 col-md-6 mx-4 mb-2 align-items-stretch mt-4 mt-md-0">
+		<div class="col-lg-3 col-md-6 mx-2 mb-2 mt-4 align-items-stretch">
         	<div class="icon-box" (click)="setPaciente()">
           		<div class="icon"><i class="fa-solid fa-hospital-user"></i></div>
           		<h4><a href="">Paciente</a></h4>
         	</div>
       	</div>
 
+    	<div *ngIf="authenticationService.creandoAdmin" class="col-lg-3 col-md-6 mx-2 mb-2 mt-4 align-items-stretch">
+			<div class="icon-box" (click)="setAdmin()">
+				<div class="icon"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+				<h4><a href="">Administrador</a></h4>
+			</div>
+		</div>
     </div>
+
 	</ng-template>
 
 	<ng-template #elseBlock>

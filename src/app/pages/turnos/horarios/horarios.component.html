@@ -6,40 +6,35 @@
 
     <form class="formulario">
 		
-		<div class="row mb-3">
-	    	<label for="lunes" class="col-sm-2 col-form-label">Lunes</label>
+		<div *ngFor="let dia of dias; index as i" class="row mb-3">
+	    	<label for="lunes" class="col-sm-2 col-form-label">{{dia | titlecase}}</label>
 	    	<div class="col-sm-5 d-flex flex-row">
-	      		<select class="form-select" name="horaILunes" #horaILunes [(ngModel)]="horasInicio[1]">
-				  <option *ngFor="let hora of horas" value="hora" [attr.value]="h" [attr.selected]="h == 8 ? true : null">{{hora}}</option>
+	      		<select class="form-select" [ngModelOptions]="{standalone: true}" [(ngModel)]="horariosInicio[i+1].hora">
+				  <option *ngFor="let hora of horas; first as isFirst" value="hora" [attr.value]="h" [attr.selected]="isFirst">{{hora}}</option>
 
 				</select>
-				<select class="form-select" name="minutosILunes" #minutosILunes  [(ngModel)]="minutosInicio[1]">
-				  <option *ngFor="let minuto of minutos" value="hora">{{minuto}}</option>
+				<select class="form-select" [ngModelOptions]="{standalone: true}"  [(ngModel)]="horariosInicio[i+1].min">
+				  <option *ngFor="let minuto of minutos; first as isFirst" value="minuto" [attr.value]="m" [attr.selected]="isFirst">{{minuto}}</option>
 				</select>
-	      		<!-- <input type="number" step="15" class="form-control" id="lunes" name="lunes" #lunes> -->
-	      		<!-- [(ngModel)]="fillEmail" -->
 	    	</div>
 	    	<div class="col-sm-5 d-flex flex-row">
-	      		<select class="form-select">
-				  <option *ngFor="let hora of horas" value="hora">{{hora}}</option>
+	      		<select class="form-select" [ngModelOptions]="{standalone: true}" [(ngModel)]="horariosFin[i+1].hora">
+				  <option *ngFor="let hora of horas" value="hora" [attr.value]="h" [attr.selected]="h==horariosFin[i+1].hora">{{hora}}</option>
 				</select>
-				<select class="form-select">
-				  <option *ngFor="let minuto of minutos" value="hora">{{minuto}}</option>
+				<select class="form-select" [ngModelOptions]="{standalone: true}" [(ngModel)]="horariosFin[i+1].min">
+				  <option *ngFor="let minuto of minutos" value="minuto" [attr.value]="m" [attr.selected]="m==horariosFin[i+1].min">{{minuto}}</option>
 				</select>
-	      		<!-- <input type="number" step="15" class="form-control" id="lunes" name="lunes" #lunes> -->
-	      		<!-- [(ngModel)]="fillEmail" -->
 	    	</div>
 	  	</div>
 
-		<div class="row mb-3">
-	    	<label for="martes" class="col-sm-2 col-form-label">Martes</label>
-	    	<div class="col-sm-10">
-	      		<input type="text" class="form-control" id="martes" name="martes" #martes>
-	    	</div>
+	  	<div class="row mb-3">
+	  		<label for="lunes" class="col-sm-2 col-form-label">Duración</label>
+	  		<div class="col-sm-5 d-flex flex-row">
+		  		<select class="form-select" name="duracion" [(ngModel)]="duracion">
+				  <option *ngFor="let minuto of minutosDuracion" value="minuto" [attr.value]="m" [attr.selected]="m==duracion">{{minuto}}</option>
+				</select>
+			</div>
 	  	</div>
-
-
-
 
     	<div class="d-flex justify-content-center mt-2">	
     		<button (click)="cerrarConfiguracion()">Salir</button>

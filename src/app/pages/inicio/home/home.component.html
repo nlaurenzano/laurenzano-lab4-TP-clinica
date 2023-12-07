@@ -2,7 +2,7 @@
 	<div class="container">
 	  <h1>Bienvenidos a Clínica Online</h1>
 	  <h2>Conozca nuestro talentoso equipo de especialistas.</h2>
-	  <a routerLink="/auth/login" class="btn-get-started">Ingresar</a>
-	  <a routerLink="/turnos/solicitud" class="btn-get-started ms-2">Solicitar turno</a>
+	  <a *ngIf="!authenticationService.isLoggedIn" routerLink="/auth/login" class="btn-get-started">Ingresar</a>
+	  <a *ngIf="authenticationService.isLoggedIn"routerLink="/turnos/solicitud" class="btn-get-started ms-2">Solicitar turno</a>
 	</div>
 </section>

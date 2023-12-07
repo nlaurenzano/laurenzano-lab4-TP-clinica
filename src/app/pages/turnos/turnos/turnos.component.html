@@ -4,9 +4,13 @@
       	<h2><span *ngIf="!esAdmin">Mis </span>Turnos</h2>
     </div>
 
-    <!-- <h3 class="text-center mb-2">{{subtitulo}}</h3> -->
 
+    <!-- Listado de turnos -->
 	<div *ngIf="!filtro" class="row  justify-content-md-center">
+
+		<!-- Paciente: Especialidad -> Especialista -->
+		<!-- Especialista: Especialidad -> Paciente -->
+
 
 		<!-- Mostrar botón Filtrar -->
 		<div class="col col-lg-2 text-center">
@@ -15,28 +19,67 @@
 					<i class="fa-solid fa-filter"></i>
 				</div>
 			</div>
+			<div class="icon-toggle" (click)="mostrarTodos()">
+				<div class="icon" title="Limpiar filtros">
+					<i class="fa-regular fa-square-minus"></i>
+				</div>
+			</div>
 		</div>
 
-		<div class="col-lg-10">
-
-    		<div *ngIf="turnos | async; then contenidoTurnos else preloaderTurnos"></div>
-			<ng-template #preloaderTurnos>
-				<!-- <div id="preloader"></div> -->
-			</ng-template>
-
-			<ng-template #contenidoTurnos>
-
-				<!-- Turnos -->
-				<turnos-lista [lista]="turnos" [tipo]="listado" (seleccionado)="seleccionarTurno($event)"></turnos-lista>
-
-			</ng-template>
-
-
-
-
-
-
+		<!-- Listado de turnos -->
+		<div class="col col-lg-4">
+			<turnos-lista [lista]="turnos" [tipo]="'listado'" (seleccionado)="seleccionarTurno($event)"></turnos-lista>
     	</div>
+
+    	<!-- Detalle del turno seleccionado -->
+		<div class="col col-lg-6">
+			<app-turno-detalle [datos]="turnoSeleccionado"></app-turno-detalle>
+		</div>
+
 	</div>
+    <!-- Fin Listado de turnos -->
+
+
+    <!-- Filtro -->
+	<div *ngIf="filtro" class="row  justify-content-md-center">
+
+
+		<!-- Mostrar selección de especialidad -->
+
+		<div *ngIf="!especialidadSeleccionada" class="col-lg-12">
+
+			<!-- Especialidades -->
+			<especialidades-lista [lista]="especialidades" (seleccionado)="seleccionarEspecialidad($event)"></especialidades-lista>
+		</div>
+		<!-- Fin selección de especialidad -->
+
+
+
+
+
+		<!-- Mostrar selección de especialistas -->
+		<div *ngIf="especialidadSeleccionada" class="row tarjetitas">
+			<div class="col-lg-12 align-items-stretch">
+		          <div class="row icon-boxes justify-content-center">
+
+		                <div class="col-xl-2 align-items-stretch text-center" *ngFor="let usuario of usuarios" (click)="seleccionarUsuario(usuario)">
+		                  	<div class="icon-box mt-4 mt-xl-0">
+		                    	<img src="{{usuario.archivoURL}}" class="img-fluid" alt="">
+		                  	</div>
+			                <h4 class="mt-2">{{usuario.nombre | titlecase}} {{usuario.apellido | titlecase}}</h4>
+		                </div>
+
+		        </div>
+		    </div>
+		</div>
+		<!-- Fin selección de especialistas -->
+
+
+
+
+
+	</div>
+    <!-- Fin Filtro -->
+
 
 </div></section>
