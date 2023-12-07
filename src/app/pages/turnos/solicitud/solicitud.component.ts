@@ -86,34 +86,49 @@ export class SolicitudComponent implements OnInit {
     // Un elemento por cada día de la semana, empezando por el lunes
     // Obtengo la disponibilidad real del especialista, para la especialidad seleccionada.
     // Y la duración mínima de un turno, en minutos.
-    const horarios = await this.db.obtenerHorarios( this.especialista, this.especialidad );
+    const horarios = await this.db.obtenerHorarios( this.especialista.email, this.especialidad );
 
     // Si no hay resultados, se configuran los valores por defecto (para toda la semana)
     // Lunes a viernes 8:00 a 19:00 y sábados de 8:00 a 14:00. Turnos de 30 muinutos.
-    if ( horarios == null ) {
+    let horariosInicioAux = [
+      {hora:0,min:0}, 
+      {hora:8,min:0}, 
+      {hora:8,min:0}, 
+      {hora:8,min:0}, 
+      {hora:8,min:0}, 
+      {hora:8,min:0}, 
+      {hora:8,min:0}
+    ];
+    let horariosFinAux = [
+      {hora:0,min:0}, 
+      {hora:19,min:0}, 
+      {hora:19,min:0}, 
+      {hora:19,min:0}, 
+      {hora:19,min:0}, 
+      {hora:19,min:0}, 
+      {hora:14,min:0}
+    ];
 
-      const horariosInicioAux = [0, 8, 8, 8, 8, 8, 8];
-      horariosInicio = horariosInicioAux.map(
-        (value) => {
-          let inicioAux = new Date();
-          inicioAux.setHours( value, 0, 0 );
-          return inicioAux; 
-        });
-
-      const horariosFinAux = [0, 19, 19, 19, 19, 19, 14];
-      horariosFin = horariosFinAux.map(
-        (value) => {
-          let finAux = new Date();
-          finAux.setHours( value, 0, 0 );
-          return finAux; 
-        });
-
-    } else {
+    if ( horarios != null ) {
       // Se usan los horarios configurados por el especialista
-      horariosInicio = horarios.horariosInicio;
-      horariosFin = horarios.horariosFin;
+      horariosInicioAux = horarios.horariosInicio;
+      horariosFinAux = horarios.horariosFin;
       this.duracion = horarios.duracion;
     }
+
+    horariosInicio = horariosInicioAux.map(
+      (value) => {
+        let inicioAux = new Date();
+        inicioAux.setHours( value.hora, value.min, 0 );
+        return inicioAux; 
+      });
+
+    horariosFin = horariosFinAux.map(
+      (value) => {
+        let finAux = new Date();
+        finAux.setHours( value.hora, value.min, 0 );
+        return finAux; 
+      });
 
     // En horas
     const duracionHoras: number = this.duracion / 60;
@@ -131,12 +146,6 @@ export class SolicitudComponent implements OnInit {
         continue;
       }
 
-      // TODO: Si el turno es hoy y ya pasó el horario de inicio, se marca como no disponible
-      // if ( i == 0 && turno >  ) {
-      //   deshabilitar = true;
-      // }
-
-
       let horaInicio = horariosInicio[diaSemana].getHours();
       let minutosInicio = horariosInicio[diaSemana].getMinutes();
       turno.setHours( horaInicio, minutosInicio, 0 );
@@ -149,7 +158,6 @@ export class SolicitudComponent implements OnInit {
       let turnosDia = [];
 
       for ( let hora = inicioDia; hora < finDia; hora+=duracionHoras ) {
-
         turnosDia.push({
           disponible: this.turnoDisponible( turno ),
           horario: new Date(turno.toString()),
@@ -184,6 +192,12 @@ export class SolicitudComponent implements OnInit {
 
   // Valido que el turno propuesto no se superpone con alguno existente
   turnoDisponible( horario ): boolean {
+
+      // TODO: Si el turno es hoy y ya pasó el horario de inicio, se marca como no disponible
+      // if ( i == 0 && turno >  ) {
+      //   deshabilitar = true;
+      // }
+
     let resultado = true;
     const duracion = this.duracion;
 

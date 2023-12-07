@@ -274,24 +274,24 @@ export class DbService {
   // Devuelve un objeto con los horarios del especialista, para la especialidad indicada.
   // Si no encuentra resultados, devuelve NULL.
   async obtenerHorarios( especialista, especialidad ) {
-
     let horariosResult = null;
     const docRef = doc(this.fs, "horarios", especialista + '-' + especialidad);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-      console.log("Document data:", docSnap.data());
-
       horariosResult = {
         horariosInicio: docSnap.data().horariosInicio,
         horariosFin: docSnap.data().horariosFin,
         duracion: docSnap.data().duracion
       }
-    } else {
-      console.log("No such document!");
     }
 
     return horariosResult;
+  }
+
+  guardarHorarios( especialista, especialidad, horarios ) {
+    const docRef = doc(this.fs, "horarios", especialista + '-' + especialidad);
+    setDoc(docRef, horarios);
   }
 
 

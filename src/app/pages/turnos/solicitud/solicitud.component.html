@@ -70,22 +70,8 @@
 	    <ng-template #seleccionTurno>
     	<div class="col-lg-10">
 
-    		<div *ngIf="turnosDisponibles | async; then contenidoTurnos else preloaderTurnos"></div>
-			<ng-template #preloaderTurnos>
-				<!-- <div id="preloader"></div> -->
-			</ng-template>
-
-			<ng-template #contenidoTurnos>
-
-				<!-- Turnos -->
-				<turnos-lista [lista]="turnosDisponibles" [tipo]="'solicitud'" (seleccionado)="confirmarTurno($event)"></turnos-lista>
-
-			</ng-template>
-
-
-
-
-
+    		<!-- Turnos -->
+			<turnos-lista [lista]="turnosDisponibles" [tipo]="'solicitud'" (seleccionado)="confirmarTurno($event)"></turnos-lista>
 
     	</div>
 		</ng-template>
