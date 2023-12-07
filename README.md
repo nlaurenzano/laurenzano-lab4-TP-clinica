@@ -1,4 +1,27 @@
-# LaurenzanoLab4Clinica
+# Laurenzano Lab4 - Clínica Online
+
+## Descripción general de la aplicación
+
+### La clínica
+La Clínica OnLine, especialista en salud, cuenta actualmente con consultorios, laboratorios y una sala de espera general.
+Disponemos de profesionales de distintas especialidades. Se pueden solicitar turnos de acuerdo a su disponibilidad.
+
+### Horarios
+Está abierta al público de lunes a viernes en el horario de 8:00 a 19:00, y los sábados en el horario de 8:00 a 14:00.
+
+
+## Uso de la Web de la clínica
+
+### Ingreso
+
+Para usar nuestro sitio web es necesario disponer de un usuario.
+Si ya tiene un usuario registrado, solo debe acceder a la sección **Ingreso** y completar el formulario con su dirección de email y contraseña.
+Si es la primera vez que ingresa al portal, necesita crear un usuario, desde la sección **Registro**. Una vez que complete el formulario recibirá un mensaje en su casilla de email, con un link para verificación. Después de seguir el link, su usuario estará habilitado para ingresar al sistema.
+Para el caso de los especialistas que crean un nuevo usuario, además de estos pasos, deben esperar a que el área de Administración los habilite a ingresar.
+
+---pegar imágenes acá---
+
+
 
 Pantallas:
 
