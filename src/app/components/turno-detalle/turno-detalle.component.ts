@@ -42,7 +42,7 @@ export class TurnoDetalleComponent {
   get esCancelable() {
 
     // TODO: Ver si considero que el horario haya pasado
-    if (this.esEspecialista && 
+    if ((this.esEspecialista || this.esAdmin) && 
         this.datos.estado != 'aceptado' && this.datos.estado != 'finalizado' && this.datos.estado != 'rechazado' && this.datos.estado != 'cancelado') {
       return true;
     }
@@ -79,7 +79,7 @@ export class TurnoDetalleComponent {
 
   // Solamente debe estar visible si el especialista marcó el turno como realizado y dejo la reseña.
   get esEncuestable() {
-    if (this.datos.estado == 'finalizado' && this.datos.resena != '') {
+    if (this.esPaciente && this.datos.estado == 'finalizado' && this.datos.resena != '') {
       return true;
     }
     return false;
@@ -87,7 +87,7 @@ export class TurnoDetalleComponent {
 
   // Solamente debe ser visible una vez que el turno sea realizado.
   get esCalificable() {
-    if (this.datos.estado == 'finalizado') {
+    if (this.esPaciente && this.datos.estado == 'finalizado') {
       return true;
     }
     return false;
