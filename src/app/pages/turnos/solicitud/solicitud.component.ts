@@ -28,22 +28,54 @@ export class SolicitudComponent implements OnInit {
     public db: DbService ) {}
 
   ngOnInit() {
-    this.paciente = this.authenticationService.usuario;
+
+    if (this.esAdmin) {
+      this.mostrarPacientes();
+    } else {
+      this.seleccionarPaciente(this.authenticationService.usuario);
+    }
+  }
+
+  get esAdmin() {
+    return this.authenticationService.usuario.rol == 'administrador';
+  }
+
+  seleccionarPaciente( usuario ) {
+    this.paciente = usuario;
     this.mostrarEspecialistas();
+  }
+
+  // Obtiene los pacientes y muestra el listado
+  async mostrarPacientes() {
+    let usuarios = [];
+    this.subtitulo = 'Seleccionar Paciente';
+    await this.db.obtenerUsuariosPorRol( 'paciente' )
+            .then((pacientes) => {
+              usuarios = pacientes;
+            });
+
+    usuarios.forEach((usuario) => {
+      this.archivos.obtenerImagen_1(usuario.email)
+        .then((archivoURL) => {
+          usuario.archivoURL = archivoURL;
+        });
+    });
+    this.usuarios = usuarios;
   }
 
   // Obtiene los especialistas y muestra el listado
   async mostrarEspecialistas() {
     let usuarios = [];
+    this.subtitulo = 'Seleccionar Especialista';
     await this.db.obtenerUsuariosPorRol( 'especialista' )
             .then((especialistas) => {
               usuarios = especialistas;
             });
 
-    usuarios.forEach((especialista) => {
-      this.archivos.obtenerImagen_1(especialista.email)
+    usuarios.forEach((usuario) => {
+      this.archivos.obtenerImagen_1(usuario.email)
         .then((archivoURL) => {
-          especialista.archivoURL = archivoURL;
+          usuario.archivoURL = archivoURL;
         });
     });
     this.usuarios = usuarios;
@@ -61,7 +93,7 @@ export class SolicitudComponent implements OnInit {
 
     // TODO: Obtener disponibilidad del especialista y duración de los turnos
 
-
+    this.subtitulo = 'Seleccionar Turno';
     this.especialidad = especialidad;
 
     this.db.obtenerTurnosExistentes( this.paciente, this.especialista, this.especialidad )

@@ -14,7 +14,7 @@
 			    	<div class="icon"><i class=""></i></div>
 			    </div>
 			    <div class="col-md-11 d-flex">
-			      	<h5>{{turno.horario | date:'short'}} - {{turno.estado | titlecase}}</h5>
+			      	<h5>{{turno.horario | date:'dd-LL-yyyy HH:mm'}} - {{turno.estado | titlecase}}</h5>
 			    </div>
 			</div>
 		</button>
@@ -44,7 +44,7 @@
       	<form *ngIf="turnoSeleccionado" class="formulario">
 	      	<h4>{{turnoSeleccionado.especialista.nombre | titlecase}} {{turnoSeleccionado.especialista.apellido | titlecase}}</h4>
 	      	<h5>{{turnoSeleccionado.especialidad | titlecase}}</h5>
-	      	<h5>{{turnoSeleccionado.horario | date:'dd-LL HH:mm'}}</h5>
+	      	<h5>{{turnoSeleccionado.horario | date:'dd-LL-yyyy HH:mm'}}</h5>
       	</form>
       </div>
 

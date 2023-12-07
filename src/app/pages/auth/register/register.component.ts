@@ -48,11 +48,6 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit() {
     this.archivos.limpiarImagenes();
-    // Si se está creando un admin desde la vista de usuarios
-    if ( this.authenticationService.creandoAdmin ) {
-      this.usuario.rol = this.roles[0];
-      this.authenticationService.creandoAdmin = false;
-    }
     this.mostrarEspecialidades();
   }
 
@@ -66,14 +61,17 @@ export class RegisterComponent implements OnInit {
   }
 
   public setAdmin() {
+    this.authenticationService.creandoAdmin = false;
     this.usuario.rol = this.roles[0];
   }
 
   public setEspecialista() {
+    this.authenticationService.creandoAdmin = false;
     this.usuario.rol = this.roles[1];
   }
 
   public setPaciente() {
+    this.authenticationService.creandoAdmin = false;
     this.usuario.rol = this.roles[2];
   }
 

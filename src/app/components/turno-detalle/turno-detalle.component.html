@@ -8,7 +8,7 @@
             
             <p>Paciente: {{datos.paciente.nombre | titlecase}} {{datos.paciente.apellido | titlecase}}</p>
             <p>Especialidad: {{datos.especialidad | titlecase}}</p>
-            <p>Horario: {{datos.horario | date:'short'}}</p>
+            <p>Horario: {{datos.horario | date:'dd-LL-yyyy HH:mm'}}</p>
 
             <p *ngIf="datos.comentario && datos.comentario!=''">Comentario: {{datos.comentario}}</p>
             <p *ngIf="datos.calificacion && datos.calificacion!=''">Calificación: {{datos.calificacion}}</p>
