@@ -14,9 +14,7 @@ Si ya tiene un usuario registrado, solo debe acceder a la sección **Ingreso** y
 Si es la primera vez que ingresa al portal, necesita crear un usuario, desde la sección **Registro**. Una vez que complete el formulario recibirá un mensaje en su casilla de email, con un link para verificación. Después de seguir el link, su usuario estará habilitado para ingresar al sistema.
 Para el caso de los especialistas que crean un nuevo usuario, además de estos pasos, deben esperar a que el área de Administración los habilite a ingresar.
 
----pegar imágenes acá---
-
-
+![Navegación inicial](https://github.com/nlaurenzano/laurenzano-lab4-TP-clinica/assets/21069517/ee2a4ff2-6704-49d7-82c9-d56591c06280)
 
 ### Pacientes
 Los pacientes pueden acceder a las siguientes secciones de la Web:
