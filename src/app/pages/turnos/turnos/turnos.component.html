@@ -53,10 +53,6 @@
 		</div>
 		<!-- Fin selección de especialidad -->
 
-
-
-
-
 		<!-- Mostrar selección de especialistas -->
 		<div *ngIf="especialidadSeleccionada" class="row tarjetitas">
 			<div class="col-lg-12 align-items-stretch">
@@ -66,16 +62,13 @@
 		                  	<div class="icon-box mt-4 mt-xl-0">
 		                    	<img src="{{usuario.archivoURL}}" class="img-fluid" alt="">
 		                  	</div>
-			                <h4 class="mt-2">{{usuario.nombre | titlecase}} {{usuario.apellido | titlecase}}</h4>
+			                <h4 class="mt-2">{{usuario | nombreUsuario}}</h4>
 		                </div>
 
 		        </div>
 		    </div>
 		</div>
 		<!-- Fin selección de especialistas -->
-
-
-
 
 
 	</div>

@@ -42,7 +42,7 @@
       </div>
       <div class="modal-body">
       	<form *ngIf="turnoSeleccionado" class="formulario">
-	      	<h4>{{turnoSeleccionado.especialista.nombre | titlecase}} {{turnoSeleccionado.especialista.apellido | titlecase}}</h4>
+	      	<h4>{{turnoSeleccionado.especialista | nombreUsuario}}</h4>
 	      	<h5>{{turnoSeleccionado.especialidad | titlecase}}</h5>
 	      	<h5>{{turnoSeleccionado.horario | date:'dd-LL-yyyy HH:mm'}}</h5>
       	</form>

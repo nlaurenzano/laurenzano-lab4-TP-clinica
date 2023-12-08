@@ -3,12 +3,15 @@ import { CommonModule } from '@angular/common';
 import { LayoutComponent } from './layout/layout.component';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+
 import { UsuarioDetalleComponent } from './usuario-detalle/usuario-detalle.component';
 import { UsuariosListaComponent } from './usuarios-lista/usuarios-lista.component';
 import { TurnosListaComponent } from './turnos-lista/turnos-lista.component';
 import { EspecialidadesListaComponent } from './especialidades-lista/especialidades-lista.component';
 import { TurnoDetalleComponent } from './turno-detalle/turno-detalle.component';
 import { SpinnerComponent } from './spinner/spinner.component';
+
+import { PipesModule } from '../pipes/pipes.module';
 
 @NgModule({
   declarations: [
@@ -32,7 +35,8 @@ import { SpinnerComponent } from './spinner/spinner.component';
   imports: [
     CommonModule,
     RouterModule,
-    FormsModule
+    FormsModule,
+    PipesModule
   ]
 })
 export class ComponentsModule { }

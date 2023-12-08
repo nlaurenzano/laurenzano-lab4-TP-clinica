@@ -4,9 +4,9 @@
 
       	<div class="detalle-info">
             <h4>{{datos.estado | titlecase}}</h4>
-            <h4>{{datos.especialista.nombre | titlecase}} {{datos.especialista.apellido | titlecase}}</h4>
+            <h4>{{datos.especialista | nombreUsuario}}</h4>
             
-            <p>Paciente: {{datos.paciente.nombre | titlecase}} {{datos.paciente.apellido | titlecase}}</p>
+            <p>Paciente: {{datos.paciente | nombreUsuario}}</p>
             <p>Especialidad: {{datos.especialidad | titlecase}}</p>
             <p>Horario: {{datos.horario | date:'dd-LL-yyyy HH:mm'}}</p>
 
