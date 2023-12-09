@@ -9,6 +9,7 @@ import { LogoutComponent } from './logout/logout.component';
 import { RegisterComponent } from './register/register.component';
 
 import { PipesModule } from '../../pipes/pipes.module';
+import { DirectivasModule } from '../../directivas/directivas.module';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { PipesModule } from '../../pipes/pipes.module';
     AuthRoutingModule,
     FormsModule,
     RecaptchaModule,
-    PipesModule
+    PipesModule,
+    DirectivasModule
   ]
 })
 export class AuthModule { }

@@ -12,6 +12,7 @@ import { TurnoDetalleComponent } from './turno-detalle/turno-detalle.component';
 import { SpinnerComponent } from './spinner/spinner.component';
 
 import { PipesModule } from '../pipes/pipes.module';
+import { DirectivasModule } from '../directivas/directivas.module';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { PipesModule } from '../pipes/pipes.module';
     CommonModule,
     RouterModule,
     FormsModule,
-    PipesModule
+    PipesModule,
+    DirectivasModule
   ]
 })
 export class ComponentsModule { }
