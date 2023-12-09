@@ -12,7 +12,8 @@ const routes: Routes = [
   {
     path: 'perfil',
     component: PerfilComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
+    data: {animation: 'Perfil'}
   }
 ];
 
