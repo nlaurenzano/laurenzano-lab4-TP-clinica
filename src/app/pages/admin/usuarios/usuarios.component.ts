@@ -38,7 +38,12 @@ export class UsuariosComponent implements OnInit {
   // Devuelve la lista de todos los usuarios
   mostrarTodos() {
     this.usuarioDetalle = null;
-    this.usuarios = this.db.obtenerUsuarios();
+
+    if ( this.esEspecialista ) {
+      this.usuarios = this.db.obtenerPacientes( this.authenticationService.usuario );
+    } else {
+      this.usuarios = this.db.obtenerUsuarios();
+    }
   }
 
   // Devuelve la lista de todos los pacientes
@@ -58,15 +63,15 @@ export class UsuariosComponent implements OnInit {
   }
 
   get esAdmin(): boolean {
-    return this.usuarioDetalle.rol == this.roles[0];
+    return this.authenticationService.usuario.rol == this.roles[0];
   }
 
   get esEspecialista(): boolean {
-    return this.usuarioDetalle.rol == this.roles[1];
+    return this.authenticationService.usuario.rol == this.roles[1];
   }
 
   get esPaciente(): boolean {
-    return this.usuarioDetalle.rol == this.roles[2];
+    return this.authenticationService.usuario.rol == this.roles[2];
   }
 
   crearAdmin() {

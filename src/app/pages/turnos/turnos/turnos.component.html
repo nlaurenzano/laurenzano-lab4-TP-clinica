@@ -59,7 +59,7 @@
 		          <div class="row icon-boxes justify-content-center">
 
 		                <div class="col-xl-2 align-items-stretch text-center" *ngFor="let usuario of usuarios" (click)="seleccionarUsuario(usuario)">
-		                  	<div class="icon-box mt-4 mt-xl-0">
+		                  	<div appResaltarLista class="icon-box mt-4 mt-xl-0">
 		                    	<img src="{{usuario.archivoURL}}" class="img-fluid" alt="">
 		                  	</div>
 			                <h4 class="mt-2">{{usuario | nombreUsuario}}</h4>

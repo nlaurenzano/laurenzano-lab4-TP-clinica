@@ -2,12 +2,6 @@ import { Component } from '@angular/core';
 import { AuthenticationService } from "../../servicios/authentication.service";
 import { ArchivosService } from "../../servicios/archivos.service";
 
-// export type NavItem = {
-//   link: string;
-//   activo: boolean;
-//   etiqueta: string
-// }
-
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.component.html',
@@ -29,9 +23,24 @@ export class LayoutComponent {
     return '';
   }
 
+  get tituloUsuarios() {
+    if (this.esEspecialista) {
+      return 'Pacientes';
+    } else {
+      return 'Usuarios';
+    }
+  }
+
   get esAdmin() {
     if (this.authenticationService.usuario != null) {
       return this.authenticationService.usuario.rol == 'administrador';
+    }
+    return false;
+  }
+
+  get esEspecialista() {
+    if (this.authenticationService.usuario != null) {
+      return this.authenticationService.usuario.rol == 'especialista';
     }
     return false;
   }

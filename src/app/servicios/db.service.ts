@@ -3,6 +3,7 @@ import {
   doc,
   where,
   query,
+  limit,
   addDoc,
   setDoc,
   getDoc,
@@ -81,7 +82,36 @@ export class DbService {
     return usuariosResult;
   }
 
-  // Devuelve la lista de todos los usuarios con el rol indicado
+  // Devuelve la lista de todos los pacientes que el especialista atendió al menos una vez
+  async obtenerPacientes( usuario ) {
+    let usuariosResult = [];
+    let turnosResult = [];
+    const turnosRef = collection(this.fs, "turnos");
+    const q = query(turnosRef, 
+      where("especialista.email", "==", usuario.email), 
+      where("estado", "==", 'finalizado'), 
+      orderBy('paciente.email'));
+
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      if ( turnosResult.every((turnoEmail)=>{return turnoEmail!=doc.data().paciente.email}) ) {
+        turnosResult.push( doc.data().paciente.email );
+      }
+    });
+
+    turnosResult.forEach((turnoEmail)=>{
+      console.log('turnoEmail '+turnoEmail);
+
+      this.obtenerUsuarioPorEmail(turnoEmail)
+        .then((usuario)=>{
+          usuariosResult.push(usuario);
+        });
+    });
+    
+    return usuariosResult;
+  }
+
+  // Devuelve el usuario con el uid indicado
   async obtenerUsuarioPorUid( uid ) {
 
     let usuarioResult = null;
@@ -100,6 +130,32 @@ export class DbService {
       especialidad: docSnap.data().especialidad,
       habilitado: docSnap.data().habilitado
     }
+
+    return usuarioResult;
+  }
+
+  // Devuelve el usuario con el email indicado
+  async obtenerUsuarioPorEmail( email ) {
+    let usuarioResult = null;
+    const usuariosRef = collection(this.fs, "usuarios");
+    const q = query(usuariosRef, where("email", "==", email), limit(1));
+    const querySnapshot = await getDocs(q);
+
+    querySnapshot.forEach((doc) => {
+      usuarioResult = {
+        id: doc.id,
+        rol: doc.data().rol,
+        nombre: doc.data().nombre,
+        apellido: doc.data().apellido,
+        edad: doc.data().edad,
+        dni: doc.data().dni,
+        email: doc.data().email,
+        clave: doc.data().clave,
+        obraSocial: doc.data().obraSocial,
+        especialidad: doc.data().especialidad,
+        habilitado: doc.data().habilitado
+      };
+    });
 
     return usuarioResult;
   }
