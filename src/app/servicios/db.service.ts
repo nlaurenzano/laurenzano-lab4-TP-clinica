@@ -100,8 +100,6 @@ export class DbService {
     });
 
     turnosResult.forEach((turnoEmail)=>{
-      console.log('turnoEmail '+turnoEmail);
-
       this.obtenerUsuarioPorEmail(turnoEmail)
         .then((usuario)=>{
           usuariosResult.push(usuario);
@@ -205,7 +203,7 @@ export class DbService {
         nombre: turnoSolicitud.paciente.nombre,
         apellido: turnoSolicitud.paciente.apellido
       },
-      estado: turnoSolicitud.estado,
+      estado: turnoSolicitud.estado
     };
     const turnosRef = collection(this.fs, "turnos");
     await addDoc( turnosRef, turno );
@@ -230,6 +228,7 @@ export class DbService {
         comentario: doc.data().comentario,
         calificacion: doc.data().calificacion,
         encuesta: doc.data().encuesta,
+        historia: doc.data().historia
       });
     });
     return turnosResult;
@@ -254,6 +253,7 @@ export class DbService {
         comentario: doc.data().comentario,
         calificacion: doc.data().calificacion,
         encuesta: doc.data().encuesta,
+        historia: doc.data().historia
       });
     });
     return turnosResult;
@@ -277,6 +277,7 @@ export class DbService {
         comentario: doc.data().comentario,
         calificacion: doc.data().calificacion,
         encuesta: doc.data().encuesta,
+        historia: doc.data().historia
       });
     });
 
@@ -306,22 +307,34 @@ export class DbService {
         comentario: doc.data().comentario,
         calificacion: doc.data().calificacion,
         encuesta: doc.data().encuesta,
+        historia: doc.data().historia
       });
     });
     return turnosResult;
   }
 
   actualizarTurno( turno, info ) {
+    let campos = null;
+
+    if ( turno.historia == null) {
+      campos = {
+        estado: turno.estado,
+        comentario: info.comentario,
+        calificacion: info.calificacion,
+        encuesta: info.encuesta
+      };
+    } else {
+      campos = {
+        estado: turno.estado,
+        comentario: info.comentario,
+        calificacion: info.calificacion,
+        encuesta: info.encuesta,
+        historia: turno.historia
+      };
+    }
 
     const docRef = doc(this.fs, "turnos", turno.id);
-    updateDoc(docRef, {
-      estado: turno.estado,
-      comentario: info.comentario,
-      calificacion: info.calificacion,
-      encuesta: info.encuesta
-    });
-
-
+    updateDoc(docRef, campos);
   }
 
 
