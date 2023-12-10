@@ -14,10 +14,7 @@ export class TurnosListaComponent implements OnInit {
   public turnos= [];
   public turnoSeleccionado = null;
 
-  ngOnInit() {
-    // this.listaPorDias();
-    // this.lista = this.listaPorDias();
-  }
+  ngOnInit() {}
 
   set setTurno( turno ) {
     this.turnoSeleccionado = turno;
@@ -64,6 +61,15 @@ export class TurnosListaComponent implements OnInit {
 
   get esListado() {
     return this.tipo == 'listado';
+  }
+
+  get esHistoria() {
+    return this.tipo == 'historia';
+  }
+
+  descargar() {
+    // TODO: Descarga de turnoSeleccionado en PDF
+
   }
 
 

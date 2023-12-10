@@ -6,16 +6,27 @@
 <ng-template #listaContenido>
 
 	<!-- Para listado de turnos -->
-	<div *ngIf="esListado" class="list-group">		
+	<h4 *ngIf="esHistoria" class="px-lg-5 mt-2">Turnos</h4>
+	<div *ngIf="esListado || esHistoria" class="list-group">		
+
 		<button appResaltarLista *ngFor="let turno of lista | async" type="button" class="list-group-item list-group-item-action" (click)="seleccionarTurno(turno)">
 			
 			<div class="row g-0 py-1">
-			    <div class="col-md-1">
-			    	<div class="icon"><i class=""></i></div>
-			    </div>
-			    <div class="col-md-11 d-flex">
-			      	<h5>{{turno.horario | date:'dd-LL-yyyy HH:mm'}} - {{turno.estado | titlecase}}</h5>
-			    </div>
+		    <div class="col-md-1">
+		    	<div class="icon"><i class=""></i></div>
+		    </div>
+		    <div class="col-md-11 d-flex">
+	      	<h5>{{turno.horario | date:'dd-LL-yyyy HH:mm'}} - {{turno.estado | titlecase}}</h5>
+
+	      	<div *ngIf="esHistoria" class="ms-auto">
+							<button type="button" class="btn btn-success btn-sm m-1" 
+							data-bs-toggle="modal" data-bs-target="#historiaModal" 
+							(click)="setTurno=turno">
+								Historia
+							</button>
+					</div>
+
+		    </div>
 			</div>
 		</button>
 	</div>
@@ -23,8 +34,9 @@
 	<!-- Para solicitud de turno -->
 	<div *ngIf="esSolicitud" class="d-flex flex-row">
 		<div *ngFor="let turnosDia of lista | async" class="d-flex flex-column">
-			<button *ngFor="let turno of turnosDia" [disabled]=!turno.disponible type="button" class="btn btn-success btn-sm m-1"
-			data-bs-toggle="modal" data-bs-target="#confirmarModal" (click)="setTurno=turno">
+			<button *ngFor="let turno of turnosDia" [disabled]=!turno.disponible type="button" 
+			class="btn btn-success btn-sm m-1" data-bs-toggle="modal" data-bs-target="#confirmarModal" 
+			(click)="setTurno=turno">
 				{{turno.horario | date:'dd-LL HH:mm'}}
 			</button>
 		</div>
@@ -33,7 +45,7 @@
 </ng-template>
 
 
-<!-- Modal -->
+<!-- Modal para confrimar turno -->
 <div class="modal fade" id="confirmarModal" tabindex="-1" aria-labelledby="confirmarModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -51,6 +63,51 @@
       <div class="modal-footer formulario">
         <button type="button" data-bs-dismiss="modal">Cancelar</button>
         <button type="button" data-bs-dismiss="modal" (click)="seleccionar()">Confirmar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal para mostrar historia clínica -->
+<div class="modal fade" id="historiaModal" tabindex="-1" aria-labelledby="historiaModalLabel" aria-hidden="true">
+<!-- <div *ngIf="turnoSeleccionado && turnoSeleccionado.historia" class="modal fade" id="historiaModal" tabindex="-1" aria-labelledby="historiaModalLabel" aria-hidden="true"> -->
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="historiaModalLabel">Historia clínica</h1>
+      </div>
+      <div class="modal-body">
+      	<form *ngIf="turnoSeleccionado" class="formulario">
+	      	<h4>{{turnoSeleccionado.especialista | nombreUsuario}}</h4>
+	      	<h5>{{turnoSeleccionado.especialidad | titlecase}}</h5>
+	      	<h5>{{turnoSeleccionado.horario | date:'dd-LL-yyyy HH:mm'}}</h5>
+      	</form>
+
+      	<div *ngIf="turnoSeleccionado && turnoSeleccionado.historia">
+	      	<h5>Altura: {{turnoSeleccionado.historia.altura}}</h5>
+	      	<h5>Peso: {{turnoSeleccionado.historia.peso}}</h5>
+	      	<h5>Temperatura: {{turnoSeleccionado.historia.temperatura}}</h5>
+	      	<h5>Presión: {{turnoSeleccionado.historia.presion}}</h5>
+
+	      	<h4>Datos adicionales:</h4>
+	    		<div *ngFor="let dato of turnoSeleccionado.historia.datosDinamicos" class="row">
+	    			<div *ngIf="dato.clave!=''" class="col col-lg-12">
+	     				<h5>{{dato.clave | titlecase}}: {{dato.valor}}</h5>
+						</div>
+					</div>
+				</div>
+
+
+
+
+
+
+      </div>
+
+      <div class="modal-footer formulario">
+        <button type="button" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" data-bs-dismiss="modal" (click)="descargar()">Descargar</button>
       </div>
     </div>
   </div>
