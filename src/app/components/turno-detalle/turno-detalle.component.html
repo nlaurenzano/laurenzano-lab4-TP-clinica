@@ -21,43 +21,37 @@
       	</div>
 
       	<form class="formulario">
-
       		<div class="d-flex justify-content-center mt-4">	
-	    		<button type="button" *ngIf="esCancelable" class="ms-1" data-bs-toggle="modal" data-bs-target="#turnoModal" (click)="setAccion='cancelar'">
-	    			Cancelar
-	    		</button>
-	    		<button type="button" *ngIf="esRechazable" class="ms-1" data-bs-toggle="modal" data-bs-target="#turnoModal" (click)="setAccion='rechazar'">
-	    			Rechazar
-	    		</button>
-	    		<button type="button" *ngIf="esFinalizable" class="ms-1" data-bs-toggle="modal" data-bs-target="#turnoModal" (click)="setAccion='finalizar'">
-	    			Finalizar
-	    		</button>
-	    		<button type="button" *ngIf="esEncuestable" class="ms-1" data-bs-toggle="modal" data-bs-target="#turnoModal" (click)="setAccion='encuesta'">
-	    			Encuesta
-	    		</button>
-	    		<button type="button" *ngIf="esCalificable" class="ms-1" data-bs-toggle="modal" data-bs-target="#turnoModal" (click)="setAccion='calificar'">
-		    		Calificar
-		    	</button>
-	    		<button type="button" *ngIf="esAceptable" class="ms-1" (click)="aceptarTurno()">Aceptar</button>
-    		</div>
-
-
-
+		    		<button type="button" *ngIf="esCancelable" class="ms-1" data-bs-toggle="modal" data-bs-target="#turnoModal" (click)="setAccion='cancelar'">
+		    			Cancelar
+		    		</button>
+		    		<button type="button" *ngIf="esRechazable" class="ms-1" data-bs-toggle="modal" data-bs-target="#turnoModal" (click)="setAccion='rechazar'">
+		    			Rechazar
+		    		</button>
+		    		<button type="button" *ngIf="esFinalizable" class="ms-1" data-bs-toggle="modal" data-bs-target="#turnoModal" (click)="setAccion='finalizar'">
+		    			Finalizar
+		    		</button>
+		    		<button type="button" *ngIf="esEncuestable" class="ms-1" data-bs-toggle="modal" data-bs-target="#turnoModal" (click)="setAccion='encuesta'">
+		    			Encuesta
+		    		</button>
+		    		<button type="button" *ngIf="esCalificable" class="ms-1" data-bs-toggle="modal" data-bs-target="#turnoModal" (click)="setAccion='calificar'">
+			    		Calificar
+			    	</button>
+		    		<button type="button" *ngIf="esAceptable" class="ms-1" (click)="aceptarTurno()">Aceptar</button>
+	    		</div>
       	</form>
-
 
     </div>
 </div>
 
 
 <!-- Modal para crear entrada en la historia clínica -->
-
-<div *ngIf="datos" class="modal fade" id="historiaModal" tabindex="-1" aria-hidden="true">
+<div *ngIf="datos" class="modal fade" id="historiaModal1" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-        <div class="modal-header">
-            <h1 class="modal-title fs-5" >Historia clínica</h1>
-        </div>
+      <div class="modal-header">
+          <h1 class="modal-title fs-5">Historia clínica 2</h1>
+      </div>
 
       <div class="modal-body">
         <form class="formulario">
@@ -140,7 +134,7 @@
         <button type="button" data-bs-dismiss="modal" (click)="resetearInfo()">Cancelar</button>
 
         <button *ngIf="!esFinalizable" type="button" data-bs-dismiss="modal" (click)="confirmarAccion()">Confirmar</button>
-				<button *ngIf="esFinalizable" type="button" data-bs-toggle="modal" data-bs-target="#historiaModal">Confirmar 2</button>
+				<button *ngIf="esFinalizable" type="button" data-bs-toggle="modal" data-bs-target="#historiaModal1">Confirmar</button>
 
       </div>
     </div>

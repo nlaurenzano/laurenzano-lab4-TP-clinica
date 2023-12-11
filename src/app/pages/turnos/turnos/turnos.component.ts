@@ -19,7 +19,9 @@ export class TurnosComponent implements OnInit {
   public turnoSeleccionado = null;
   public especialidadSeleccionada = '';
   public usuarioSeleccionado = null;
+  public datosTurnoFiltro = null;
   public usuarios;
+  public subtitulo: string = '';
 
   constructor( 
     public authenticationService: AuthenticationService,
@@ -57,12 +59,21 @@ export class TurnosComponent implements OnInit {
     return this.usuario.rol == 'administrador';
   }
 
+  get esPaciente() {
+    return this.usuario.rol == 'paciente';
+  }
+
+  get esEspecialista() {
+    return this.usuario.rol == 'especialista';
+  }
+
   filtrar() {
     this.filtro = true;
     this.turnoSeleccionado = null;
     this.especialidadSeleccionada = '';
     this.usuarioSeleccionado = null;
     this.especialidades = [];
+    this.subtitulo = 'Seleccionar Especialidad';
 
     this.turnosInicial.filter((item)=>{
         if (!this.especialidades.includes(item.especialidad)) {
@@ -77,15 +88,35 @@ export class TurnosComponent implements OnInit {
     return this.turnos
       .then((turnos)=>{
         return  this.turnosInicial.filter((item)=>{
-          let email = item.especialista.email;
-          if ( this.usuario.rol == 'especialista' ) {
-            email = item.paciente.email;
-          }
-          if ( item.especialidad == this.especialidadSeleccionada && email == this.usuarioSeleccionado.email ) {
+          if ( this.compararTurnoFiltro(item) ) {
             return item;
           }
         });
       });
+  }
+
+  // Devuelve true si el turno coincide con los datos del filtro
+  private compararTurnoFiltro( turno ) {
+    let resultado = false;
+    let email = turno.especialista.email;
+
+    if ( this.usuario.rol == 'especialista' ) {
+      email = turno.paciente.email;
+    }
+
+    if ( turno.especialidad == this.especialidadSeleccionada && email == this.usuarioSeleccionado.email ) {
+      resultado = true;
+    }
+
+    // Pacientes y Especialistas además filtran por datos del turno
+    if ( !this.esAdmin ) {
+    // datosTurnoFiltro
+      
+
+      resultado = resultado && true;
+    }
+
+    return resultado;
   }
 
   seleccionarTurno( valor ) {
@@ -94,11 +125,18 @@ export class TurnosComponent implements OnInit {
 
   seleccionarEspecialidad( valor ) {
     this.especialidadSeleccionada = valor;
+    this.subtitulo = this.esEspecialista ? 'Seleccionar Paciente' : 'Seleccionar Especialista';
     this.mostrarUsuarios();
   }
 
   seleccionarUsuario( valor ) {
     this.usuarioSeleccionado = valor;
+    this.subtitulo = this.esAdmin ? '' : 'Seleccionar Datos del Turno';
+  }
+
+  agregarDatosTurno( valor ) {
+    this.datosTurnoFiltro = valor;
+    this.subtitulo = '';
     this.turnos = this.aplicarFiltro();
   }
 
@@ -133,5 +171,6 @@ export class TurnosComponent implements OnInit {
 
     this.usuarios = usuarios;
   }
+
 
 }

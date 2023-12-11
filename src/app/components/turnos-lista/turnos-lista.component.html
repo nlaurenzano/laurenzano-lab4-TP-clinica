@@ -6,7 +6,7 @@
 <ng-template #listaContenido>
 
 	<!-- Para listado de turnos -->
-	<h4 *ngIf="esHistoria" class="px-lg-5 mt-2">Turnos</h4>
+	<!-- <h4 *ngIf="esHistoria" class="px-lg-5 mt-2">Turnos</h4> -->
 	<div *ngIf="esListado || esHistoria" class="list-group">		
 
 		<button appResaltarLista *ngFor="let turno of lista | async" type="button" class="list-group-item list-group-item-action" (click)="seleccionarTurno(turno)">
@@ -45,7 +45,7 @@
 </ng-template>
 
 
-<!-- Modal para confrimar turno -->
+<!-- Modal para confirmar turno -->
 <div class="modal fade" id="confirmarModal" tabindex="-1" aria-labelledby="confirmarModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -97,11 +97,6 @@
 						</div>
 					</div>
 				</div>
-
-
-
-
-
 
       </div>
 

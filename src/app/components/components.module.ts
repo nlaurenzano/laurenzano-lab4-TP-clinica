@@ -10,6 +10,7 @@ import { TurnosListaComponent } from './turnos-lista/turnos-lista.component';
 import { EspecialidadesListaComponent } from './especialidades-lista/especialidades-lista.component';
 import { TurnoDetalleComponent } from './turno-detalle/turno-detalle.component';
 import { SpinnerComponent } from './spinner/spinner.component';
+import { TurnoFiltroComponent } from './turno-filtro/turno-filtro.component';
 
 import { PipesModule } from '../pipes/pipes.module';
 import { DirectivasModule } from '../directivas/directivas.module';
@@ -22,7 +23,8 @@ import { DirectivasModule } from '../directivas/directivas.module';
     TurnosListaComponent,
     EspecialidadesListaComponent,
     TurnoDetalleComponent,
-    SpinnerComponent
+    SpinnerComponent,
+    TurnoFiltroComponent
   ],
   exports: [
     LayoutComponent,
@@ -31,7 +33,8 @@ import { DirectivasModule } from '../directivas/directivas.module';
     TurnosListaComponent,
     EspecialidadesListaComponent,
     TurnoDetalleComponent,
-    SpinnerComponent
+    SpinnerComponent,
+    TurnoFiltroComponent
   ],
   imports: [
     CommonModule,
