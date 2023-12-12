@@ -54,6 +54,7 @@
 					<usuario-detalle [datos]="usuarioDetalle" [imagenes]="usuarioImagenes"></usuario-detalle>
 
 					<!-- Listado de turnos -->
+					<h4 *ngIf="turnosPaciente" class="px-lg-5 mt-2">Turnos</h4>
 					<turnos-lista *ngIf="turnosPaciente" [lista]="turnosPaciente" [tipo]="'historia'"></turnos-lista>
 				</div>
 

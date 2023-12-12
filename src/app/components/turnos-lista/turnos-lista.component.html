@@ -6,7 +6,6 @@
 <ng-template #listaContenido>
 
 	<!-- Para listado de turnos -->
-	<!-- <h4 *ngIf="esHistoria" class="px-lg-5 mt-2">Turnos</h4> -->
 	<div *ngIf="esListado || esHistoria" class="list-group">		
 
 		<button appResaltarLista *ngFor="let turno of lista | async" type="button" class="list-group-item list-group-item-action" (click)="seleccionarTurno(turno)">

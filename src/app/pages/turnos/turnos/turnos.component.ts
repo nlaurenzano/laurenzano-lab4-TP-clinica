@@ -95,29 +95,74 @@ export class TurnosComponent implements OnInit {
       });
   }
 
+
   // Devuelve true si el turno coincide con los datos del filtro
   private compararTurnoFiltro( turno ) {
-    let resultado = false;
     let email = turno.especialista.email;
-
     if ( this.usuario.rol == 'especialista' ) {
       email = turno.paciente.email;
     }
 
-    if ( turno.especialidad == this.especialidadSeleccionada && email == this.usuarioSeleccionado.email ) {
-      resultado = true;
+    if ( turno.especialidad != this.especialidadSeleccionada || email != this.usuarioSeleccionado.email ) {
+      return false;
     }
 
     // Pacientes y Especialistas además filtran por datos del turno
     if ( !this.esAdmin ) {
-    // datosTurnoFiltro
-      
 
-      resultado = resultado && true;
+      if ( this.datosTurnoFiltro.horario != '' ) {
+        if ( this.datosTurnoFiltro.horario != turno.horario ) {
+          return false;
+        }
+      }
+
+      if ( this.datosTurnoFiltro.estado != '' ) {
+        if ( this.datosTurnoFiltro.estado != turno.estado ) {
+          return false;
+        }
+      }
+
+      // Los turnos finalizados, además tienen historia clínica
+      if ( turno.estado == 'finalizado' ) {
+
+        if ( this.datosTurnoFiltro.historia.altura != '' ) {
+          if ( this.datosTurnoFiltro.historia.altura != turno.historia.altura ) {
+            return false;
+          }
+        }
+
+        if ( this.datosTurnoFiltro.historia.peso != '' ) {
+          if ( this.datosTurnoFiltro.historia.peso != turno.historia.peso ) {
+            return false;
+          }
+        }
+
+        if ( this.datosTurnoFiltro.historia.temperatura != '' ) {
+          if ( this.datosTurnoFiltro.historia.temperatura != turno.historia.temperatura ) {
+            return false;
+          }
+        }
+
+        if ( this.datosTurnoFiltro.historia.presion != '' ) {
+          if ( this.datosTurnoFiltro.historia.presion != turno.historia.presion ) {
+            return false;
+          }
+        }
+
+        for ( let i = 0; i < 3; i++ ) {
+          if ( this.datosTurnoFiltro.historia.datosDinamicos[i].clave != '' && this.datosTurnoFiltro.historia.datosDinamicos[i].valor != '' ) {
+            if ( this.datosTurnoFiltro.historia.datosDinamicos[i].clave != turno.historia.datosDinamicos[i].clave || 
+                  this.datosTurnoFiltro.historia.datosDinamicos[i].valor != turno.historia.datosDinamicos[i].valor ) {
+              return false;
+            }
+          }
+        }
+      }
     }
 
-    return resultado;
+    return true;
   }
+
 
   seleccionarTurno( valor ) {
     this.turnoSeleccionado = valor;

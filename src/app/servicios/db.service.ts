@@ -270,6 +270,44 @@ export class DbService {
     return turnosResult;
   }
 
+  // Devuelve la lista con la cantidad indicada de turnos del paciente, con el especialista y estado indicados
+  async obtenerTurnosPacienteEspEstadoCantidad( usuario, especialista, estado, cantidad ) {
+    let turnosResult = [];
+    const turnosRef = collection(this.fs, "turnos");
+    let q = query(turnosRef, 
+        where("paciente.email", "==", usuario.email), 
+        where("especialista.email", "==", especialista.email), 
+        where("estado", "==", estado), 
+        orderBy('horario'));
+
+    if ( cantidad > 0 ) {
+      q = query(turnosRef, 
+        where("paciente.email", "==", usuario.email), 
+        where("especialista.email", "==", especialista.email), 
+        where("estado", "==", estado), 
+        orderBy('horario'), 
+        limit(cantidad));
+    }
+
+    const querySnapshot = await getDocs(q);
+
+    querySnapshot.forEach((doc) => {
+      turnosResult.push({
+        id: doc.id,
+        horario: doc.data().horario.toDate(),
+        especialista: doc.data().especialista,
+        especialidad: doc.data().especialidad,
+        paciente: doc.data().paciente,
+        estado: doc.data().estado,
+        comentario: doc.data().comentario,
+        calificacion: doc.data().calificacion,
+        encuesta: doc.data().encuesta,
+        historia: doc.data().historia
+      });
+    });
+    return turnosResult;
+  }
+
   // Devuelve la lista de todos los turnos del paciente
   async obtenerTurnosEspecialista( usuario ) {
     let turnosResult = [];

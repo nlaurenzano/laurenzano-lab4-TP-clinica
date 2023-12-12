@@ -17,6 +17,7 @@ export class UsuariosComponent implements OnInit {
   public usuarioImagenes: any;
   public turnosPaciente = null;
 
+  private usuario;
   private roles = ['administrador', 'especialista', 'paciente'];
 
   constructor( 
@@ -27,6 +28,7 @@ export class UsuariosComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.usuario = this.authenticationService.usuario;
     this.mostrarTodos();
   }
 
@@ -43,7 +45,7 @@ export class UsuariosComponent implements OnInit {
       if ( this.esEspecialista ) {
         cantidadTurnos = 3;
       }
-      this.turnosPaciente = this.db.obtenerTurnosPacienteEstadoCantidad( this.usuarioDetalle, 'finalizado', cantidadTurnos );
+      this.turnosPaciente = this.db.obtenerTurnosPacienteEspEstadoCantidad( this.usuarioDetalle, this.usuario, 'finalizado', cantidadTurnos );
     }
   }
 
@@ -53,7 +55,7 @@ export class UsuariosComponent implements OnInit {
     this.turnosPaciente = null;
 
     if ( this.esEspecialista ) {
-      this.usuarios = this.db.obtenerPacientes( this.authenticationService.usuario );
+      this.usuarios = this.db.obtenerPacientes( this.usuario );
     } else {
       this.usuarios = this.db.obtenerUsuarios();
     }
@@ -81,15 +83,15 @@ export class UsuariosComponent implements OnInit {
   }
 
   get esAdmin(): boolean {
-    return this.authenticationService.usuario.rol == this.roles[0];
+    return this.usuario.rol == this.roles[0];
   }
 
   get esEspecialista(): boolean {
-    return this.authenticationService.usuario.rol == this.roles[1];
+    return this.usuario.rol == this.roles[1];
   }
 
   get esPaciente(): boolean {
-    return this.authenticationService.usuario.rol == this.roles[2];
+    return this.usuario.rol == this.roles[2];
   }
 
   crearAdmin() {
