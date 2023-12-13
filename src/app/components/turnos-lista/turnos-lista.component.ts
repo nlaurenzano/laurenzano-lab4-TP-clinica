@@ -1,5 +1,6 @@
-import { Component, Input, Output, EventEmitter, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ElementRef, ViewChild } from '@angular/core';
 
+import { AuthenticationService } from "../../servicios/authentication.service";
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 
@@ -8,7 +9,7 @@ import html2canvas from 'html2canvas';
   templateUrl: './turnos-lista.component.html',
   styleUrls: ['./turnos-lista.component.css']
 })
-export class TurnosListaComponent implements OnInit {
+export class TurnosListaComponent {
 
   @Input() lista;
   @Input() tipo;
@@ -18,8 +19,13 @@ export class TurnosListaComponent implements OnInit {
 
   public turnos= [];
   public turnoSeleccionado = null;
+  public horaActual = new Date();
 
-  ngOnInit() {}
+  constructor( public authenticationService: AuthenticationService ) {}
+
+  get esPaciente() {
+    return this.authenticationService.usuario.rol == 'paciente';
+  }
 
   set setTurno( turno ) {
     this.turnoSeleccionado = turno;
@@ -46,15 +52,13 @@ export class TurnosListaComponent implements OnInit {
   }
 
   descargar() {
-      // TODO: Descarga de turnoSeleccionado en PDF
-
     const DATA = this.listado.nativeElement;
-
     const doc = new jsPDF('p', 'pt', 'a4');
     const options = {
       background: 'white',
       scale: 3
     };
+
     html2canvas(DATA, options).then((canvas) => {
 
       const img = canvas.toDataURL('image/PNG');
@@ -68,7 +72,7 @@ export class TurnosListaComponent implements OnInit {
       doc.addImage(img, 'PNG', bufferX, bufferY, pdfWidth, pdfHeight, undefined, 'FAST');
       return doc;
     }).then((docResult) => {
-      docResult.save(`${new Date().toISOString()}_tutorial.pdf`);
+      docResult.save(`historia_${new Date().toISOString()}.pdf`);
     });
 
   }

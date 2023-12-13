@@ -72,12 +72,13 @@
 <div class="modal fade" id="historiaModal" #historiaModal tabindex="-1" aria-labelledby="historiaModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header d-flex">
         <h1 class="modal-title fs-5" id="historiaModalLabel">Historia clínica</h1>
+        <div class="icon ms-auto"><i class="fa-solid fa-house-chimney-medical" routerLink="/"></i></div>
       </div>
       <div class="modal-body">
       	<form *ngIf="turnoSeleccionado" class="formulario">
-	      	<h4>{{turnoSeleccionado.horario | date:'dd-LL-yyyy HH:mm'}}</h4>
+	      	<h4>Turno: {{turnoSeleccionado.horario | date:'dd-LL-yyyy HH:mm'}}</h4>
 	      	<h5>Paciente: {{turnoSeleccionado.paciente | nombreUsuario}}</h5>
 	      	<h5>Especialista: {{turnoSeleccionado.especialista | nombreUsuario}}</h5>
 	      	<h5>Especialidad: {{turnoSeleccionado.especialidad | titlecase}}</h5>
@@ -95,13 +96,16 @@
 	     				<h5>{{dato.clave | titlecase}}: {{dato.valor | traducirBoolean | titlecase}}</h5>
 						</div>
 					</div>
+
+					<br>
+					<p>Fecha de emisión: {{horaActual | date:'dd-LL-yyyy HH:mm'}}</p>
 				</div>
 
       </div>
 
-      <div class="modal-footer formulario">
+      <div class="modal-footer formulario" data-html2canvas-ignore>
         <button type="button" data-bs-dismiss="modal">Cerrar</button>
-        <button type="button" data-bs-dismiss="modal" (click)="descargar()">Descargar</button>
+        <button *ngIf="esPaciente" type="button" data-bs-dismiss="modal" (click)="descargar()">Descargar</button>
       </div>
     </div>
   </div>
