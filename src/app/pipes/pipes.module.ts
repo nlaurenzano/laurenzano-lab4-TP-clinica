@@ -4,17 +4,20 @@ import { TitleCasePipe } from '@angular/common';
 
 import { PipesRoutingModule } from './pipes-routing.module';
 import { NombreUsuarioPipe } from './nombre-usuario.pipe';
+import { TraducirBooleanPipe } from './traducir-boolean.pipe';
 
 @NgModule({
   declarations: [
-    NombreUsuarioPipe
+    NombreUsuarioPipe,
+    TraducirBooleanPipe
   ],
   imports: [
     CommonModule,
     PipesRoutingModule
   ],
   exports: [
-    NombreUsuarioPipe
+    NombreUsuarioPipe,
+    TraducirBooleanPipe
   ],
   providers: [
     TitleCasePipe

@@ -69,8 +69,7 @@
 
 
 <!-- Modal para mostrar historia clínica -->
-<div class="modal fade" id="historiaModal" tabindex="-1" aria-labelledby="historiaModalLabel" aria-hidden="true">
-<!-- <div *ngIf="turnoSeleccionado && turnoSeleccionado.historia" class="modal fade" id="historiaModal" tabindex="-1" aria-labelledby="historiaModalLabel" aria-hidden="true"> -->
+<div class="modal fade" id="historiaModal" #historiaModal tabindex="-1" aria-labelledby="historiaModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -78,9 +77,10 @@
       </div>
       <div class="modal-body">
       	<form *ngIf="turnoSeleccionado" class="formulario">
-	      	<h4>{{turnoSeleccionado.especialista | nombreUsuario}}</h4>
-	      	<h5>{{turnoSeleccionado.especialidad | titlecase}}</h5>
-	      	<h5>{{turnoSeleccionado.horario | date:'dd-LL-yyyy HH:mm'}}</h5>
+	      	<h4>{{turnoSeleccionado.horario | date:'dd-LL-yyyy HH:mm'}}</h4>
+	      	<h5>Paciente: {{turnoSeleccionado.paciente | nombreUsuario}}</h5>
+	      	<h5>Especialista: {{turnoSeleccionado.especialista | nombreUsuario}}</h5>
+	      	<h5>Especialidad: {{turnoSeleccionado.especialidad | titlecase}}</h5>
       	</form>
 
       	<div *ngIf="turnoSeleccionado && turnoSeleccionado.historia">
@@ -92,7 +92,7 @@
 	      	<h4>Datos adicionales:</h4>
 	    		<div *ngFor="let dato of turnoSeleccionado.historia.datosDinamicos" class="row">
 	    			<div *ngIf="dato.clave!=''" class="col col-lg-12">
-	     				<h5>{{dato.clave | titlecase}}: {{dato.valor}}</h5>
+	     				<h5>{{dato.clave | titlecase}}: {{dato.valor | traducirBoolean | titlecase}}</h5>
 						</div>
 					</div>
 				</div>
