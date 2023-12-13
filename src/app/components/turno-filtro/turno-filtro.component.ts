@@ -21,6 +21,9 @@ export class TurnoFiltroComponent {
       datosDinamicos: [
         {clave: '', valor: ''},
         {clave: '', valor: ''},
+        {clave: '', valor: ''},
+        {clave: '', valor: ''},
+        {clave: '', valor: ''},
         {clave: '', valor: ''}
       ]
      }

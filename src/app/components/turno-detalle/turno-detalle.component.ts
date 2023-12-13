@@ -24,6 +24,9 @@ export class TurnoDetalleComponent {
     datosDinamicos: [
       {clave: '', valor: ''},
       {clave: '', valor: ''},
+      {clave: '', valor: ''},
+      {clave: '', valor: ''},
+      {clave: '', valor: ''},
       {clave: '', valor: ''}
     ]
    };

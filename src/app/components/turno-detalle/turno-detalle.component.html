@@ -50,7 +50,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-          <h1 class="modal-title fs-5">Historia clínica 2</h1>
+          <h1 class="modal-title fs-5">Historia clínica</h1>
       </div>
 
       <div class="modal-body">
@@ -85,18 +85,78 @@
 	    		</div>
 
 					<label class="mb-1">Datos adicionales</label>
-	    		<div *ngFor="let dato of historia.datosDinamicos" class="row">
-	    			<div class="col col-lg-6">
+	    		<div *ngFor="let dato of historia.datosDinamicos; index as i">
+		    		<div *ngIf="i < 3"  class="row">
+		    			<div class="col col-lg-6">
+			        	<div class="form-group">
+										<input type="text" class="form-control" placeholder="Dato" name="clave{{i}}" [(ngModel)]="dato.clave">
+				    		</div>
+							</div>
+		    			<div class="col col-lg-6">
+			        	<div class="form-group">
+										<input type="text" class="form-control" placeholder="Valor" name="valor{{i}}" [(ngModel)]="dato.valor">
+				    		</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- Datos dinámicos agregados al sprint 3 -->
+					<!-- Un control de rango entre 0 y 100. -->
+					<div class="row">
+						<div class="col col-lg-6">
 		        	<div class="form-group">
-									<input type="text" class="form-control" placeholder="Dato" name="clave" [(ngModel)]="dato.clave">
+									<input type="text" class="form-control" placeholder="Rango" name="claveRango" [(ngModel)]="historia.datosDinamicos[3].clave">
 			    		</div>
 						</div>
 	    			<div class="col col-lg-6">
 		        	<div class="form-group">
-									<input type="text" class="form-control" placeholder="Valor" name="valor" [(ngModel)]="dato.valor">
+									<input type="text" class="form-control" disabled placeholder="Valor" [value]="historia.datosDinamicos[3].valor">
 			    		</div>
 						</div>
 					</div>
+
+					<!-- Slider para el rango. -->
+					<div class="row">
+						<div class="col col-lg-12">
+		        	<div class="form-group">
+		        		<div class="d-flex">
+		        			<label>0</label>
+		        			<label class="ms-auto">100</label>
+		        		</div>
+									<input type="range" class="form-range" min="0" max="100" id="valorRango" name="valorRango" [(ngModel)]="historia.datosDinamicos[3].valor">
+			    		</div>
+						</div>
+					</div>
+
+					<!-- Un cuadro de texto numérico. -->
+					<div class="row">
+						<div class="col col-lg-6">
+		        	<div class="form-group">
+									<input type="text" class="form-control" placeholder="Número" name="claveNro" [(ngModel)]="historia.datosDinamicos[4].clave">
+			    		</div>
+						</div>
+	    			<div class="col col-lg-6">
+		        	<div class="form-group">
+									<input type="number" class="form-control" placeholder="Valor" name="valorNro" [(ngModel)]="historia.datosDinamicos[4].valor">
+			    		</div>
+						</div>
+					</div>
+
+					<!-- Switch con “Si” o “No”. -->
+					<div class="row">
+						<div class="col col-lg-6">
+		        	<div class="form-group">
+									<input type="text" class="form-control" placeholder="Switch" name="claveSwitch" [(ngModel)]="historia.datosDinamicos[5].clave">
+			    		</div>
+						</div>
+	    			<div class="col col-lg-6">
+	    				<div class="form-check form-switch">
+							  <input class="form-check-input switch" type="checkbox" role="switch" id="valorSwitch" name="valorSwitch" [(ngModel)]="historia.datosDinamicos[5].valor">
+							  <label class="form-check-label" for="valorSwitch">No / Sí</label>
+							</div>
+						</div>
+					</div>
+
         </form>
       </div>
 

@@ -149,7 +149,7 @@ export class TurnosComponent implements OnInit {
           }
         }
 
-        for ( let i = 0; i < 3; i++ ) {
+        for ( let i = 0; i < 6; i++ ) {
           if ( this.datosTurnoFiltro.historia.datosDinamicos[i].clave != '' && this.datosTurnoFiltro.historia.datosDinamicos[i].valor != '' ) {
             if ( this.datosTurnoFiltro.historia.datosDinamicos[i].clave != turno.historia.datosDinamicos[i].clave || 
                   this.datosTurnoFiltro.historia.datosDinamicos[i].valor != turno.historia.datosDinamicos[i].valor ) {
