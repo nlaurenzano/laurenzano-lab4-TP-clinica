@@ -1,6 +1,8 @@
-<!-- Detalles -->
-<div class="usuarios detalle">
-	<div *ngIf="datos" class="detalle d-flex align-items-start">
+<div *ngIf="datos" class="usuarios">
+<div class="card p-1 mx-auto">
+<div class="card-body">
+
+	<div class="detalle d-flex align-items-start">
 
       	<div class="d-flex flex-column">
           	<div *ngFor="let imagen of imagenes | async" class="pic my-1">
@@ -9,7 +11,7 @@
       	</div>
 
       	<div class="detalle-info">
-            <h4>{{datos.nombre | titlecase}} {{datos.apellido | titlecase}}</h4>
+            <h4>{{datos | nombreUsuario}}</h4>
             <span>{{datos.rol | titlecase}}</span>
             <p>Edad: {{datos.edad}}</p>
             <p>DNI: {{datos.dni}}</p>
@@ -21,4 +23,5 @@
             </p>
       	</div>
     </div>
-</div>
+
+</div></div></div>

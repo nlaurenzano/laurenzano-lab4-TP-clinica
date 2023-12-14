@@ -9,7 +9,7 @@ import { AuthenticationService } from "../servicios/authentication.service";
 })
 export class AdminGuard implements CanActivate {
 
-  constructor( public authenticationService: AuthenticationService, public router: Router ) {}
+  constructor( public authenticationService: AuthenticationService ) {}
 
   canActivate(
     route: ActivatedRouteSnapshot,

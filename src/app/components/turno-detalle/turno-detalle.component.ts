@@ -16,6 +16,21 @@ export class TurnoDetalleComponent {
   private accion: string = '';
   public info = {comentario:'', calificacion:'', encuesta:''};
 
+  public historia = {
+    altura: '',
+    peso: '',
+    temperatura: '',
+    presion: '',
+    datosDinamicos: [
+      {clave: '', valor: ''},
+      {clave: '', valor: ''},
+      {clave: '', valor: ''},
+      {clave: '', valor: ''},
+      {clave: '', valor: ''},
+      {clave: '', valor: ''}
+    ]
+   };
+
   constructor( public authenticationService: AuthenticationService, public db: DbService ) {}
 
   set setAccion( valor ) {
@@ -105,7 +120,6 @@ export class TurnoDetalleComponent {
     return resultado;
   }
 
-
   aceptarTurno() {
     this.datos.estado = 'aceptado';
     this.db.actualizarTurno(this.datos, this.info);
@@ -118,6 +132,7 @@ export class TurnoDetalleComponent {
         break;
       case 'finalizar':
         this.datos.estado = 'finalizado';
+        this.datos.historia = this.historia;
         break;
       case 'rechazar':
         this.datos.estado = 'rechazado';

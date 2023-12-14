@@ -4,9 +4,9 @@
 
       	<div class="detalle-info">
             <h4>{{datos.estado | titlecase}}</h4>
-            <h4>{{datos.especialista.nombre | titlecase}} {{datos.especialista.apellido | titlecase}}</h4>
+            <h4>{{datos.especialista | nombreUsuario}}</h4>
             
-            <p>Paciente: {{datos.paciente.nombre | titlecase}} {{datos.paciente.apellido | titlecase}}</p>
+            <p>Paciente: {{datos.paciente | nombreUsuario}}</p>
             <p>Especialidad: {{datos.especialidad | titlecase}}</p>
             <p>Horario: {{datos.horario | date:'dd-LL-yyyy HH:mm'}}</p>
 
@@ -21,57 +21,181 @@
       	</div>
 
       	<form class="formulario">
-
       		<div class="d-flex justify-content-center mt-4">	
-	    		<button type="button" *ngIf="esCancelable" class="ms-1" data-bs-toggle="modal" data-bs-target="#turnoModal" (click)="setAccion='cancelar'">
-	    			Cancelar
-	    		</button>
-	    		<button type="button" *ngIf="esRechazable" class="ms-1" data-bs-toggle="modal" data-bs-target="#turnoModal" (click)="setAccion='rechazar'">
-	    			Rechazar
-	    		</button>
-	    		<button type="button" *ngIf="esFinalizable" class="ms-1" data-bs-toggle="modal" data-bs-target="#turnoModal" (click)="setAccion='finalizar'">
-	    			Finalizar
-	    		</button>
-	    		<button type="button" *ngIf="esEncuestable" class="ms-1" data-bs-toggle="modal" data-bs-target="#turnoModal" (click)="setAccion='encuesta'">
-	    			Encuesta
-	    		</button>
-	    		<button type="button" *ngIf="esCalificable" class="ms-1" data-bs-toggle="modal" data-bs-target="#turnoModal" (click)="setAccion='calificar'">
-		    		Calificar
-		    	</button>
-	    		<button type="button" *ngIf="esAceptable" class="ms-1" (click)="aceptarTurno()">Aceptar</button>
-    		</div>
-
-
-
+		    		<button type="button" *ngIf="esCancelable" class="ms-1" data-bs-toggle="modal" data-bs-target="#turnoModal" (click)="setAccion='cancelar'">
+		    			Cancelar
+		    		</button>
+		    		<button type="button" *ngIf="esRechazable" class="ms-1" data-bs-toggle="modal" data-bs-target="#turnoModal" (click)="setAccion='rechazar'">
+		    			Rechazar
+		    		</button>
+		    		<button type="button" *ngIf="esFinalizable" class="ms-1" data-bs-toggle="modal" data-bs-target="#turnoModal" (click)="setAccion='finalizar'">
+		    			Finalizar
+		    		</button>
+		    		<button type="button" *ngIf="esEncuestable" class="ms-1" data-bs-toggle="modal" data-bs-target="#turnoModal" (click)="setAccion='encuesta'">
+		    			Encuesta
+		    		</button>
+		    		<button type="button" *ngIf="esCalificable" class="ms-1" data-bs-toggle="modal" data-bs-target="#turnoModal" (click)="setAccion='calificar'">
+			    		Calificar
+			    	</button>
+		    		<button type="button" *ngIf="esAceptable" class="ms-1" (click)="aceptarTurno()">Aceptar</button>
+	    		</div>
       	</form>
-
 
     </div>
 </div>
 
-<!-- Modal para dejar comentarios, encuesta y calificación -->
-<div class="modal fade" id="turnoModal" tabindex="-1" aria-labelledby="turnoModalLabel" aria-hidden="true">
+
+<!-- Modal para crear entrada en la historia clínica -->
+<div *ngIf="datos" class="modal fade" id="historiaModal1" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      	<div class="modal-header">
-	        <h1 *ngIf="getAccion=='cancelar'" class="modal-title fs-5" id="turnoModalLabel">Razón de la cancelación</h1>
-	        <h1 *ngIf="getAccion=='finalizar'" class="modal-title fs-5" id="turnoModalLabel">Comentario de la consulta</h1>
-	        <h1 *ngIf="getAccion=='calificar'" class="modal-title fs-5" id="turnoModalLabel">Calificar atención</h1>
-	        <h1 *ngIf="getAccion=='rechazar'" class="modal-title fs-5" id="turnoModalLabel">Razón del rechazo</h1>
-	        <h1 *ngIf="getAccion=='encuesta'" class="modal-title fs-5" id="turnoModalLabel">Encuesta: ¿Qué opina de nuestra clínica?</h1>
-      	</div>
+      <div class="modal-header">
+          <h1 class="modal-title fs-5">Historia clínica</h1>
+      </div>
 
       <div class="modal-body">
-      	<form *ngIf="datos" class="formulario">
-			<textarea *ngIf="getAccion=='finalizar' || getAccion=='rechazar' || getAccion=='cancelar'" class="form-control" id="comentario" name="comentario" #comentario [(ngModel)]="info.comentario"></textarea>
-			<textarea *ngIf="getAccion=='encuesta'" class="form-control" id="comentarioEncuesta" name="comentarioEncuesta" #comentarioEncuesta [(ngModel)]="info.encuesta"></textarea>
-			<textarea *ngIf="getAccion=='calificar'" class="form-control" id="calificacion" name="calificacion" #calificacion [(ngModel)]="info.calificacion"></textarea>
-      	</form>
+        <form class="formulario">
+
+        	<div class="form-group">
+	        	<div class="form-floating mb-3">
+							<input type="number" class="form-control" id="altura" name="altura" placeholder="Altura" [(ngModel)]="historia.altura">
+							<label for="altura">Altura</label>
+						</div>
+	    		</div>
+
+        	<div class="form-group">
+	        	<div class="form-floating mb-3">
+							<input type="number" class="form-control" id="peso" name="peso" placeholder="Peso" [(ngModel)]="historia.peso">
+							<label for="peso">Peso</label>
+						</div>
+	    		</div>
+
+        	<div class="form-group">
+	        	<div class="form-floating mb-3">
+							<input type="number" class="form-control" id="temperatura" name="temperatura" placeholder="Temperatura" [(ngModel)]="historia.temperatura">
+							<label for="temperatura">Temperatura</label>
+						</div>
+	    		</div>
+
+        	<div class="form-group">
+	        	<div class="form-floating mb-3">
+							<input type="number" class="form-control" id="presion" name="presion" placeholder="Presión" [(ngModel)]="historia.presion">
+							<label for="presion">Presión</label>
+						</div>
+	    		</div>
+
+					<label class="mb-1">Datos adicionales</label>
+	    		<div *ngFor="let dato of historia.datosDinamicos; index as i">
+		    		<div *ngIf="i < 3"  class="row">
+		    			<div class="col col-lg-6">
+			        	<div class="form-group">
+										<input type="text" class="form-control" placeholder="Dato" name="clave{{i}}" [(ngModel)]="dato.clave">
+				    		</div>
+							</div>
+		    			<div class="col col-lg-6">
+			        	<div class="form-group">
+										<input type="text" class="form-control" placeholder="Valor" name="valor{{i}}" [(ngModel)]="dato.valor">
+				    		</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- Datos dinámicos agregados al sprint 3 -->
+					<!-- Un control de rango entre 0 y 100. -->
+					<div class="row">
+						<div class="col col-lg-6">
+		        	<div class="form-group">
+									<input type="text" class="form-control" placeholder="Rango" name="claveRango" [(ngModel)]="historia.datosDinamicos[3].clave">
+			    		</div>
+						</div>
+	    			<div class="col col-lg-6">
+		        	<div class="form-group">
+									<input type="text" class="form-control" disabled placeholder="Valor" [value]="historia.datosDinamicos[3].valor">
+			    		</div>
+						</div>
+					</div>
+
+					<!-- Slider para el rango. -->
+					<div class="row">
+						<div class="col col-lg-12">
+		        	<div class="form-group">
+		        		<div class="d-flex">
+		        			<label>0</label>
+		        			<label class="ms-auto">100</label>
+		        		</div>
+									<input type="range" class="form-range" min="0" max="100" id="valorRango" name="valorRango" [(ngModel)]="historia.datosDinamicos[3].valor">
+			    		</div>
+						</div>
+					</div>
+
+					<!-- Un cuadro de texto numérico. -->
+					<div class="row">
+						<div class="col col-lg-6">
+		        	<div class="form-group">
+									<input type="text" class="form-control" placeholder="Número" name="claveNro" [(ngModel)]="historia.datosDinamicos[4].clave">
+			    		</div>
+						</div>
+	    			<div class="col col-lg-6">
+		        	<div class="form-group">
+									<input type="number" class="form-control" placeholder="Valor" name="valorNro" [(ngModel)]="historia.datosDinamicos[4].valor">
+			    		</div>
+						</div>
+					</div>
+
+					<!-- Switch con “Si” o “No”. -->
+					<div class="row">
+						<div class="col col-lg-6">
+		        	<div class="form-group">
+									<input type="text" class="form-control" placeholder="Switch" name="claveSwitch" [(ngModel)]="historia.datosDinamicos[5].clave">
+			    		</div>
+						</div>
+	    			<div class="col col-lg-6">
+	    				<div class="form-check form-switch">
+							  <input class="form-check-input switch" type="checkbox" role="switch" id="valorSwitch" name="valorSwitch" [(ngModel)]="historia.datosDinamicos[5].valor">
+							  <label class="form-check-label" for="valorSwitch">No / Sí</label>
+							</div>
+						</div>
+					</div>
+
+        </form>
       </div>
 
       <div class="modal-footer formulario">
         <button type="button" data-bs-dismiss="modal" (click)="resetearInfo()">Cancelar</button>
         <button type="button" data-bs-dismiss="modal" (click)="confirmarAccion()">Confirmar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Modal para dejar comentarios, encuesta y calificación -->
+<div *ngIf="datos" class="modal fade" id="turnoModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      	<div class="modal-header">
+	        <h1 *ngIf="getAccion=='cancelar'" class="modal-title fs-5">Razón de la cancelación</h1>
+	        <h1 *ngIf="getAccion=='finalizar'" class="modal-title fs-5">Comentario de la consulta</h1>
+	        <h1 *ngIf="getAccion=='calificar'" class="modal-title fs-5">Calificar atención</h1>
+	        <h1 *ngIf="getAccion=='rechazar'" class="modal-title fs-5">Razón del rechazo</h1>
+	        <h1 *ngIf="getAccion=='encuesta'" class="modal-title fs-5">Encuesta: ¿Qué opina de nuestra clínica?</h1>
+      	</div>
+
+      <div class="modal-body">
+      	<form class="formulario">
+					<textarea *ngIf="getAccion=='finalizar' || getAccion=='rechazar' || getAccion=='cancelar'" class="form-control" id="comentario" name="comentario" #comentario [(ngModel)]="info.comentario"></textarea>
+					<textarea *ngIf="getAccion=='encuesta'" class="form-control" id="comentarioEncuesta" name="comentarioEncuesta" #comentarioEncuesta [(ngModel)]="info.encuesta"></textarea>
+					<textarea *ngIf="getAccion=='calificar'" class="form-control" id="calificacion" name="calificacion" #calificacion [(ngModel)]="info.calificacion"></textarea>
+      	</form>
+      </div>
+
+      <div class="modal-footer formulario">
+        <button type="button" data-bs-dismiss="modal" (click)="resetearInfo()">Cancelar</button>
+
+        <button *ngIf="!esFinalizable" type="button" data-bs-dismiss="modal" (click)="confirmarAccion()">Confirmar</button>
+				<button *ngIf="esFinalizable" type="button" data-bs-toggle="modal" data-bs-target="#historiaModal1">Confirmar</button>
+
       </div>
     </div>
   </div>

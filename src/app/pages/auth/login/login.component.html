@@ -52,11 +52,11 @@
           <div class="icon-boxes flex-column justify-content-center">
             <div class="row">
 
-                <div class="col-xl-2 align-items-stretch" *ngFor="let usuario of usuarios; let i = index;" (click)="completarCampos(i)">
-                  	<div class="icon-box mt-4 mt-xl-0">
-                  		<i class="{{mostrarIcono(usuario)}}"></i>
+                <div class="col-lg-2 col-md-4 align-items-stretch" *ngFor="let usuario of usuarios; let i = index;" (click)="completarCampos(i)">
+                  	<div appResaltarLista class="icon-box mt-4 mt-xl-0">
+                  		<i class="{{usuario | mostrarIcono}}"></i>
                     	<img src="{{usuario.archivoURL}}" class="img-fluid" alt="">
-	                    <h4 class="mt-2">{{usuario.nombre | titlecase}} {{usuario.apellido | titlecase}}</h4>
+	                    <h4 class="mt-2">{{usuario | nombreUsuario}}</h4>
                   	</div>
                 </div>
 

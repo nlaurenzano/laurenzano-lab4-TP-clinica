@@ -15,7 +15,9 @@ export class UsuariosComponent implements OnInit {
   public usuarioDetalle: Usuario = null;
   public creandoAdmin: boolean = false;
   public usuarioImagenes: any;
+  public turnosPaciente = null;
 
+  private usuario;
   private roles = ['administrador', 'especialista', 'paciente'];
 
   constructor( 
@@ -26,6 +28,7 @@ export class UsuariosComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.usuario = this.authenticationService.usuario;
     this.mostrarTodos();
   }
 
@@ -33,40 +36,62 @@ export class UsuariosComponent implements OnInit {
     this.usuarioImagenes = [];
     this.usuarioDetalle = usuario;
     this.usuarioImagenes = this.archivos.obtenerImagenes(usuario.email);
+    this.turnosPaciente = null;
+
+    // Buscar turnos, si se seleccionó un paciente
+    if ( this.usuarioDetalle.rol == this.roles[2] ) {
+      let cantidadTurnos = 0;
+      // Si el usuario logueado es especialista, solo se muestran 3 turnos
+      if ( this.esEspecialista ) {
+        cantidadTurnos = 3;
+      }
+      this.turnosPaciente = this.db.obtenerTurnosPacienteEspEstadoCantidad( this.usuarioDetalle, this.usuario, 'finalizado', cantidadTurnos );
+    }
   }
 
   // Devuelve la lista de todos los usuarios
   mostrarTodos() {
     this.usuarioDetalle = null;
-    this.usuarios = this.db.obtenerUsuarios();
+    this.turnosPaciente = null;
+
+    if ( this.esEspecialista ) {
+      this.usuarios = this.db.obtenerPacientes( this.usuario );
+    } else {
+      this.usuarios = this.db.obtenerUsuarios();
+    }
   }
 
   // Devuelve la lista de todos los pacientes
   mostrarAdmins() {
+    this.usuarioDetalle = null;
+    this.turnosPaciente = null;
     this.usuarios = this.db.obtenerUsuariosPorRol( this.roles[0] );
   }
 
   // Devuelve la lista de todos los pacientes
   mostrarEspecialistas() {
     this.usuarioDetalle = null;
+    this.turnosPaciente = null;
     this.usuarios = this.db.obtenerUsuariosPorRol( this.roles[1] );
   }
 
   // Devuelve la lista de todos los pacientes
   mostrarPacientes() {
+    this.usuarioDetalle = null;
+    this.turnosPaciente = null;
     this.usuarios = this.db.obtenerUsuariosPorRol( this.roles[2] );
   }
 
   get esAdmin(): boolean {
-    return this.usuarioDetalle.rol == this.roles[0];
+    return this.usuario.rol == this.roles[0];
   }
 
   get esEspecialista(): boolean {
-    return this.usuarioDetalle.rol == this.roles[1];
+    return this.usuario.rol == this.roles[1];
   }
 
   get esPaciente(): boolean {
-    return this.usuarioDetalle.rol == this.roles[2];
+    return this.usuario.rol == this.roles[2];
   }
 
   crearAdmin() {
@@ -79,9 +104,5 @@ export class UsuariosComponent implements OnInit {
     await this.db.habilitarUsuario( usuario.id, !usuario.habilitado );
     usuario.habilitado = !usuario.habilitado;
   }
-
-
-
-
 
 }

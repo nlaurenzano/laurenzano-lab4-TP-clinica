@@ -1106,9 +1106,9 @@ section {
 .usuarios .detalle {
   background: #fff;
   position: relative;
-  box-shadow: 0px 2px 15px rgba(44, 73, 100, 0.08);
+  /*box-shadow: 0px 2px 15px rgba(44, 73, 100, 0.08);*/
   padding: 30px;
-  border-radius: 10px;
+  /*border-radius: 10px;*/
 }
 
 .usuarios .detalle .pic {
@@ -1161,7 +1161,7 @@ section {
 }
 
 .usuarios .detalle .social {
-  margin-top: 12px;
+  /*margin-top: 12px;*/
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -1531,6 +1531,11 @@ section {
   100% {
     transform: rotate(360deg);
   }
+}
+
+.resaltar-algo {
+  font-size: 1.1em;
+  font-weight: 1.1em;
 }
 
 /*--------------------------------------------------------------

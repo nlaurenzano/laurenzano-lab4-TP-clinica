@@ -21,11 +21,10 @@
 			          <div class="row icon-boxes justify-content-center">
 
 			                <div class="col-xl-2 align-items-stretch text-center" *ngFor="let usuario of usuarios" (click)="seleccionarPaciente(usuario)">
-			                  	<div class="icon-box mt-4 mt-xl-0">
-			                  		<!-- <i class="{{mostrarIcono(usuario)}}"></i> -->
+			                  	<div appResaltarLista class="icon-box mt-4 mt-xl-0">
 			                    	<img src="{{usuario.archivoURL}}" class="img-fluid" alt="">
 			                  	</div>
-				                <h4 class="mt-2">{{usuario.nombre | titlecase}} {{usuario.apellido | titlecase}}</h4>
+				                <h4 class="mt-2">{{usuario | nombreUsuario}}</h4>
 			                </div>
 
 			        </div>
@@ -50,11 +49,10 @@
 			          <div class="row icon-boxes justify-content-center">
 
 			                <div class="col-xl-2 align-items-stretch text-center" *ngFor="let usuario of usuarios" (click)="mostrarEspecialidades(usuario)">
-			                  	<div class="icon-box mt-4 mt-xl-0">
-			                  		<!-- <i class="{{mostrarIcono(usuario)}}"></i> -->
+			                  	<div appResaltarLista class="icon-box mt-4 mt-xl-0">
 			                    	<img src="{{usuario.archivoURL}}" class="img-fluid" alt="">
 			                  	</div>
-				                <h4 class="mt-2">{{usuario.nombre | titlecase}} {{usuario.apellido | titlecase}}</h4>
+				                <h4 class="mt-2">{{usuario | nombreUsuario}}</h4>
 			                </div>
 
 			        </div>
@@ -75,7 +73,7 @@
 	              	<div class="icon-box mt-4 mt-xl-0">
 	                	<img src="{{paciente.archivoURL}}" class="img-fluid" alt="">
 	              	</div>
-	                <h4 class="mt-2">{{paciente.nombre | titlecase}} {{paciente.apellido | titlecase}}</h4>
+	                <h4 class="mt-2">{{paciente | nombreUsuario}}</h4>
 		    	</div>
 		    </div>
 
@@ -83,12 +81,11 @@
               	<div class="icon-box mt-4 mt-xl-0">
                 	<img src="{{especialista.archivoURL}}" class="img-fluid" alt="">
               	</div>
-                <h4 class="mt-2">{{especialista.nombre | titlecase}} {{especialista.apellido | titlecase}}</h4>
+                <h4 class="mt-2">{{especialista | nombreUsuario}}</h4>
                 <h5 *ngIf="especialidad" class="mt-2">{{especialidad | titlecase}}</h5>
 	    	</div>
 
 	    </div>
-
 
 
 	    <!-- Especialidad / Turno -->
@@ -103,10 +100,6 @@
 
 		</div>
 		</ng-template>
-
-
-
-
 
 		<!-- Mostrar selección de turno -->
 	    <ng-template #seleccionTurno>

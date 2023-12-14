@@ -5,24 +5,23 @@
 	      <h2>Usuarios</h2>
 	    </div>
 
-<!-- TODO -->
 	    <!-- Crear usuario -->
-	    <div class="icon-toggle">
+	    <div *ngIf="esAdmin" class="icon-toggle">
 			<div class="icon" title="Nuevo Usuario" (click)="crearAdmin()">
 				<i class="fa-solid fa-user-plus"></i>
 			</div>
 		</div>
 
-		<div *ngIf="usuarios | async; then contenidoBlock else preloader"></div>
-		<ng-template #preloader>
-			<div id="preloader"></div>
+		<div *ngIf="usuarios | async; then listaContenido else listaSpinner"></div>
+		<ng-template #listaSpinner>
+			<app-spinner></app-spinner>
 		</ng-template>
 
-		<ng-template #contenidoBlock>
+		<ng-template #listaContenido>
 			<div class="row justify-content-md-center">
 			    
 			    <!-- Filtros -->
-				<div class="col col-lg-1 text-center">
+				<div *ngIf="esAdmin" class="col col-lg-1 text-center">
 					<div class="icon-toggle" (click)="mostrarEspecialistas()">
 						<div class="icon" title="Especialistas">
 							<i class="fas fa-stethoscope"></i>
@@ -47,12 +46,16 @@
 
 				<!-- Listado -->
 				<div class="col col-lg-5">
-					<usuarios-lista [lista]="usuarios" [conHabilitacion]="true" (seleccionado)="mostrarDetalle($event)" (toggleHabilitacion)="toggleHabilitar($event)"></usuarios-lista>
+					<usuarios-lista [lista]="usuarios" [conHabilitacion]="esAdmin" (seleccionado)="mostrarDetalle($event)" (toggleHabilitacion)="toggleHabilitar($event)"></usuarios-lista>
 				</div>
 
 				<!-- Detalles -->
 				<div class="col col-lg-6">
 					<usuario-detalle [datos]="usuarioDetalle" [imagenes]="usuarioImagenes"></usuario-detalle>
+
+					<!-- Listado de turnos -->
+					<h4 *ngIf="turnosPaciente" class="px-lg-5 mt-2">Turnos</h4>
+					<turnos-lista *ngIf="turnosPaciente" [lista]="turnosPaciente" [tipo]="'historia'"></turnos-lista>
 				</div>
 
 			</div>

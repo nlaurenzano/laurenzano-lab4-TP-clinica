@@ -1,0 +1,130 @@
+<div class="card card-login m-3 p-1 mx-auto">
+<div class="card-body">
+
+	<form class="formulario">
+		<div class="row">
+
+			<div class="form-group">
+		    	<div class="form-floating mb-3">
+					<input type="text" class="form-control" id="estado" name="estado" placeholder="Estado" [(ngModel)]="turno.estado">
+					<label for="estado">Estado</label>
+				</div>
+			</div>
+
+			<div class="form-group">
+		    	<div class="form-floating mb-3">
+					<input type="datetime" class="form-control" id="horario" name="horario" placeholder="Horario" [(ngModel)]="turno.horario">
+					<label for="horario">Horario</label>
+				</div>
+			</div>
+
+			<div class="form-group">
+		    	<div class="form-floating mb-3">
+					<input type="number" class="form-control" id="altura" name="altura" placeholder="Altura" [(ngModel)]="turno.historia.altura">
+					<label for="altura">Altura</label>
+				</div>
+			</div>
+
+			<div class="form-group">
+		    	<div class="form-floating mb-3">
+					<input type="number" class="form-control" id="peso" name="peso" placeholder="Peso" [(ngModel)]="turno.historia.peso">
+					<label for="peso">Peso</label>
+				</div>
+			</div>
+
+			<div class="form-group">
+		    	<div class="form-floating mb-3">
+					<input type="number" class="form-control" id="temperatura" name="temperatura" placeholder="Temperatura" [(ngModel)]="turno.historia.temperatura">
+					<label for="temperatura">Temperatura</label>
+				</div>
+			</div>
+
+			<div class="form-group">
+		    	<div class="form-floating mb-3">
+					<input type="number" class="form-control" id="presion" name="presion" placeholder="Presión" [(ngModel)]="turno.historia.presion">
+					<label for="presion">Presión</label>
+				</div>
+			</div>
+
+			<label class="mb-1">Datos adicionales</label>
+			<div *ngFor="let dato of turno.historia.datosDinamicos; index as i">
+				<div *ngIf="i < 3" class="row">
+					<div class="col col-lg-6">
+			        	<div class="form-group">
+							<input type="text" class="form-control" placeholder="Dato" name="clave" [(ngModel)]="dato.clave">
+			    		</div>
+					</div>
+					<div class="col col-lg-6">
+			        	<div class="form-group">
+							<input type="text" class="form-control" placeholder="Valor" name="valor" [(ngModel)]="dato.valor">
+			    		</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Datos dinámicos agregados al sprint 3 -->
+			<!-- Un control de rango entre 0 y 100. -->
+			<div class="row">
+				<div class="col col-lg-6">
+	    			<div class="form-group">
+						<input type="text" class="form-control" placeholder="Rango" name="claveRango" [(ngModel)]="turno.historia.datosDinamicos[3].clave">
+	    			</div>
+				</div>
+				<div class="col col-lg-6">
+		    		<div class="form-group">
+						<input type="text" class="form-control" disabled placeholder="Valor" [value]="turno.historia.datosDinamicos[3].valor">
+	    			</div>
+				</div>
+			</div>
+
+			<!-- Slider para el rango. -->
+			<div class="row">
+				<div class="col col-lg-12">
+			    	<div class="form-group">
+			    		<div class="d-flex">
+			    			<label>0</label>
+			    			<label class="ms-auto">100</label>
+			    		</div>
+						<input type="range" class="form-range" min="0" max="100" id="valorRango" name="valorRango" [(ngModel)]="turno.historia.datosDinamicos[3].valor">
+	    			</div>
+				</div>
+			</div>
+
+			<!-- Un cuadro de texto numérico. -->
+			<div class="row">
+				<div class="col col-lg-6">
+	    			<div class="form-group">
+						<input type="text" class="form-control" placeholder="Número" name="claveNro" [(ngModel)]="turno.historia.datosDinamicos[4].clave">
+	    			</div>
+				</div>
+				<div class="col col-lg-6">
+		    		<div class="form-group">
+						<input type="number" class="form-control" placeholder="Valor" name="valorNro" [(ngModel)]="turno.historia.datosDinamicos[4].valor">
+	    			</div>
+				</div>
+			</div>
+
+			<!-- Switch con “Si” o “No”. -->
+			<div class="row">
+				<div class="col col-lg-6">
+	    			<div class="form-group">
+						<input type="text" class="form-control" placeholder="Switch" name="claveSwitch" [(ngModel)]="turno.historia.datosDinamicos[5].clave">
+	    			</div>
+				</div>
+				<div class="col col-lg-6">
+					<div class="form-check form-switch">
+						<input class="form-check-input switch" type="checkbox" role="switch" id="valorSwitch" name="valorSwitch" [(ngModel)]="turno.historia.datosDinamicos[5].valor">
+					  	<label class="form-check-label" for="valorSwitch">No / Sí</label>
+					</div>
+				</div>
+			</div>
+		
+
+			<div class="d-flex justify-content-center mt-2">
+				<button type="button" (click)="seleccionar(turno)">Agregar datos</button>
+			</div>
+
+		</div>
+	</form>
+</div>
+</div>

@@ -1,0 +1,14 @@
+<div class="list-group">		
+	<button appResaltarLista *ngFor="let item of lista | async" type="button" class="list-group-item list-group-item-action">
+	
+		<div class="row g-0 py-1">
+		    <div class="col-md-1">
+		    	<div class="icon"><i class=""></i></div>
+		    </div>
+		    <div class="col-md-11 d-flex">
+		  		<h5>{{item.usuario | nombreUsuario}}: {{item.actividad | titlecase}} - {{item.fecha | date:'dd-LL-yyyy HH:mm'}}</h5>
+
+		    </div>
+		</div>
+	</button>
+</div>

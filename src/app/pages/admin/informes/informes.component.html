@@ -1,0 +1,44 @@
+<section><div class="container">
+
+	<div class="row justify-content-md-center">
+		<div class="col col-lg-4">
+
+
+			<div class="list-group">
+				<button appResaltarLista *ngFor="let item of lista" type="button" class="list-group-item list-group-item-action"
+					(click)="seleccionarInforme(item)">
+					
+					<div class="row g-0 py-1">
+					    <div class="col-md-12 d-flex ps-2">
+					    	<h5>{{item.nombre | titlecase}}</h5>
+					    </div>
+					</div>
+
+				</button>
+			</div>
+		</div>
+
+		<div class="col col-lg-8">
+			<div class="d-flex formulario mb-2 ps-5">
+				<!-- 
+				<div class="col col-lg-3 px-1">
+	            	<input *ngIf="usaFechas" id="inicioInforme" name="inicioInforme" class="form-control" type="date" [(ngModel)]="inicioInforme">
+				</div>
+				<div class="col col-lg-3 px-1">
+	            	<input *ngIf="usaFechas" id="finInforme" name="finInforme" class="form-control" type="date" [(ngModel)]="finInforme">
+				</div>
+ -->
+ 				<h5 *ngIf="usaFechas">Se muestran datos desde {{inicioInforme | date:'dd-LL-yyyy HH:mm'}} hasta {{finInforme | date:'dd-LL-yyyy HH:mm'}}.</h5>
+
+				<button *ngIf="datosInforme && esIngresos"type="button" class="ms-auto" (click)="savePDF()">Descargar</button>
+				<button *ngIf="datosInforme && !esIngresos"type="button" class="ms-auto" (click)="descargar()">Descargar</button>
+			</div>
+			<div id="graficoInforme" #graficoInforme>
+				<app-graficos *ngIf="!esIngresos" [datos]="datosInforme"></app-graficos>
+				<app-log-lista *ngIf="esIngresos" [lista]="datosInforme"></app-log-lista>
+			</div>
+		</div>
+
+	</div>
+
+</div></section>

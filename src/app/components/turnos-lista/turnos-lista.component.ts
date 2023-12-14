@@ -1,22 +1,30 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ElementRef, ViewChild } from '@angular/core';
+
+import { AuthenticationService } from "../../servicios/authentication.service";
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'turnos-lista',
   templateUrl: './turnos-lista.component.html',
   styleUrls: ['./turnos-lista.component.css']
 })
-export class TurnosListaComponent implements OnInit {
+export class TurnosListaComponent {
 
   @Input() lista;
   @Input() tipo;
   @Output() seleccionado = new EventEmitter<string>();
 
+  @ViewChild('historiaModal') private listado: ElementRef;
+
   public turnos= [];
   public turnoSeleccionado = null;
+  public horaActual = new Date();
 
-  ngOnInit() {
-    // this.listaPorDias();
-    // this.lista = this.listaPorDias();
+  constructor( public authenticationService: AuthenticationService ) {}
+
+  get esPaciente() {
+    return this.authenticationService.usuario.rol == 'paciente';
   }
 
   set setTurno( turno ) {
@@ -31,39 +39,42 @@ export class TurnosListaComponent implements OnInit {
     this.seleccionado.emit(turno);
   }
 
-  // Devuelve un array que contiene un array por cada día, con los turnos para ese día.
-  listaPorDias() {
-
-    if ( this.lista.length != 0 ) {
-
-      this.lista.then((turnos) => {
-        let indexDia = 0;
-
-        turnos.forEach((item, index, arr) => {
-          if ( index == 0 || arr[index-1].horario.getDate() != item.horario.getDate() ) {
-            // Agrego array para un nuevo día, con el primer turno
-            this.turnos.push( [item] );
-            
-            // Incremento el índice principal
-            indexDia = index == 0 ? 0 : indexDia+1;
-
-          } else {
-            // Agrego turno al array del día
-            this.turnos[indexDia].push( item );
-          }
-
-        });
-      });
-      // return listaDias;
-    }
-  }
-
   get esSolicitud() {
     return this.tipo == 'solicitud';
   }
 
   get esListado() {
     return this.tipo == 'listado';
+  }
+
+  get esHistoria() {
+    return this.tipo == 'historia';
+  }
+
+  descargar() {
+    const DATA = this.listado.nativeElement;
+    const doc = new jsPDF('p', 'pt', 'a4');
+    const options = {
+      background: 'white',
+      scale: 3
+    };
+
+    html2canvas(DATA, options).then((canvas) => {
+
+      const img = canvas.toDataURL('image/PNG');
+
+      // Add image Canvas to PDF
+      const bufferX = 15;
+      const bufferY = 15;
+      const imgProps = (doc as any).getImageProperties(img);
+      const pdfWidth = doc.internal.pageSize.getWidth() - 2 * bufferX;
+      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+      doc.addImage(img, 'PNG', bufferX, bufferY, pdfWidth, pdfHeight, undefined, 'FAST');
+      return doc;
+    }).then((docResult) => {
+      docResult.save(`historia_${new Date().toISOString()}.pdf`);
+    });
+
   }
 
 

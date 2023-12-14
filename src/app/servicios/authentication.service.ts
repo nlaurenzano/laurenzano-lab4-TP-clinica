@@ -1,6 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-// import { Firestore, doc, setDoc, getDocs, collection, collectionData } from '@angular/fire/firestore';
 import { traceUntilFirst } from '@angular/fire/performance';
 import { map } from 'rxjs/operators';
 import { EMPTY, Observable, Subscription } from 'rxjs';
@@ -53,7 +52,6 @@ export class AuthenticationService implements OnDestroy {
   private readonly urlLogin: string = 'https://clinica-6b04b.web.app/auth/login';
   private readonly userDisposable: Subscription|undefined;
 
-  // constructor(@Optional() private auth: Auth) {
   constructor( 
     public auth: Auth, 
     public db: DbService, 
