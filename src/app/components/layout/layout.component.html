@@ -12,6 +12,7 @@
       <ul>
         <li><a class="nav-link scrollto" routerLink="/">Inicio</a></li>
         <li *ngIf="authenticationService.isLoggedIn && !esPaciente"><a class="nav-link scrollto" routerLink="/admin/usuarios">{{tituloUsuarios}}</a></li>
+        <li *ngIf="authenticationService.isLoggedIn && esAdmin"><a class="nav-link scrollto" routerLink="/admin/informes">Informes</a></li>
         <li *ngIf="authenticationService.isLoggedIn"><a class="nav-link scrollto" routerLink="/turnos/turnos">
           <span *ngIf="!esAdmin">Mis&nbsp;</span>Turnos
         </a></li>

@@ -53,7 +53,6 @@ export class AuthenticationService implements OnDestroy {
   private readonly urlLogin: string = 'https://clinica-6b04b.web.app/auth/login';
   private readonly userDisposable: Subscription|undefined;
 
-  // constructor(@Optional() private auth: Auth) {
   constructor( 
     public auth: Auth, 
     public db: DbService, 

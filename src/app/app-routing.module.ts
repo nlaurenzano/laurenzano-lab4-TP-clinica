@@ -4,7 +4,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
-  // { path: '', redirectTo:'/home', pathMatch:'full' },
   {
     path: '',
     loadChildren: () => import('./pages/inicio/inicio.module').then(m => m.InicioModule)

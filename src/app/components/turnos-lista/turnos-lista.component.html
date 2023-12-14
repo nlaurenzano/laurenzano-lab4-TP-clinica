@@ -93,7 +93,7 @@
 	      	<h4>Datos adicionales:</h4>
 	    		<div *ngFor="let dato of turnoSeleccionado.historia.datosDinamicos" class="row">
 	    			<div *ngIf="dato.clave!=''" class="col col-lg-12">
-	     				<h5>{{dato.clave | titlecase}}: {{dato.valor | traducirBoolean | titlecase}}</h5>
+	     				<h5>{{dato.clave | titlecase}}: {{dato.valor | traducirBoolean}}</h5>
 						</div>
 					</div>
 
