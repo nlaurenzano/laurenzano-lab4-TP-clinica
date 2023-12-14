@@ -34,7 +34,12 @@ Los pacientes pueden acceder a las siguientes secciones de la Web:
 En esta sección se ven los datos del usuario y sus imágenes.
 Además se puede seleccionar una especialidad, para ver los turnos pasados y acceder a la historia clínica. Se puede descargar la historia clínica en formato PDF.
 
-![Perfil de usuario](https://github.com/nlaurenzano/laurenzano-lab4-TP-clinica/assets/21069517/dc738f41-32db-4a42-b2e1-2eaf6633cbd4)
+![image](https://github.com/nlaurenzano/laurenzano-lab4-TP-clinica/assets/21069517/3e4574e4-173c-4981-9742-91f4874abbe9)
+
+![image](https://github.com/nlaurenzano/laurenzano-lab4-TP-clinica/assets/21069517/b4971444-75c6-442f-acdc-1371785fd549)
+
+![image](https://github.com/nlaurenzano/laurenzano-lab4-TP-clinica/assets/21069517/11401ab8-ed30-4113-858a-7c23ab0489cb)
+
 
 #### Mis Turnos
 En esta sección se ven todos los turnos que el usuario haya solicitado, con su horario y estado.
