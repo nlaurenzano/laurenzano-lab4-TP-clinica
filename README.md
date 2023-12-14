@@ -77,7 +77,10 @@ Esta configuración solo afecta a los turnos nuevos, no a los existentes.
 En esta sección se ven todos los pacientes que el especialista haya atendido al menos una vez.
 Al seleccionar un paciente, se puede ver en detalle toda la información relacionada, junto con sus imágenes de perfil y los últimos turnos a los que asistió. En el listado de turnos se puede acceder a la historia clínica asociada.
 
---	imagenes 	--
+![Pacientes](https://github.com/nlaurenzano/laurenzano-lab4-TP-clinica/assets/21069517/575e1188-f604-4f13-b36f-88f599bbdc62)
+
+![Historia clínica](https://github.com/nlaurenzano/laurenzano-lab4-TP-clinica/assets/21069517/39f3083b-d637-4d24-bf44-5855428f9847)
+
 
 #### Mis Turnos
 En esta sección se ven todos los turnos que los pacientes hayan solicitado con el especialista, con su horario y estado.
@@ -124,8 +127,15 @@ Los informes disponibles son:
 -	Cantidad de turnos solicitado por médico, desde el día actual hasta 15 días en adelante.
 -	Cantidad de turnos finalizados por médico, desde 30 días atrás hasta el día actual.
 
---	imágenes  --
+![image](https://github.com/nlaurenzano/laurenzano-lab4-TP-clinica/assets/21069517/3c30d158-544f-4eff-be85-5174297dce43)
 
+![image](https://github.com/nlaurenzano/laurenzano-lab4-TP-clinica/assets/21069517/99a26b02-e32f-4e46-af1d-753bf5336a15)
+
+![image](https://github.com/nlaurenzano/laurenzano-lab4-TP-clinica/assets/21069517/f3aeaaa4-ba30-4eae-a6d7-76080540ec45)
+
+![image](https://github.com/nlaurenzano/laurenzano-lab4-TP-clinica/assets/21069517/04280255-fb55-48c8-9478-1b51116e2c5a)
+
+![image](https://github.com/nlaurenzano/laurenzano-lab4-TP-clinica/assets/21069517/da486884-46b0-4679-8a30-aff70647f829)
 
 
 #### Turnos
