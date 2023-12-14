@@ -1,1 +1,29 @@
-<p>informes works!</p>
+<section><div class="container">
+
+	<div class="row justify-content-md-center">
+		<div class="col col-lg-4">
+
+
+			<div class="list-group">
+				<button appResaltarLista *ngFor="let item of lista" type="button" class="list-group-item list-group-item-action"
+					(click)="seleccionarInforme(item)">
+					
+					<div class="row g-0 py-1">
+					    <div class="col-md-12 d-flex ps-2">
+					    	<h5>{{item.nombre | titlecase}}</h5>
+					    </div>
+					</div>
+
+				</button>
+			</div>
+		</div>
+
+		<div class="col col-lg-8">
+
+			<app-graficos [datos]="lista"></app-graficos>
+
+		</div>
+
+	</div>
+
+</div></section>
