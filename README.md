@@ -32,6 +32,7 @@ Los pacientes pueden acceder a las siguientes secciones de la Web:
 
 #### Perfil
 En esta sección se ven los datos del usuario y sus imágenes.
+Además se puede seleccionar una especialidad, para ver los turnos pasados y acceder a la historia clínica. Se puede descargar la historia clínica en formato PDF.
 
 ![Perfil de usuario](https://github.com/nlaurenzano/laurenzano-lab4-TP-clinica/assets/21069517/dc738f41-32db-4a42-b2e1-2eaf6633cbd4)
 
@@ -71,6 +72,13 @@ Esta configuración solo afecta a los turnos nuevos, no a los existentes.
 
 ![Configuración de horarios y duración de turnos](https://github.com/nlaurenzano/laurenzano-lab4-TP-clinica/assets/21069517/7ddce981-5783-4fb9-b288-5b179604a228)
 
+
+#### Pacientes
+En esta sección se ven todos los pacientes que el especialista haya atendido al menos una vez.
+Al seleccionar un paciente, se puede ver en detalle toda la información relacionada, junto con sus imágenes de perfil y los últimos turnos a los que asistió. En el listado de turnos se puede acceder a la historia clínica asociada.
+
+--	imagenes 	--
+
 #### Mis Turnos
 En esta sección se ven todos los turnos que los pacientes hayan solicitado con el especialista, con su horario y estado.
 A la izquierda del listado se encuetra la opción **Filtrar** los turnos visibles. Al usar esta opción, se selecciona la especialidad que se está buscando y luego el paciente. Para volver a ver todos los turnos, usar la opción **Limpiar Filtros**.
@@ -105,6 +113,21 @@ Al seleccionar un usuario, se puede ver en detalle toda la información relacion
 
 ![Creación de nuevo usuario](https://github.com/nlaurenzano/laurenzano-lab4-TP-clinica/assets/21069517/6209869c-1df5-4ad8-84c0-5b43fbbf613b)
 
+
+#### Informes
+En esta sección se accede a los informes de uso de la Web
+Los informes disponibles son:
+-	Log de ingresos al sistema: Es un listado que indica cada actividad de los usuario, con día y horario.
+	Este informe se puede exportar en formato PDF.
+-	Cantidad de turnos por especialidad.
+-	Cantidad de turnos por día.
+-	Cantidad de turnos solicitado por médico, desde el día actual hasta 15 días en adelante.
+-	Cantidad de turnos finalizados por médico, desde 30 días atrás hasta el día actual.
+
+--	imágenes  --
+
+
+
 #### Turnos
 En esta sección se ven todos los turnos que los usuarios hayan solicitado, con su horario y estado.
 A la izquierda del listado se encuetra la opción **Filtrar** los turnos visibles. Al usar esta opción, se selecciona la especialidad que se está buscando y luego el especialista. Para volver a ver todos los turnos, usar la opción **Limpiar Filtros**.
@@ -117,4 +140,3 @@ En esta sección se puede solicitar un turno.
 Primero debe seleccionarse el paciente que se está buscando, luego indicar el especialista, la especialidad y, por último, el día y horario deseados. Los turnos que no estén disponibles se verán en un tono más suave y no podrán seleccionarse. Cabe aclarar que la confirmación del turno depende de que el especialista acepte el horario propuesto.
 Se puede ver el estado de los turnos solicitados en la sección **Turnos**.
 ![Nuevo turno - Selección de paciente](https://github.com/nlaurenzano/laurenzano-lab4-TP-clinica/assets/21069517/73886605-9288-48c1-aedb-f6b495b1946a)
-
