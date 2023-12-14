@@ -2,7 +2,8 @@
 	<div class="container">
 
 		<div class="section-title">
-	      <h2>Usuarios</h2>
+	      <h2 *ngIf="esAdmin">Usuarios</h2>
+	      <h2 *ngIf="!esAdmin">Pacientes</h2>
 	    </div>
 
 	    <!-- Crear usuario -->
