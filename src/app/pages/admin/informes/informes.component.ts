@@ -108,15 +108,16 @@ export class InformesComponent {
 
     turnos.forEach((turno)=>{
       // Completo la lista de especialidades
-      if ( !datosResult.labels.includes(turno.especialidad) ) {
-        datosResult.labels.push(turno.especialidad);
+      let especialidad = this.titlePipe.transform(turno.especialidad);
+      if ( !datosResult.labels.includes(especialidad) ) {
+        datosResult.labels.push(especialidad);
 
         // Inicializo el contador de turnos para esta especialidad
         datosResult.series[0].push(1);
 
       } else {
         // Incremento el contador de turnos para esta especialidad
-        const i = datosResult.labels.indexOf(turno.especialidad);
+        const i = datosResult.labels.indexOf(especialidad);
         datosResult.series[0][i]++;
       }
     });
