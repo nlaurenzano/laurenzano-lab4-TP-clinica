@@ -19,9 +19,24 @@
 		</div>
 
 		<div class="col col-lg-8">
+			<div class="d-flex formulario mb-2 ps-5">
+				<!-- 
+				<div class="col col-lg-3 px-1">
+	            	<input *ngIf="usaFechas" id="inicioInforme" name="inicioInforme" class="form-control" type="date" [(ngModel)]="inicioInforme">
+				</div>
+				<div class="col col-lg-3 px-1">
+	            	<input *ngIf="usaFechas" id="finInforme" name="finInforme" class="form-control" type="date" [(ngModel)]="finInforme">
+				</div>
+ -->
+ 				<h5 *ngIf="usaFechas">Se muestran datos desde {{inicioInforme | date:'dd-LL-yyyy HH:mm'}} hasta {{finInforme | date:'dd-LL-yyyy HH:mm'}}.</h5>
 
-			<app-graficos [datos]="lista"></app-graficos>
-
+				<button *ngIf="datosInforme && esIngresos"type="button" class="ms-auto" (click)="savePDF()">Descargar</button>
+				<button *ngIf="datosInforme && !esIngresos"type="button" class="ms-auto" (click)="descargar()">Descargar</button>
+			</div>
+			<div id="graficoInforme" #graficoInforme>
+				<app-graficos *ngIf="!esIngresos" [datos]="datosInforme"></app-graficos>
+				<app-log-lista *ngIf="esIngresos" [lista]="datosInforme"></app-log-lista>
+			</div>
 		</div>
 
 	</div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnChanges, SimpleChanges, Input } from '@angular/core';
 
 import { BarChart, BarChartOptions } from 'chartist';
 
@@ -7,40 +7,23 @@ import { BarChart, BarChartOptions } from 'chartist';
   templateUrl: './graficos.component.html',
   styleUrls: ['./graficos.component.css']
 })
-export class GraficosComponent implements OnInit {
+export class GraficosComponent implements OnChanges {
 
   @Input() datos;
 
-  ngOnInit() {
+  chart;
 
-    new BarChart(
-      '#chart',
-      {
-        labels: ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'],
-        series: [20, 60, 120, 200, 180, 20, 10]
-      },
-      {
-        distributeSeries: true
+  ngOnChanges(changes: SimpleChanges) {
+    if ( this.datos != null ) {
+      if ( changes.datos.previousValue != changes.datos.currentValue ) {
+        this.datos.then((datos)=>{
+          console.log('datos '+datos.labels);
+          console.log('datos '+datos.series);
+          this.chart = new BarChart( '#chart', datos,
+            { axisY: {onlyInteger:true}} );
+        });
       }
-    );
-
-    // const data = {
-    //   labels: ['W1', 'W2', 'W3', 'W4', 'W5', 'W6', 'W7', 'W8', 'W9', 'W10'],
-    //   series: [[1, 2, 4, 8, 6, -2, -1, -4, -6, -2]]
-    // };
-
-    // const options: BarChartOptions = {
-    //   high: 10,
-    //   low: -10,
-    //   axisX: {
-    //     labelInterpolationFnc(value, index) {
-    //       return index % 2 === 0 ? value : null;
-    //     }
-    //   }
-    // };
-
-    // new BarChart('#chart', data, options);
-
+    }
   }
 
 

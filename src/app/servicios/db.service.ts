@@ -234,6 +234,42 @@ export class DbService {
     return turnosResult;
   }
 
+  // Devuelve la lista de todos los turnos del paciente
+  async obtenerTurnosEstadoRango( inicio, fin, estado ) {
+    let turnosResult = [];
+    const turnosRef = collection(this.fs, "turnos");
+    let q = query(turnosRef, 
+      where("horario", ">=", inicio), 
+      where("horario", "<=", fin), 
+      orderBy('horario'));
+
+    if ( estado != '' ) {
+      q = query(turnosRef, 
+      where("estado", "==", estado), 
+      where("horario", ">=", inicio), 
+      where("horario", "<=", fin), 
+      orderBy('horario'));      
+    }
+
+    const querySnapshot = await getDocs(q);
+
+    querySnapshot.forEach((doc) => {
+      turnosResult.push({
+        id: doc.id,
+        horario: doc.data().horario.toDate(),
+        especialista: doc.data().especialista,
+        especialidad: doc.data().especialidad,
+        paciente: doc.data().paciente,
+        estado: doc.data().estado,
+        comentario: doc.data().comentario,
+        calificacion: doc.data().calificacion,
+        encuesta: doc.data().encuesta,
+        historia: doc.data().historia
+      });
+    });
+    return turnosResult;
+  }
+
   // Devuelve la lista con la cantidad indicada de turnos del paciente, en el estado indicado
   async obtenerTurnosPacienteEstadoCantidad( usuario, estado, cantidad ) {
     let turnosResult = [];
@@ -410,6 +446,9 @@ export class DbService {
     const docRef = doc(this.fs, "turnos", turno.id);
     updateDoc(docRef, campos);
   }
+
+
+  
 
 
   // ------------ HORARIOS ------------

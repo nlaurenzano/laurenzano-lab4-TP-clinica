@@ -15,6 +15,7 @@ import { TurnoFiltroComponent } from './turno-filtro/turno-filtro.component';
 import { PipesModule } from '../pipes/pipes.module';
 import { DirectivasModule } from '../directivas/directivas.module';
 import { GraficosComponent } from './graficos/graficos.component';
+import { LogListaComponent } from './log-lista/log-lista.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { GraficosComponent } from './graficos/graficos.component';
     TurnoDetalleComponent,
     SpinnerComponent,
     TurnoFiltroComponent,
-    GraficosComponent
+    GraficosComponent,
+    LogListaComponent
   ],
   exports: [
     LayoutComponent,
@@ -37,7 +39,8 @@ import { GraficosComponent } from './graficos/graficos.component';
     TurnoDetalleComponent,
     SpinnerComponent,
     TurnoFiltroComponent,
-    GraficosComponent
+    GraficosComponent,
+    LogListaComponent
   ],
   imports: [
     CommonModule,

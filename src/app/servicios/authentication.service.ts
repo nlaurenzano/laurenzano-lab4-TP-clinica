@@ -1,6 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-// import { Firestore, doc, setDoc, getDocs, collection, collectionData } from '@angular/fire/firestore';
 import { traceUntilFirst } from '@angular/fire/performance';
 import { map } from 'rxjs/operators';
 import { EMPTY, Observable, Subscription } from 'rxjs';
