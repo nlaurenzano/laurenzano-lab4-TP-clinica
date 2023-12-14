@@ -11,7 +11,8 @@ const routes: Routes = [
     component: UsuariosComponent,
     canActivate: [RolGuard],
     data: {
-        rolesRequeridos: ['administrador','especialista']
+        rolesRequeridos: ['administrador','especialista'],
+        animation: 'Usuarios'
     }
   },
   {
@@ -19,7 +20,8 @@ const routes: Routes = [
     component: InformesComponent,
     canActivate: [RolGuard],
     data: {
-        rolesRequeridos: ['administrador']
+        rolesRequeridos: ['administrador'],
+        animation: 'Informes'
     }
   }
 ];

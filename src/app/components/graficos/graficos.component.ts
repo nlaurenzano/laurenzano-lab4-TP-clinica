@@ -17,8 +17,6 @@ export class GraficosComponent implements OnChanges {
     if ( this.datos != null ) {
       if ( changes.datos.previousValue != changes.datos.currentValue ) {
         this.datos.then((datos)=>{
-          console.log('datos '+datos.labels);
-          console.log('datos '+datos.series);
           this.chart = new BarChart( '#chart', datos,
             { axisY: {onlyInteger:true}} );
         });

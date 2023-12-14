@@ -5,11 +5,13 @@ import { TitleCasePipe, DatePipe } from '@angular/common';
 import { PipesRoutingModule } from './pipes-routing.module';
 import { NombreUsuarioPipe } from './nombre-usuario.pipe';
 import { TraducirBooleanPipe } from './traducir-boolean.pipe';
+import { MostrarIconoPipe } from './mostrar-icono.pipe';
 
 @NgModule({
   declarations: [
     NombreUsuarioPipe,
-    TraducirBooleanPipe
+    TraducirBooleanPipe,
+    MostrarIconoPipe,
   ],
   imports: [
     CommonModule,
@@ -17,7 +19,8 @@ import { TraducirBooleanPipe } from './traducir-boolean.pipe';
   ],
   exports: [
     NombreUsuarioPipe,
-    TraducirBooleanPipe
+    TraducirBooleanPipe,
+    MostrarIconoPipe
   ],
   providers: [
     TitleCasePipe,

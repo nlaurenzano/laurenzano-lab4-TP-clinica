@@ -1,18 +1,18 @@
 import { Directive, ElementRef, HostListener } from '@angular/core';
 
 @Directive({
-  selector: '[appResaltarLista]'
+  selector: '[appResaltarTurno]'
 })
-export class ResaltarListaDirective {
+export class ResaltarTurnoDirective {
 
   constructor( private el: ElementRef ) {}
 
   @HostListener('mouseenter') onMouseEnter() {
-    this.el.nativeElement.classList.toggle('bg-info');
+    this.el.nativeElement.classList.toggle('resaltar-algo');
   }
 
   @HostListener('mouseleave') onMouseLeave() {
-    this.el.nativeElement.classList.toggle('bg-info');
+    this.el.nativeElement.classList.toggle('resaltar-algo');
   }
 
 }

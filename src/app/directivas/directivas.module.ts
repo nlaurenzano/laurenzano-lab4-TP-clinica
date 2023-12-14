@@ -3,17 +3,20 @@ import { CommonModule } from '@angular/common';
 
 import { DirectivasRoutingModule } from './directivas-routing.module';
 import { ResaltarListaDirective } from './resaltar-lista.directive';
+import { ResaltarTurnoDirective } from './resaltar-turno.directive';
 
 @NgModule({
   declarations: [
-    ResaltarListaDirective
+    ResaltarListaDirective,
+    ResaltarTurnoDirective
   ],
   imports: [
     CommonModule,
     DirectivasRoutingModule
   ],
   exports: [
-    ResaltarListaDirective
+    ResaltarListaDirective,
+    ResaltarTurnoDirective
   ],
 })
 export class DirectivasModule { }

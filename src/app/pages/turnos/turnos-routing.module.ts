@@ -7,7 +7,8 @@ import { SolicitudComponent } from './solicitud/solicitud.component';
 const routes: Routes = [
   {
     path: 'turnos',
-    component: TurnosComponent
+    component: TurnosComponent,
+    data: {animation: 'Turnos'}
   },
   {
     path: 'solicitud',
